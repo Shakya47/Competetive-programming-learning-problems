@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+  bool foundnum(int a[],int n, int f){
+
+    if(n==0) return false;
+
+    if(a[0]==f) return true;
+
+    return foundnum(a+1,n-1,f); 
+  
+  }
+
+
+int main(){
+  int a[10];
+  int n;
+  cin>>n;
+  for(int i = 0;i<n ;i++){
+    cin>>a[i];
+  }
+  int f;
+  cin>>f;
+  cout<<foundnum(a,n,f)<<endl;
+  
+
+  return 0;
+}

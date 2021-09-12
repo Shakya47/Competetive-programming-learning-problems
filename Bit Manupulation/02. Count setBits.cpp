@@ -10,6 +10,7 @@ int countBits(int n){  //Time Complexity -> O(logn)
   return ans;
 }
 
+//Brian Kerningam's Algorithm
 int countBitsFast(int n){  //Time Complexity -> O(no. of setbits)
 
   int ans = 0;

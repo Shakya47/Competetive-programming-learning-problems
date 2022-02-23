@@ -1,0 +1,29 @@
+//Right Rotate Array by k times
+//Logic, rotate 0 to n-k-1 elements, rotate n-k to n-1 elements, rotate the entire array. 
+
+void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        if(n==1) return;
+        if(n<k) k = k%n;  //Very imp. k could be more than n so the rotation would repeat.
+               
+        reverse(nums, 0, n-k-1);  //rotate 0 to n-k-1 elements
+        reverse(nums, n-k, n-1);  //rotate n-k to n-1 elements
+        reverse(nums, 0, n-1);    //rotate the entire array
+         
+        // while(k--){    TLE, as it became 10^10, should be <10^8, otherwise without test cases it is good
+        //     int temp = nums[n-1];
+        //     for(int i = n-2; i>=0; i--){
+        //         nums[i+1] = nums[i];
+        //     }
+        //     nums[0] = temp;
+        // }
+        
+    }
+    
+    void reverse(vector<int>& nums, int low, int high){
+        while(low<high){
+            swap(nums[low], nums[high]);
+            low++;
+            high--;
+        }
+    }

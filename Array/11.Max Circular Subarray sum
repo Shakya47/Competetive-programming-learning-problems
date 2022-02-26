@@ -1,0 +1,38 @@
+//Given a circular integer array nums of length n, return the maximum possible sum of a non-empty subarray of nums.
+Input: nums = [5,-3,5]
+Output: 10
+Explanation: Subarray [5,5] has maximum sum 5 + 5 = 10.
+
+
+Concept -> Circular Sum = Sum of array  +  (max of sum of subarray of invert of array);
+-> Input: 5,-2,3,4  -> Output: 12
+-> Sum of array = 5-2+3+4 = 10
+-> invert of array = -5, 2, -3, -4
+-> max sum of subarray in invert array = 2
+-> Circular sum = 10 + 2 = 12
+
+//Kadens Algorithm, to find max sum of subarray
+int kaden(vector<int>&a, int n){
+        int res = a[0];
+        int maxEnding = a[0];
+        for(int i=1; i<n; i++){
+            maxEnding = max(maxEnding+a[i],a[i]);
+            res = max(maxEnding, res);
+        }
+        return res;
+    }
+    
+    int maxSubarraySumCircular(vector<int>& a) {
+        int n = a.size();
+        if(n==1) return a[0];
+        int normalSum = kaden(a,n);
+        if(normalSum<0) return normalSum; //important condition
+        
+        int curSum = 0;
+        for(int i=0; i<n; i++){
+            curSum += a[i];
+            a[i] = -a[i];
+        }
+        int circularSum = curSum + kaden(a,n);
+        return max(circularSum, normalSum);
+    }

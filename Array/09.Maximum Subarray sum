@@ -10,11 +10,11 @@ int maxSubArray(vector<int>& a) {
         vector<int> maxEnd(n);
         maxEnd[0]=a[0];
         for(int i=1; i<n; i++){
-            maxEnd[i]=max(maxEnd[i-1]+a[i], a[i]);
+            maxEnd[i]=max(maxEnd[i-1]+a[i], a[i]);      //Finding max sum possible for each element
         }
         int res = maxEnd[0];
         for(int i=1; i<n; i++){
-            res = max(res, maxEnd[i]);
+            res = max(res, maxEnd[i]);          //result is max of all the sum possible
         }
         return res;
     }

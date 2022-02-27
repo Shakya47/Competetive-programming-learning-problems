@@ -1,0 +1,26 @@
+//Given an array nums of size n, return the majority element.
+//The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+Input: nums = [2,2,1,1,1,2,2]
+Output: 2
+
+Boyer–Moore majority vote algorithm -> it gives a candidate with highest occurrence without sorting. 
+
+int majorityElement(vector<int>& a) {
+        int n = a.size();
+        int res=0;
+        int count = 1;
+        for(int i = 1; i<n; i++){
+            if(a[res]==a[i]){
+                count++;
+            }
+            else count--;
+            if(count==0){
+                count=1;
+                res = i;
+            }
+        }
+        return a[res];  //In this question it is guaranteed that majority element exists, so no need to check the count of candidate
+        
+    }
+
+ 

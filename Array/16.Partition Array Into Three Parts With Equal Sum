@@ -1,0 +1,22 @@
+//Given an array of integers arr, return true if we can partition the array into three non-empty parts with equal sums.
+//Input: 5,2,6,1,1,1,5
+//Output -> true, //each part hass sum = 7
+
+bool canThreePartsEqualSum(vector<int>& a) {
+        int n = a.size();
+        int sum = 0;
+        for(int i = 0; i<n; i++){
+            sum += a[i];
+        }
+        if(sum%3!=0) return false;
+        int part = 0;
+        int count = 0;
+        for(int i =0; i<n; i++){
+            part += a[i];
+            if(part == sum/3){
+                count++;
+                part=0;
+            }
+        }
+        return count>=3;  //if arr has all zeroes, count can be more than 3 but still would be a valid answer
+    }

@@ -1,0 +1,35 @@
+//A string is good if there are no repeated characters.
+//iven a string s, return the number of good substrings of length three in s
+
+//Input: s = "xyzzaz"
+//Output: 1
+
+//Hint: Use sliding window technique
+
+int countGoodSubstrings(string s) {
+        unordered_map <char,int> mp;
+        int count = 0;
+        int k = 3;
+        for(int i=0; i<3; i++){
+            if(mp.find(s[i])==mp.end())
+                mp[s[i]]=1;
+            else
+                mp[s[i]]++;
+        }
+        
+        if(k==mp.size())
+            count++;
+        for(int i = k; i<s.length(); i++){
+            if(mp[s[i-k]]==1)
+                mp.erase(s[i-k]);
+            else
+                mp[s[i-k]]--;
+            if(mp.find(s[i])==mp.end())
+                mp[s[i]]=1;
+            else
+                mp[s[i]]++;
+            if(k==mp.size()) count++;
+        }
+        return count;
+        
+    }

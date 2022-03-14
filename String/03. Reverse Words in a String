@@ -45,3 +45,48 @@
             high--;
         }
     }
+--------------------------------------------------------------------------------------------------------------------------------------------
+Efficient answer
+
+//custom comparator for unique 
+bool BothAreSpace(char x1,char x2)
+{
+	if(x1==x2 && x1==' ') return true;
+	return false;
+}
+class Solution {
+public:
+    string reverseWords(string s) {
+        //Reversing each Word using recursion      
+        int start = 0;
+        int n = s.length();
+        for(int end=0; end<s.length(); end++){
+            if(s[end]==' '){
+                reverse(s, start, end-1);   //reverse each letter of a word
+                start = end+1;
+            }
+        }
+        reverse(s, start,n-1);  //reverse each letter of the last word
+        reverse(s, 0, n-1);     //reverse the entire string
+        
+    //Removing extra spaces
+    s.erase(unique(s.begin(), s.end(), BothAreSpace), s.end());
+    if(s[0]==' ')
+        s.erase(s.begin());
+    if(s[s.length()-1]==' ')
+        s.erase(s.begin()+s.length()-1);
+        
+        
+return s;
+    }
+     void reverse(string &s, int low, int high){
+        while(low<=high){
+            swap(s[low], s[high]);
+            low++;
+            high--;
+        }
+     }
+};
+
+
+

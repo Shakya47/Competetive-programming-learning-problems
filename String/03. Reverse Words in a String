@@ -1,0 +1,47 @@
+//Given an input string s, reverse the order of the words.
+//A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+//Return a string of the words in reverse order concatenated by a single space.
+ 
+ //Removing extra spaces is a challenge
+ 
+ string reverseWords(string s) {
+        
+ //Reversing each Word using recursion      
+        int start = 0;
+        int n = s.length();
+        for(int end=0; end<s.length(); end++){
+            if(s[end]==' '){
+                reverse(s, start, end-1);   //reverse each letter of a word
+                start = end+1;
+            }
+        }
+        reverse(s, start,n-1);  //reverse each letter of the last word
+        reverse(s, 0, n-1);     //reverse the entire string
+        
+        //By this time we have got the string reversed but with spaces also
+        
+        //Below logic is to remove all the extra space
+        int i=0;
+        while(s[i]==' '){
+            s.erase(s.begin()+i);
+        }
+        
+        for(i; i<s.length();i++){
+            if(s[i]==s[i+1]&&s[i]==' '){
+                s.erase(s.begin()+i);
+                i--;
+            }
+        }
+        n = s.length();
+        if(s[n-1]==' ')
+            s.erase(s.begin()+n-1);
+        return s;
+    }
+    
+    void reverse(string &s, int low, int high){
+        while(low<=high){
+            swap(s[low], s[high]);
+            low++;
+            high--;
+        }
+    }

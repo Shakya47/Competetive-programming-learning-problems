@@ -1,0 +1,37 @@
+A string is called a happy prefix if is a non-empty prefix which is also a suffix (excluding itself).
+Given a string s, return the longest happy prefix of s. Return an empty string "" if no such prefix exists.
+
+//Hint: same concept as LPS, only difference is longest is the size of lps[n-1]
+//Example
+Input: "ababacab"
+Output: "ab"
+lps = : 0 0 1 2 3 0 1 2 
+Even though longest is 3, have to take 2 i.e lps[n-1]
+
+  string longestPrefix(string s) {
+        int n = s.length();
+        int lps[n];
+        lps[0]=0;
+        int i=1;
+        int len = 0;
+        //Simple LPS algo
+        while(i<n){
+            if(s[i]==s[len]){
+                len++;
+                lps[i]=len;
+                i++;
+            }
+            else{
+                if(len==0){
+                    lps[i]=0;
+                    i++;
+                }
+                else{
+                    len=lps[len-1];
+                }
+            }
+        }
+        //returning sub string
+        return s.substr(0, lps[n-1]);
+        
+    }

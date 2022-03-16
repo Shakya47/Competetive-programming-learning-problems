@@ -1,0 +1,48 @@
+//Longest Perfect Prefix Suffix;
+//Example 1
+Input: s = "level"
+Output: "l"
+lps = 0, 0, 0, 0, 1
+
+//Example 2
+Input: s = "ababac"
+Output: "l"
+lps = 0, 0, 1, 2, 3,0
+
+
+int fillLPS(string s, int *lps){
+    lps[0]=0;
+    int len = 0;
+    int i = 1;
+    while(i<s.length()){
+        if(s[i]==s[len]){
+            len++;
+            lps[i]=len;
+            i++;
+        }
+        else{
+            if(len==0){
+                lps[i]=0;
+                i++;
+            }
+            else{
+                len=lps[len-1];
+            }
+        }
+    }
+    return 0;
+}
+
+int main()
+{
+    cout<<"Hello World";
+    string s = "ababacab";
+    int lps[s.length()];
+    fillLPS(s, lps);
+    cout<<"LPS is :";
+    for(int i=0; i<s.length(); i++){
+        cout<<lps[i]<<" ";
+    }
+    return 0;
+
+}

@@ -1,0 +1,47 @@
+Find Lexicographic rank of a String
+Example: 
+string -> "abc" -> rank = 1
+string -> "acb" -> rank = 2
+string -> "cba" -> rank = 6
+
+//Tip: Watch Sandeep Jain sir's video whenever confused
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    cout<<"Start";
+    string s = "cba";
+    int n = s.length();
+    int res = 1;
+    int mul = fact(n);
+    int count[256]={0};
+    cout<<"Computing count of each char";
+    for(int i=0; i<n;i++)
+        count[s[i]]++;
+    cout<<"Computing count of smaller char";
+    for(int i=1; i<256; i++)
+        count[i] += count[i-1];
+    cout<<"Computing rank";    
+    for(int i=0; i<n-1; i++){
+        mul = mul/(n-i);
+        res = res + mul*count[s[i]-1];
+        for(int j=s[i]; j<256; j++)     //Decrease the count of all char >= s[i] as it is already considered
+            count[j]--;
+    }
+    
+    cout<<"Rank is: "<<res;
+    return 0;
+}
+
+int fact(int n){
+    int res=1;
+    cout<<"Computing factorial";
+    if(n==1 || n==0) return res;
+    for(int i=2; i<=n; i++){
+        res = res*i;
+    }
+    return res;
+}
+

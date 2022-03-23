@@ -1,0 +1,46 @@
+You are given the head of a linked list. Delete the middle node, and return the head of the modified linked list.
+
+Input: head = [1,2,3,4]
+Output: [1,2,4]
+
+Input: head = [2,1]
+Output: [2]
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteMiddle(ListNode* head) {
+        if(head->next == NULL) return NULL;
+       if(head->next->next == NULL){
+            head->next = NULL;
+            return head;
+        }
+        
+        ListNode *slow = head;
+        ListNode *fast = head;
+        
+        while(fast!=NULL && fast->next!=NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+            ListNode *temp = slow->next;
+            slow->val = temp->val;
+            slow->next = slow->next->next;
+            delete temp;
+        
+      
+        
+        return head;
+        
+    }
+};

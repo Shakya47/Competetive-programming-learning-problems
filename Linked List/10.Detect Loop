@@ -1,0 +1,18 @@
+Floyd's Detection
+
+void checkLoop(node *head){
+    node *slow = head;
+    node *fast = head;
+    while(fast!=NULL && fast->next!=NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+        if(slow == fast){
+            cout<<"Loop detected";
+            return;
+        }
+    }
+
+    cout<<"No Loop"<<endl;;
+    diplayList(head);
+    return;
+}

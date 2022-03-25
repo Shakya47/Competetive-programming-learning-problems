@@ -1,0 +1,41 @@
+Given the head of a singly linked list, return true if it is a palindrome.
+
+Input: head = [1,2,2,1]
+Output: true
+
+
+class Solution {
+    ListNode *reverseList(ListNode *rev){
+        if(rev == NULL || rev->next==NULL) return rev;
+        ListNode *curr = rev;
+        ListNode *prev = NULL;
+        while(curr!=NULL){
+             ListNode *next = curr->next;
+             curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+    
+public:
+    bool isPalindrome(ListNode* head) {
+        //Find middle of the list;
+        ListNode *slow = head, *fast = head;
+        while(fast->next!=NULL && fast->next->next!=NULL){  //Find the middle of the list
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        ListNode *rev = reverseList(slow->next);  //Reverse only the 2nd half of the list
+        
+        ListNode *curr = head;
+        
+        while(rev!=NULL){   //Check for the palindrome
+            if(curr->val != rev->val) return false;
+            curr = curr->next;
+            rev = rev->next;
+        }
+        return true;
+    }
+};

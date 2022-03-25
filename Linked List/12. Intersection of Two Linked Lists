@@ -1,0 +1,23 @@
+//Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. 
+//If the two linked lists have no intersection at all, return null.
+
+Input: listA = [4,1,8,4,5], listB = [5,6,1,8,4,5] //intersectVal = 8, 
+Output: Intersected at '8'
+
+//Very tricky and simple solution
+
+ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int c1=0, c2=0;
+        ListNode *currA = headA;
+        ListNode *currB = headB;
+        while(currA!=currB){
+            if(currA==NULL) currA = headB;      //move currA to head of B
+            else if(currB==NULL) currB = headA; //move currB to head of A
+            else{
+                currA = currA->next;
+                currB = currB->next;
+            }
+        }
+        return currA;
+        
+    }

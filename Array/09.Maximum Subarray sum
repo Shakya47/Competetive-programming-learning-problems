@@ -5,16 +5,14 @@ Output: 23
 //Hint: Pre compute the max sum possible for each element and then find the max of sum
 
 int maxSubArray(vector<int>& a) {
-        int n = a.size();
-        if(n==1) return a[0];
-        vector<int> maxEnd(n);
-        maxEnd[0]=a[0];
-        for(int i=1; i<n; i++){
-            maxEnd[i]=max(maxEnd[i-1]+a[i], a[i]);      //Finding max sum possible for each element
+    int n = a.size();
+    int res = a[0];
+    int curMax = a[0];
+    
+    for(int i=1; i<n; i++){
+        curMax = max(a[i], curMax+a[i]);
+        res = max(res, curMax);
         }
-        int res = maxEnd[0];
-        for(int i=1; i<n; i++){
-            res = max(res, maxEnd[i]);          //result is max of all the sum possible
-        }
-        return res;
-    }
+        
+    return res;
+ }

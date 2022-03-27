@@ -9,7 +9,7 @@ int maxLen(vector<int> &a){
     int res = 0;
     int curMax = 0;
     for(int i=0; i<n-1; i++){
-        if((a[i]+a[i+1])%2==1){
+        if((a[i]+a[i+1])%2==1){     //To check whether a[i] & a[i+1] are not same type
             curMax++;
         }
         else{

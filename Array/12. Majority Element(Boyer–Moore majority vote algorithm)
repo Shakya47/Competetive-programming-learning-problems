@@ -19,7 +19,7 @@ int majorityElement(vector<int>& a) {
                 res = i;
             }
         }
-        return a[res];  //In this question it is guaranteed that majority element exists, so no need to check the count of candidate
+        return a[res];   //In this question it is guaranteed that majority element exists, so no need to check the count of candidate
         
     }
 

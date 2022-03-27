@@ -21,9 +21,9 @@ int trap(vector<int>& height) {
         int w=0;
         for(int i=1; i<n-1; i++){
             if(lmax[i]>rmax[i])     //Very important condition
-                w = w + min(lmax[i], rmax[i]-height[i]);
+                w = w + (rmax[i]-height[i]);
             else
-                w = w + min(rmax[i], lmax[i]-height[i]);
+                w = w + (lmax[i]-height[i]);
         }
         return w;
     }

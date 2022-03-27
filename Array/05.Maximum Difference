@@ -2,6 +2,8 @@
 //find the maximum difference between nums[i] and nums[j] (i.e., nums[j] - nums[i]), 
 //such that 0 <= i < j < n and nums[i] < nums[j].
 
+//Simply maintain a minVal which should be the smallest integer in the array
+
 int maximumDifference(vector<int>& nums) {
         int n = nums.size();
         int res = nums[1]-nums[0];

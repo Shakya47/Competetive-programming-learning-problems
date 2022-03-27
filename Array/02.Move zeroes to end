@@ -1,5 +1,5 @@
 //Move zeroes to to the end of the array
-//Hint: simply swap all the non zero elements in order 0,1,2,3; -> this will make sure zeroes go to the end
+//Hint: simply swap all the non zero elements in order 0,1,2,3; ->  this will make sure zeroes go to the end
 
 void moveZeroes(vector<int>& nums) {
         int z = 0;

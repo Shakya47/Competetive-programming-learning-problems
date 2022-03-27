@@ -11,8 +11,8 @@ Concept -> Circular Sum = Sum of array  +  (max of sum of subarray of invert of 
 -> max sum of subarray in invert array = 2
 -> Circular sum = 10 + 2 = 12
 
-//Kadens Algorithm, to find max sum of subarray
-int kaden(vector<int>&a, int n){
+                                               
+    int kaden(vector<int>&a, int n){   //Kadens Algorithm, to find max sum of subarray
         int res = a[0];
         int maxEnding = a[0];
         for(int i=1; i<n; i++){
@@ -26,13 +26,13 @@ int kaden(vector<int>&a, int n){
         int n = a.size();
         if(n==1) return a[0];
         int normalSum = kaden(a,n);
-        if(normalSum<0) return normalSum; //important condition
+        if(normalSum<0) return normalSum; //edge case, for -ve greates sum
         
-        int curSum = 0;
-        for(int i=0; i<n; i++){
-            curSum += a[i];
-            a[i] = -a[i];
+        int totalSum = 0;
+        for(int i=0; i<n; i++){         //Total sum of the array
+            totalSum += a[i];
+            a[i] = -a[i];               //Also making the array invert 
         }
-        int circularSum = curSum + kaden(a,n);
+        int circularSum = totalSum + kaden(a,n);        //here kaden will give max sum of subarray of invert array
         return max(circularSum, normalSum);
     }

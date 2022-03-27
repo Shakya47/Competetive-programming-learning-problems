@@ -5,16 +5,19 @@
 bool canThreePartsEqualSum(vector<int>& a) {
         int n = a.size();
         int sum = 0;
+        
         for(int i = 0; i<n; i++){
             sum += a[i];
         }
+        
         if(sum%3!=0) return false;
         int part = 0;
         int count = 0;
+        
         for(int i =0; i<n; i++){
             part += a[i];
             if(part == sum/3){
-                count++;
+                count++;       
                 part=0;
             }
         }

@@ -12,10 +12,10 @@ int trap(vector<int>& height) {
             
         }
         lmax[0]=height[0], rmax[n-1]=height[n-1];
-        for(int i=1;i<n;i++){       //Pre-compute lmax & rmax
+        for(int i=1;i<n;i++){       //LMAX -> greatest on left side
             lmax[i]=max(lmax[i-1],height[i]);
         }
-        for(int i=n-2; i>=0;i--){
+        for(int i=n-2; i>=0;i--){       //RMAX -> greates on right side
             rmax[i] = max(rmax[i+1],height[i]);
         }
         int w=0;

@@ -4,7 +4,7 @@ If no majority element exists, return empty array.
 Input: [8,8,6,6,6,8,8]
 Output: [8,6]
 
-Hint: Based on (Boyer–Moore majority vote algorithm)
+Hint: extended on (Boyer–Moore majority vote algorithm)
 Hint2: For appearance n/3, atmost 2 elements can be there
 
  vector<int> majorityElement(vector<int>& a) {

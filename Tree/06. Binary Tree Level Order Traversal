@@ -1,0 +1,63 @@
+Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
+
+Method 1: 
+class Solution {
+    int depth(TreeNode* root){
+        if(root == NULL) return 0;
+        else{
+            return max(depth(root->left), depth(root->right))+1;
+        }
+    }
+    
+    void printatk(TreeNode *root, vector<int> &tr, int k){
+        if(root == NULL) return;
+        else if(k==0) tr.push_back(root->val);
+        else{
+            printatk(root->left, tr, k-1);
+            printatk(root->right, tr, k-1);
+
+        }
+    }
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        int d = depth(root);
+        vector<int> tr;
+        vector<vector<int>> res;
+        for(int i =0; i<d; i++){
+            printatk(root, tr,i);
+            res.push_back(tr);
+            tr.clear();
+        }
+        
+        return res;
+    }
+};
+
+-------------------------------------------------------------------------------------------
+Method 2: and better
+vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        if(root == NULL) return res;
+
+        vector<int> tr;
+        queue<TreeNode*> q;
+        q.push(root);
+        
+        while(q.empty()==false){    //O(n) as we are going into the queue & coming out exactly once for each node
+            int n = q.size();               
+            for(int i = 0; i<n; i++){   
+                TreeNode *cur = q.front();
+                q.pop();
+                tr.push_back(cur->val);
+                if(cur->left!=NULL) q.push(cur->left);
+                if(cur->right!=NULL) q.push(cur->right);
+            }
+            res.push_back(tr);
+            tr.clear();
+        }
+
+        return res;
+    }
+
+
+

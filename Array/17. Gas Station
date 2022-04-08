@@ -1,0 +1,20 @@
+//AKA Circular tour
+
+You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station to its next (i + 1)th station.
+ou begin the journey with an empty tank at one of the gas stations.
+
+int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int cur =0;
+        int prev = 0;
+        int start = 0;
+        for(int i = 0; i<gas.size(); i++){
+            cur += gas[i]-cost[i];
+            while(cur<0){   //if the distance travelled is -ve, we know that any gas station before i is not an answer
+                start = i+1;  //we start from next 
+                prev += cur;  //this is important, if we encounter another -ve distance, 
+                cur = 0;
+            }
+        } 
+        return((cur + prev)>=0?start : -1);   //cur+prev = total distance of a circular path
+        
+    }

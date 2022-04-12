@@ -1,0 +1,40 @@
+Almost everything is same as before
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    int postIndex = 0;  //important as we are traversing postorder, but in reverse
+    TreeNode* create(vector<int>& inorder, vector<int>& postorder, int is, int ie){
+        if(is>ie) return NULL;
+        TreeNode* node = new TreeNode(postorder[postorder.size()-postIndex-1]);     
+        postIndex = postIndex + 1;
+         if(is==ie){
+            return node;
+        }
+        int inIndex = -1;
+        for(int i = is; i <= ie; i++){
+            if(inorder[i]==node->val){
+                inIndex = i;
+                break;
+            }
+        }
+       
+        node->right = create(inorder, postorder, inIndex+1, ie);    //Since it is postorder, we do right side first
+        node->left = create(inorder, postorder, is, inIndex-1);
+        return node;
+    }
+        
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        return create(inorder, postorder, 0, inorder.size()-1);
+    }
+};

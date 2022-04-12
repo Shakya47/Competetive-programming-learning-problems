@@ -1,0 +1,38 @@
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+
+According to the definition of LCA on Wikipedia: 
+“The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants 
+(where we allow a node to be a descendant of itself).”
+
+//It's tricky, watch sandeep sir's video for any confusion
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    TreeNode* find(TreeNode* root, int p, int q){
+        
+        if(root == NULL) return NULL;
+        
+        if(root->val == p || root->val == q)    //if reached the given node, return it, as we don't have to go any deeper
+            return root;
+        TreeNode* lca1 = find(root->left, p, q);    //given nodes could be in left tree
+        TreeNode* lca2 = find(root->right, p, q);   //given nodes could be in right tree
+        
+        if(lca1 != NULL && lca2 != NULL) return root;   //if the given node is found in the left&&right tree, return current root
+        
+        if(lca1 != NULL) return lca1;   //if given node is found in left tree, return left node
+        else return lca2;   //if given node is found in right tree, return right node
+
+    }
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        return find(root, p->val, q->val);
+    }
+};

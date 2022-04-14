@@ -1,0 +1,51 @@
+Burning the leaf node takes 0 second
+//The topics used are:
+//  Finding depth/height of the tree
+//  Finding ancestor of the tree, and their distance from the target
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+int res = 0;
+int burnTree(TreeNode* root, int target, int &dist){
+    //base case
+    if(root == NULL) return 0;
+
+    //if the root->val == target -> used for ancestor distance
+    if(root->val == target){
+        dist = 0;
+        return 1;   //as the leaf node has height 1, so directly returning it
+    }
+
+    //the target could be on any side, so having 2 variables to keep a distance of ancestor from the target
+    int ldist = -1;     //used for left distance of ancestor from the target
+    int rdist = -1;     //used for right distance of ancestor from the target
+    int lh = burnTree(root->left, target, ldist);    //find left height for each node
+    int rh = burnTree(root->right, target, rdist);   //find right height for each TreeNode
+
+    if(ldist != -1){ //means that ancestor is on the left 
+        dist = ldist + 1; //so that higher ancestors would have dist incremented
+        res = max(res, ldist + rh+1);  //so the burn time would be ldist + the right height
+    }
+    
+    else{   //means that ancestor is on the right 
+        dist = rdist + 1; //so that higher ancestors would have dist incremented
+        res = max(res, rdist + lh+1); //so the burn time would be rdist + the left height
+    }
+
+    return max(lh, rh) + 1; //As this is a height/depth finding algo, returning this only, used to find lh & rh by children
+
+
+}
+
+int Solution::solve(TreeNode* A, int B) {
+    int dist = -1;
+    burnTree(A, B, dist);
+    return res;
+}

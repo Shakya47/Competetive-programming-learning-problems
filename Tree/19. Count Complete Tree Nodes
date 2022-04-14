@@ -1,0 +1,56 @@
+Given the root of a complete binary tree, return the number of the nodes in the tree.
+According to Wikipedia, every level, except possibly the last, is completely filled in a complete binary tree, 
+and all nodes in the last level are as far left as possible. 
+It can have between 1 and 2h nodes inclusive at the last level h.
+Design an algorithm that runs in less than O(n) time complexity.
+
+
+
+Method 1: Simple counting of all nodes is any tree
+O(n)
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+ 
+ class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root == NULL) return 0;
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+};
+ 
+//Method 2: Better version
+//O(logn * logn)
+ 
+ 
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root == NULL) return 0;
+        int lh = 0;
+        int rh = 0;
+        TreeNode* cur = root;
+        while(cur != NULL){
+            lh++;
+            cur = cur->left;
+        }
+        cur = root;
+        while(cur!=NULL){
+            rh++;
+            cur = cur->right;
+        }
+        
+        if(lh == rh) return pow(2,lh)-1;
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+    
+};

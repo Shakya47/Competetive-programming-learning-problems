@@ -1,0 +1,66 @@
+// Given the root of a binary tree, the value of a target node target, and an integer k, 
+// return an array of the values of all nodes that have a distance k from the target node.
+// You can return the answer in any order.
+
+
+//Hint:
+We have to make sure ancestors are also considered, but in DFS its a bit tricky
+- First, we'll print the Child nodes at K distance from Target node
+- Second, we'll get the distance of ancestor from target node in ldist/rdist, this will help us in finding K distant nodes in above nodes
+- Third, we'll consider the ancestor and its other child nodes for K distant nodes.
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    vector<int> ans;  //Global vector in which answer will be stored
+    
+    //Simple K distance nodes from root, here blockNode is imp, as for the ancestors it will limit the further DFS
+    void printKDown(TreeNode* root, TreeNode* blockNode, int k){  
+        if(root == NULL || root == blockNode || k<0) return;  //k could be -ve also
+        if(k==0){
+            ans.push_back(root->val);
+            return;
+        }
+        printKDown(root->left, blockNode, k-1);
+        printKDown(root->right, blockNode, k-1);
+
+    }
+    
+    int findK(TreeNode* root, TreeNode* target, int k){
+        //base case
+        if(root == NULL) return -1;
+        
+        if(root->val == target->val){ 
+            printKDown(root, NULL, k);  //If target found, simply print all the K distant nodes from it in DFS(below the target)
+            return 1; //this indicates that the ancestor is 1 distance from target node
+        } 
+        
+        int ldist = findK(root->left, target, k);   //ldist-> distance of ancestor from target node if its on left
+        if(ldist != -1){
+            printKDown(root, root->left, k-ldist);  //blockNode is root-left as we have already calculated all the K distant nodes in the bottom nodes
+                                                    //k-ldist-> as ancestor as taken ldist distance, so the node to be searched will be k-ldist
+            return ldist+1;                         //we'll move to higher ancestor and its distance will increase by 1 from the target node
+        }
+        
+        int rdist = findK(root->right, target, k);  //ldist-> distance of ancestor from target node if its on left
+        if(rdist != -1){
+            printKDown(root, root->right, k-rdist);
+            return rdist+1;
+        }
+        
+        return -1;        
+    }
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        findK(root, target, k);
+        return ans;
+    }
+};

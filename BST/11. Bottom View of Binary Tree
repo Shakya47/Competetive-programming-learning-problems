@@ -1,0 +1,27 @@
+Given a binary tree, print the bottom view from left to right.
+A node is included in bottom view if it can be seen when we look at the tree from bottom
+
+//Step:
+- Exactly same as top view, only difference is that we keep updating mp[hd]
+
+
+vector <int> bottomView(Node *root) {
+        map<int,int>mp;
+        vector<int> res;
+        queue<pair<Node*, int>> q;
+        q.push(make_pair(root, 0));
+        while(q.empty()==false){
+            auto it = q.front();
+            q.pop();
+            Node* cur = it.first;
+            int hd = it.second;
+            mp[hd]= cur->data;  //Keep updating this
+            if(cur->left!=NULL) q.push(make_pair(cur->left, hd-1));
+            if(cur->right!=NULL) q.push(make_pair(cur->right, hd+1));
+        }
+        for(auto p: mp){
+                res.push_back(p.second);
+            }
+        
+        return res;
+    }

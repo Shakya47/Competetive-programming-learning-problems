@@ -1,0 +1,31 @@
+Given a Binary Tree, find vertical sum of the nodes that are in same vertical line. 
+Print all sums through different vertical lines starting from left-most vertical line to right-most vertical line.
+
+//Steps:
+- Imp part is height distance, all the same height distance elements would be added
+- maintain a map, with key as height distance
+- run it in inorder
+
+
+class Solution{
+    map<int,int>mp;
+  public:
+    void getSum(Node *root, int hd){
+        if(root==NULL) return;
+        
+        getSum(root->left, hd-1);
+        
+        mp[hd]+=root->data;
+        
+        getSum(root->right, hd+1);
+    }
+  
+    vector <int> verticalSum(Node *root) {
+        getSum(root, 0);
+        vector<int>res;
+        for(auto it:mp){
+            res.push_back(it.second);
+        }
+        return res;
+    }
+};

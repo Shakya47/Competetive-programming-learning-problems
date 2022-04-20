@@ -1,0 +1,31 @@
+Given a Binary Tree, find the vertical traversal of it starting from the leftmost level to the rightmost level.
+If there are multiple nodes passing through a vertical line, then they should be printed as they appear in level order traversal of the tree.
+
+//Steps:
+- Its important that we use Inorder traversal
+- its also imp to use queue method instead of recursion
+- rest of the things are same as Pair sum
+
+vector<int> verticalOrder(Node *root)
+    {
+        map<int,vector<int>>mp;
+        vector<int> res;
+        queue<pair<Node*, int>> q;
+        q.push(make_pair(root, 0));
+        while(q.empty()==false){
+            auto it = q.front();
+            q.pop();
+            Node* cur = it.first;
+            int hd = it.second;
+            mp[hd].push_back(cur->data);
+            if(cur->left!=NULL) q.push(make_pair(cur->left, hd-1));
+            if(cur->right!=NULL) q.push(make_pair(cur->right, hd+1));
+        }
+        for(auto p: mp){
+            for(auto it:p.second){
+                res.push_back(it);
+            }
+        }
+
+        return res;
+    }

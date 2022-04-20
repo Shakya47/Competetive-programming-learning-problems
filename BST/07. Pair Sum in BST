@@ -1,0 +1,23 @@
+Given a Binary Search Tree and a target sum. Check whether there's a pair of Nodes in the BST with value summing up to the target sum. 
+
+//Steps:
+- maintain a set, which would get the node->data
+- sum-set_element -> if this is found, that means a pair exists
+- make everthing in inorder/postorder/preorder
+
+
+class Solution{
+    unordered_set<int> s;
+  public:
+
+    int isPairPresent(struct Node *root, int target)
+    {
+        if(root == NULL) return 0;
+        if(isPairPresent(root->left, target) == 1) return 1;
+        else if(s.find(target-root->data)!= s.end()) return 1;
+        else{
+            s.insert(root->data);
+        }
+        return isPairPresent(root->right, target);
+    }
+};

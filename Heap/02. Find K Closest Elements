@@ -1,0 +1,28 @@
+Given a sorted integer array arr, two integers k and x, return the k closest integers to x in the array. The result should also be sorted in ascending order
+
+//Steps:
+- we will use max heap
+- similar to k largest problem, here we will check for difference of numbers, smallest difference numbers will be pushed in max heap
+
+
+
+vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+        priority_queue<pair<int,int>> pq;
+        for(int i = 0; i<k; i++){
+            pq.push(make_pair(abs(arr[i]-x), i));
+        }
+        for(int i = k; i<arr.size(); i++){
+            int diff = abs(arr[i]-x);
+            if(pq.top().first > diff){
+                pq.pop();
+                pq.push(make_pair(diff, i));
+            }
+        }
+        vector<int> res;
+        for(int i = 0; i<k; i++){
+            res.push_back(arr[pq.top().second]);
+            pq.pop();
+        }
+        sort(res.begin(), res.end());
+        return res;
+    }

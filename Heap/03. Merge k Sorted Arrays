@@ -1,0 +1,51 @@
+Given K sorted arrays arranged in the form of a matrix of size K*K. The task is to merge them into one sorted array.
+
+//Steps-
+- will use minheap, with struct objects
+- these objects have paramaters - value, array_position in matrix, value_position in array
+- have to create custom comparator as we are using our own ds
+- rest all is simple
+
+//**Imp - Operator overloading - give multiple definition to an operator
+for eg: for numbers '+' is used for addition
+        for strings '+' us used for concatenation 
+
+class Solution
+{
+    struct Triplet{
+        int val, apos, vpos;
+        Triplet(int v, int ap, int vp){
+            val = v;
+            apos = ap;
+            vpos = vp;
+        }
+    };
+    
+    struct mycmp{   //Custom comparator
+        bool operator() (Triplet &t1, Triplet &t2)    //very imp to overload operator(), otherwise won't work
+        {return t1.val>t2.val;}
+    };
+    public:
+    //Function to merge k sorted arrays.
+    vector<int> mergeKArrays(vector<vector<int>> arr, int K)
+    {
+        priority_queue<Triplet, vector<Triplet>, mycmp> pq;
+        for(int i =0; i< arr.size(); i++){
+            Triplet t(arr[i][0], i, 0);
+            pq.push(t);   //Insert first 3 elements in the pq.
+        }
+        vector<int> res;
+        while(!pq.empty()){
+            Triplet cur = pq.top();
+            pq.pop();
+            res.push_back(cur.val);
+            int ap = cur.apos;
+            int vp = cur.vpos;
+            if(vp+1 < arr[ap].size()){
+                Triplet t(arr[ap][vp+1], ap, vp+1);
+                pq.push(t);
+            }
+        }
+        return res;
+    }
+};

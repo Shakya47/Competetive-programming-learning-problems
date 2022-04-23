@@ -1,0 +1,76 @@
+The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value and the median is the mean of the two middle values.
+
+For example, for arr = [2,3,4], the median is 3.
+For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.
+Implement the MedianFinder class:
+
+MedianFinder() initializes the MedianFinder object.
+void addNum(int num) adds the integer num from the data stream to the data structure.
+double findMedian() returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.
+
+//Steps:
+- we would require both min&max heap
+- while adding the number from the stream, we make sure in which heap to put it in
+-- small numbers in maxHeap, big numbers in minHeap
+- based on the size of heap we calculate the median
+-- if size is same (i.e no. of elements is even) then median = (minHeap.top() + maxHeap.top())/2
+-- if not equal then median = minHeap.top() //as we started adding the elements in minHeap it will have more elements
+
+
+
+
+class MedianFinder {
+        priority_queue<int>s;   //small_basket -> maxHeap
+        priority_queue<int, vector<int>, greater<int>>g;  //great_basket -> minHeap
+public:
+    MedianFinder() {
+        
+    }
+    
+    void addNum(int num) {    //have to balance the heap as well while adding new elements
+        if(s.size()==0)
+                s.push(num);
+        else{
+            if(s.size()>g.size()){
+                if(s.top()>num){    //this would mean we would add the num in small_basket, but small_basket.size() is already large
+                    g.push(s.top());    //small_basket.top() (maxheap.top()) will go to great_basket(minHeap)
+                    s.pop();            //remove the top() from small_basket
+                    s.push(num);        //push the new num in small_basket
+                }
+                else 
+                    g.push(num);      //simply add in great_basket as it is smaller in size
+          
+            }
+            else{
+                if(s.top()>=num){ //as both heaps are same of small_basket.size() is less
+                    s.push(num);  //simply add small num in the small_basket(
+                }
+                else{
+                    g.push(num);    
+                    s.push(g.top());  //as g.top() will have minHeap.top(), we push in s.push() to intentionally make small_basket().size() big, helpful in calculating median
+                    g.pop();
+                }
+            }
+        }
+        }
+    
+    
+    double findMedian() {
+
+        double med;
+        if(s.size()>g.size())   //odd number of elements
+            med = s.top();      //as we made small_basket intentionally bigm it will have 1 element more than great_basket
+        else  //even number of elements
+            med = (double)(s.top()+g.top())/2;  //avg of both heap.top()
+
+        return med;
+
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */

@@ -1,0 +1,35 @@
+Given a Directed Graph with V vertices (Numbered from 0 to V-1) and E edges, check whether it contains any cycle or not.
+
+//Steps:
+- Similar to undirected graph, but in this we can't use parent
+- We use ancestors with the help of rec[], which is a recursion stack
+- if any adjacent elemnts point to an element which is true in rec[], cycle is detected
+
+
+bool dfscycle(vector<int> adj[], int s, int *vis, int *rec){
+        vis[s]=1;
+        rec[s]=1;
+        for(int u: adj[s]){
+            if(vis[u]==0){
+                if(dfscycle(adj, u, vis, rec))
+                    return true;
+            }
+            else if (rec[u]==1)   //adjacent elemnts point to an element which is true in rec[], cycle is detected
+                return 1;
+        }
+        rec[s]=false;   //this indicates that s is not in recursion stack
+        return false;
+    }
+    
+    
+    bool isCyclic(int V, vector<int> adj[]) {
+        int vis[V]={0};
+        int rec[V]={0};
+        for(int i=0; i<V; i++){
+            if(vis[i]==0){
+                if(dfscycle(adj, i, vis, rec))
+                    return true;
+            }
+        }
+        return false;
+    }

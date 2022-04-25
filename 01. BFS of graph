@@ -1,0 +1,24 @@
+Given a directed graph. The task is to do Breadth First Traversal of this graph starting from 0.
+
+
+vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        vector<int> res;
+        queue<int> q;
+        int visited[V] = {0};
+        q.push(0);
+        visited[0]=1;
+        
+        while(!q.empty()){
+            int n = q.front();
+            q.pop();
+            res.push_back(n);
+            
+            for(int i : adj[n]){
+                if(visited[i]==0){
+                    visited[i]=1;
+                    q.push(i);
+                }
+            }
+        }
+        return res;
+    }

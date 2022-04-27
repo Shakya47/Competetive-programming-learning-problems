@@ -1,0 +1,35 @@
+Prims Algorithm
+Given a weighted, undirected and connected graph of V vertices and E edges. The task is to find the sum of weights of the edges of the Minimum Spanning Tree.
+
+int spanningTree(int V, vector<vector<int>> adj[])
+    {
+        vector<int> key(V,INT_MAX);
+        vector<bool> mst(V,false);
+        vector<int> parent(V,-1);
+        
+        key[0]=0;
+        int sum = 0;
+        
+        for(int count = 0; count < V; count++){
+            int minVal = INT_MAX, minValNode;
+            for(int i = 0; i < V; i++){
+                if(mst[i]==false && key[i]<minVal){ //find smallest key among the mst false;
+                    minVal = key[i];
+                    minValNode = i;
+                }
+            }
+            mst[minValNode] = true;
+            sum += minVal;
+            
+            for(auto it: adj[minValNode]){
+                int v = it[0];
+                int wt = it[1];
+                if(mst[v]==false && wt < key[v]){
+                    key[v] = wt;
+                    parent[v] = minValNode;
+                }
+            }
+        }
+
+        return sum;
+    }

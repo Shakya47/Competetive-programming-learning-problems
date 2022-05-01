@@ -1,0 +1,45 @@
+The n-queens puzzle is the problem of placing n queens on a (n×n) chessboard such that no two queens can attack each other.
+Given an integer n, find all distinct solutions to the n-queens puzzle.
+Each solution contains distinct board configurations of the n-queens’ placement, where the solutions are a permutation of [1,2,3..n] in increasing order, 
+here the number in the ith place denotes that the ith-column queen is placed in the row with that number. 
+For eg below figure represents a chessboard [3 1 4 2].
+
+class Solution{
+public:
+    bool isSafe(int n, int row, int col, vector<vector<bool>> &board){
+        for(int i = 0; i<n; i++){   //row check, no need to check for columns as we are going column-wise
+            if(board[row][i])
+            return false;
+        }
+        for(int i = row,j = col; i>=0 && j>=0; i--,j--){ //top left diagonal
+            if(board[i][j])
+            return false;
+        }
+        for(int i = row,j = col; i<n && j>=0; i++,j--){ //bottom left diagonal
+            if(board[i][j])
+            return false;
+        }
+    }
+    
+    void findPlaces(int col, int n, vector<vector<bool>> &board, vector<vector<int>> &res, vector<int>place){
+        if(col == n)
+            res.push_back(place);
+        for(int i = 0; i<n; i++){ //iterating over rows for a column
+            if(isSafe(n,i,col,board)){
+                board[i][col]=1;
+                place.push_back(i+1);
+                findPlaces(col+1, n, board,res,place);
+                board[i][col]=0;
+                place.pop_back();
+            }
+        }
+    }
+
+    vector<vector<int>> nQueen(int n) {
+        vector<vector<int>> res;
+        vector<vector<bool>> board(n,vector<bool>(n,0));
+        vector<int>place;
+        findPlaces(0,n, board, res, place);
+        return res;
+    }
+};

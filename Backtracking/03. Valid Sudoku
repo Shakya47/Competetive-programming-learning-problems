@@ -1,0 +1,44 @@
+Given an incomplete Sudoku configuration in terms of a 9x9  2-D square matrix(mat[][])
+the task to check if the current configuration is valid or not where a 0 represents an empty block.
+Note: Current valid configuration does not ensure validity of the final solved sudoku. 
+Refer to this : https://en.wikipedia.org/wiki/Sudoku
+
+//sudoku is invalid if:
+
+same number is present in row || column in entire sudoku
+same number is present in row || column only in subgrid
+//Subgrid: there are 9 subgrids in 9x9 sudoku
+
+//We will keep adding following info as string in hashset for each number found in mat[][]:
+
+“row”+(rowIndex)+(mat[i][j])
+“col”+(colIndex)+(mat[i][j])
+“box”+(subgridNumber)+(mat[i][j])
+//If we find any of these info repeating then that sudoku is invalid
+
+
+int isValid(vector<vector<int>> mat){
+      unordered_set<string> st;
+       
+       for(int i = 0; i<9; i++)
+           for(int j = 0; j<9; j++){
+               if(mat[i][j]!=0){
+                   string s1 = "row"+to_string(i)+to_string(mat[i][j]);
+                   string s2 = "col"+to_string(j)+to_string(mat[i][j]);
+
+
+                   int subgrid = (i/3)*3 + j/3;   //Formula to find which subgrid the element lies in
+                   string s3 = "box"+to_string(subgrid)+to_string(mat[i][j]);
+
+
+                   if(st.count(s1) || st.count(s2) || st.count(s3))    //if any of them already exists, invalid
+                       return 0;
+
+
+                   st.insert(s1);
+                   st.insert(s2);
+                   st.insert(s3);
+               }
+           }
+       return 1;
+  }

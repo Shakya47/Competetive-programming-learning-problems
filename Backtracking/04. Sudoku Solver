@@ -1,0 +1,46 @@
+Given an incomplete Sudoku configuration in terms of a 9 x 9  2-D square matrix (grid[][]), the task to find a solved Sudoku. 
+For simplicity, you may assume that there will be only one unique solution.
+
+class Solution 
+{
+    public:
+    vector<int>res;
+    //Function to find a solved Sudoku. 
+    bool SolveSudoku(int grid[N][N])  
+    {
+        for(int i =0; i<9; i++)
+            for(int j = 0; j<9; j++){
+                if(grid[i][j] == 0){
+                    for(int n = 1; n <= 9; n++){
+                        if(isValid(grid,i,j,n)){
+                            grid[i][j] = n;
+                            if(SolveSudoku(grid)) return true;
+                            grid[i][j] = 0;
+                        }
+                    }
+                    return false;
+                }
+            }
+        return true;
+     }
+    //isSafe Function
+    bool isValid(int grid[N][N], int row, int col, int c) {
+        for(int i=0; i<9; i++) {
+            if(grid[i][col] == c) return false;
+            if(grid[row][i] == c) return false;
+            if(grid[3 * (row/3) + i/3][3 * (col/3) + i%3] == c) return false;
+        }
+        return true;
+    }
+    
+    
+    
+    //Function to print grids of the Sudoku.
+    void printGrid (int grid[N][N]) 
+    {
+        for(int i = 0; i<9; i++)
+           for(int j = 0; j<9; j++)
+            cout<<grid[i][j]<<" ";
+        
+    }
+};

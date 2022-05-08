@@ -1,0 +1,55 @@
+here is a robot on an m x n grid. The robot is initially located at the top-left corner (i.e., grid[0][0]).
+The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1]). The robot can only move either down or right at any point in time.
+
+Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.
+
+The test cases are generated so that the answer will be less than or equal to 2 * 109.
+____________________________________________________
+//BruteForce: trying all possible ways  time:O(2^(m*n)
+----------------------------------------------------
+int countPath(int m, int n){
+        if(m==0 && n==0) return 1;
+        if(m<0 || n<0) return 0;
+        int up = countPath(m-1,n);
+        int left = countPath(m,n-1);
+        return up+left;
+    }
+    
+    int uniquePaths(int m, int n) {
+        return countPath(m-1, n-1);
+    }
+    
+____________________________________________________
+//Memoization: trying all possible ways  time:O(m*n)
+----------------------------------------------------  
+ int countPath(int m, int n, vector<vector<int>> &dp){
+        if(m==0 && n==0) return 1;
+        if(m<0 || n<0) return 0;
+        if(dp[m][n]!= -1) return dp[m][n];
+        int up = countPath(m-1,n, dp);
+        int left = countPath(m,n-1, dp);
+        return dp[m][n] = up+left;
+    }
+    
+    int uniquePaths(int m, int n) {
+        vector<vector<int>>dp(m,vector<int>(n,-1));
+        return countPath(m-1, n-1,dp);
+    }
+
+
+_________________________________________________
+//Optimal: As we have fixed directions to take, we can have some fixed combinations of direction
+-------------------------------------------------
+//nCr ; 
+n = total no. of directions to take to reach end
+r = out of total directions, total no. of either down move or right move
+
+ int uniquePaths(int m, int n) {
+        int N = m+n-2;
+        int r = (m<n) ? m-1 : n-1;
+        long long int res = 1;
+        for(int i = 1; i<=r; i++){
+            res = res* (N-r+i)/i;          
+        }
+        return res;
+    }

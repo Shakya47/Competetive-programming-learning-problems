@@ -1,0 +1,65 @@
+Given a triangle array, return the minimum path sum from top to bottom.
+
+For each step, you may move to an adjacent number of the row below. 
+More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
+
+//Same as previous problem, difference is:
+there is fixed start(like previous) but a variable end;
+so we will start from 0 instead of n-1
+
+_________________________________________
+Recursion - time: O(2^m*n)
+-----------------------------------------
+int f(int i, int j, int n, vector<vector<int>>& triangle){
+        if(i == n) return triangle[i][j];
+        
+        int d = triangle[i][j] + f(i+1, j, n, triangle);
+        int dg = triangle[i][j] + f(i+1, j+1, n, triangle);
+        
+        return min(d, dg);
+    }
+    
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        return f(0,0,n-1,triangle);
+    }
+_________________________________________
+Memoization - time: O(m*n)
+-----------------------------------------
+int f(int i, int j, int n, vector<vector<int>>& triangle, vector<vector<int>>&dp){
+        if(i == n) return triangle[i][j];
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        
+        int d = triangle[i][j] + f(i+1, j, n, triangle,dp);
+        int dg = triangle[i][j] + f(i+1, j+1, n, triangle,dp);
+        
+        return dp[i][j] = min(d, dg);
+    }
+    
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        return f(0,0,n-1,triangle, dp);
+    }
+    
+_________________________________________
+Tabulation - time: O(m*n)   //we go reverse in this, in recursion we started from 0, in tabulation we start from n-1
+-----------------------------------------
+int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        vector<vector<int>>dp(n,vector<int>(n));
+        
+        for(int j = 0; j<n; j++){
+            dp[n-1][j] = triangle[n-1][j];  //Handling base case in starting only that too manually
+        }
+        
+        for(int i = n-2; i>=0; i--){
+            for(int j = i; j>=0; j--){
+                int d = triangle[i][j] + dp[i+1][j];
+                int dg = triangle[i][j] + dp[i+1][j+1];
+                dp[i][j] = min(d,dg);
+            }
+        }
+        return dp[0][0];        
+    }

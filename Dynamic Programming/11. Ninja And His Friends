@@ -1,0 +1,61 @@
+Ninja has a 'GRID' of size 'R' X 'C'. Each cell of the grid contains some chocolates. 
+Ninja has two friends Alice and Bob, and he wants to collect as many chocolates as possible with the help of his friends.
+Initially, Alice is in the top-left position i.e. (0, 0), and Bob is in the top-right place i.e. (0, ‘C’ - 1) in the grid. 
+Each of them can move from their current cell to the cells just below them. 
+When anyone passes from any cell, he will pick all chocolates in it, and then the number of chocolates in that cell will become zero. 
+If both stay in the same cell, only one of them will pick the chocolates in it.
+If Alice or Bob is at (i, j) then they can move to (i + 1, j), (i + 1, j - 1) or (i + 1, j + 1). They will always stay inside the ‘GRID’.
+Your task is to find the maximum number of chocolates Ninja can collect with the help of his friends by following the above rules.
+
+______________________________________________________________
+Recursion - time: O(3^r*c)
+--------------------------------------------------------------
+
+int f(int i, int j1, int j2, int c, int r, vector<vector<int>> &grid){
+	if(j1<0 || j1 >c || j2<0 || j2>c) return -1e8;
+	if(i== r){
+		if(j1 == j2) return grid[i][j1];
+		else return grid[i][j1] + grid[i][j2];
+	}
+	
+	int maxi = -1e8;
+	for(int x = -1 ; x<2; x++){
+		for(int y = -1; y<2; y++){
+			if(j1 == j2) maxi = max(maxi, grid[i][j1] + f(i+1, j1+x, j2+y, c, r, grid));
+			else maxi = max(maxi, grid[i][j1] + grid[i][j2] + f(i+1, j1+x, j2+y, c, r, grid));
+		}
+	}
+	return maxi;
+}
+
+int maximumChocolates(int r, int c, vector<vector<int>> &grid) {
+    return f(0,0,c-1,c-1,r-1, grid);
+}
+
+
+______________________________________________________________
+Memoization - time: O(9*r*c*c)
+--------------------------------------------------------------
+
+
+int f(int i, int j1, int j2, int c, int r, vector<vector<vector<int>>> &dp, vector<vector<int>> &grid){
+	if(j1<0 || j1 >c || j2<0 || j2>c) return -1e8;
+	if(i== r){
+		if(j1 == j2) return grid[i][j1];
+		else return grid[i][j1] + grid[i][j2];
+	}
+	if (dp[i][j1][j2] != -1) return dp[i][j1][j2]; 
+	int maxi = -1e8;
+	for(int x = -1 ; x<2; x++){
+		for(int y = -1; y<2; y++){
+			if(j1 == j2) maxi = max(maxi, grid[i][j1] + f(i+1, j1+x, j2+y, c, r, dp, grid));
+			else maxi = max(maxi, grid[i][j1] + grid[i][j2] + f(i+1, j1+x, j2+y, c, r, dp, grid));
+		}
+	}
+	return dp[i][j1][j2] = maxi;
+}
+
+int maximumChocolates(int r, int c, vector<vector<int>> &grid) {
+	vector<vector<vector<int>>> dp(r, vector<vector<int>>(c,vector<int>(c,-1)));
+    return f(0,0,c-1,c-1,r-1, dp, grid);
+}

@@ -18,9 +18,9 @@ int subarraySum(vector<int>& a, int k) {
         for(int i=0; i<n; i++){
             psum += a[i];
             if(psum==k)count++;
-            if(mp.find(psum-k)!=mp.end())
-                count += mp[psum-k];
-            mp[psum]++;
+            if(mp.find(psum-k)!=mp.end())       //find if the psum - k is present or not in the map
+                count += mp[psum-k];            //get the occurrence of that in count
+            mp[psum]++;         //increment the occurence of psum in map
                           
         }
         return count;

@@ -23,7 +23,7 @@ int countGoodSubstrings(string s) {
             if(mp[s[i-k]]==1)
                 mp.erase(s[i-k]);
             else
-                mp[s[i-k]]--;
+                mp[s[i-k]]--;           //if the character repeats in 1st 3 characters, then decrement as the sliding window would contain one of its occurrence
             if(mp.find(s[i])==mp.end())
                 mp[s[i]]=1;
             else

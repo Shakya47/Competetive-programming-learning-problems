@@ -3,6 +3,10 @@
 //Input: s = "anagram", t = "nagaram"
 //Output: true
 
+//Idea:
+- ++ occurence of character in string s, then -- occurence of character in string t
+- if its anagram everthing would be zero
+
 bool isAnagram(string s, string t) {
         if(s.length()!=t.length()) return false;
         int count[256] = {0};

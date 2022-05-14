@@ -7,6 +7,9 @@
 //Output: true
 //Explanation: "amanaplanacanalpanama" is a palindrome.
 
+//Idea:
+- keep veryfing whether s[i] is alphanumeric or not, if its not, skip and continue
+
 bool isPalindrome(string s) {
         transform(s.begin(), s.end(), s.begin(),::tolower);
         

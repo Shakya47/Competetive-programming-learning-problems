@@ -3,6 +3,9 @@
 //Return a string of the words in reverse order concatenated by a single space.
  
  //Removing extra spaces is a challenge
+ //Idea:
+ - Step 1 - Reverse words
+ - Step 2- Remove extra space
  
  string reverseWords(string s) {
         

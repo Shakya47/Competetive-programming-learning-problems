@@ -3,6 +3,11 @@
 //Input: nums = [100,4,200,1,3,2]
 //Output: 4
 
+//Idea:
+- Store everything in unordered_set
+- then find the element whose element-1 does not exist, then run while loop with element+1
+- this way its O(n) instead of sorting O(nlogn)
+
 int longestConsecutive(vector<int>& a) {
         unordered_set<int> h;
         int res = 0;

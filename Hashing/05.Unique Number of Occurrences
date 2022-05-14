@@ -3,6 +3,10 @@
 //Input: arr = [1,2,2,1,1,3]
 //Output: true
 
+//Idea:
+- Store values in map with ++ its occurence
+- then run a loop to find if the same occurence is present in the map
+
 bool uniqueOccurrences(vector<int>& a) {
         unordered_map<int,int> h;   //map to store numbers and their occurrences
         for(int i=0; i<a.size(); i++){

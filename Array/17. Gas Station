@@ -3,6 +3,11 @@
 You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station to its next (i + 1)th station.
 ou begin the journey with an empty tank at one of the gas stations.
 
+//Idea:
+- If we encounter -ve distance i.e gas[i] - cost[i] -> store them in another variable, prev
+- If we encounter +ve distance -> store them in another variable, cur
+- to complete the circuit, cur + prev //aka cur - (-prev) >= 0
+
 int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
         int cur =0;
         int prev = 0;

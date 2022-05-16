@@ -9,24 +9,29 @@ Input: s = "ababac"
 Output: "l"
 lps = 0, 0, 1, 2, 3,0
 
+//Idea:
+- LPS array shows the no. of letters in the matching patter
+- Rest all info is commented in the code
+
+
 
 int fillLPS(string s, int *lps){
     lps[0]=0;
-    int len = 0;
+    int len = 0;    //length or no. of characters matching 
     int i = 1;
     while(i<s.length()){
-        if(s[i]==s[len]){
+        if(s[i]==s[len]){   //if letter match
             len++;
             lps[i]=len;
             i++;
         }
         else{
-            if(len==0){
+            if(len==0){     //if len has no match, again lps[i] would be zero
                 lps[i]=0;
                 i++;
             }
             else{
-                len=lps[len-1];
+                len=lps[len-1];     //up until now there were matching letters, but now its not so len would get the previous value it held
             }
         }
     }

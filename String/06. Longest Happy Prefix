@@ -6,7 +6,7 @@ Given a string s, return the longest happy prefix of s. Return an empty string "
 Input: "ababacab"
 Output: "ab"
 lps = : 0 0 1 2 3 0 1 2 
-Even though longest is 3, have to take 2 i.e lps[n-1]
+Even though longest is 3, have to take 2 i.e lps[n-1] // Important
 
   string longestPrefix(string s) {
         int n = s.length();

@@ -11,22 +11,22 @@ int main()
     int lps[n];
     fillLPS(s, lps);    //replace this with lps code
     int i=0;
-    int j=0;
+    int len=0;
     while(i<n){
-        if(s[i]==p[j]){
+        if(s[i]==p[len]){
             i++;
-            j++;
+            len++;
         }
-        if(j== m){
-            cout<<i-j<<" ";
-            j = lps[j-1];
+        if(len == m){   //Pattern is found
+            cout<<i-len<<" ";   //starting index in s where pattern was found
+            len = lps[len-1];   //make len to its previous value as another pattern might overlap the current one
         }
-        else if(i<n && s[i]!=p[j]){
-            if(j==0){
+        else if(i<n && s[i]!=p[len]){
+            if(len==0){ //if pattern is not found
                 i++;
             }
             else{
-                j = lps[j-1];
+                len = lps[len-1];
             }
         }
     }

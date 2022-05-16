@@ -5,6 +5,11 @@ For example, if s = "abcde", then it will be "bcdea" after one shift.
 Input: s = "abcde", goal = "cdeab"
 Output: true
 
+Idea:
+- concatenate the string goal to itself.
+- find if the string s is present in goal
+- the function find() for string is weird, memorize it.
+
 bool rotateString(string s, string goal) {
         if(goal.length()!=s.length()) return false;
         if(goal == s) return true;

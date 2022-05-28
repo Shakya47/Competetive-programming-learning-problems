@@ -23,4 +23,19 @@ int majorityElement(vector<int>& a) {
         
     }
 
+//Little Better solution in terms of space optimization:
+int majorityElement(vector<int>& a) {
+        int n = a.size();
+        int element = a[0];
+        int count = 1;
+        for(int i=1; i<n; i++){
+            if(count == 0){
+                element = a[i];
+                count = 1;
+            }
+            else if(a[i] == element) count++;
+            else count--;
+        }
+        return element;
+    }
  

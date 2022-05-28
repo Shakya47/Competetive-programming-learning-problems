@@ -1,0 +1,27 @@
+Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+
+//Idea:
+- We use simple math to break down problem
+- if n is even, we can do Ex: 2^10 = (2*2)^5
+- if n is odd, we can do Ex: 4^5 = 4 * 4^4
+
+double myPow(double x, int n) {
+        if(x == 1 || x == 0) return x;
+        
+        double ans = 1.0;
+        long long int nn = n;
+        if(n<0) nn = nn * -1;
+        
+        while(nn>0){
+            if(nn % 2 == 1){
+                ans = ans * x;
+                nn--;
+            }
+            else{
+                x = x * x;
+                nn = nn / 2;
+            }
+        }
+        if(n<0) return 1/ans;
+        return ans;
+    }

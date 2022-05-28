@@ -1,0 +1,30 @@
+Write an efficient algorithm that searches for a value target in an m x n integer matrix matrix. This matrix has the following properties:
+
+Integers in each row are sorted from left to right.
+The first integer of each row is greater than the last integer of the previous row.
+
+//Idea:
+- Use a binary search
+- challenge is how to get low & high in a matrix as index are (i,j), in array its much simpler
+  -- Solution, to get i -> mid / no. of column
+  -- to get j -> mid % no. of column
+  
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if(matrix.size()==0) return false;
+        
+        int low = 0;
+        int n = matrix.size();    //no. of rows
+        int m = matrix[0].size(); //no. of columns
+        int high = (n * m) - 1;
+        
+        
+        while(low <= high){
+            int mid = low + (high-low)/2;
+            if(matrix[mid/m][mid%m] == target)
+                return true;
+            if(matrix[mid/m][mid%m] < target)
+                low = mid+1;
+            else high = mid - 1;
+        }
+        return false;
+    }

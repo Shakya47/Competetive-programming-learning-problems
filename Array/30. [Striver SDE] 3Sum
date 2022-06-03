@@ -1,0 +1,40 @@
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+//Idea:
+- Similar to 4sum problem
+
+vector<vector<int>> threeSum(vector<int>& nums) {
+        
+      int n = nums.size();
+      vector<vector<int>> res;
+      if(n<3) return res;
+
+      sort(nums.begin(), nums.end());
+
+      for(int i = 0; i<n-2 ; i++){
+          if(i==0 || (i>0 && nums[i]!=nums[i-1])){
+              int sum = 0 - nums[i];
+              int low = i+1;
+              int high = n-1;
+              while(low<high){
+                  if(nums[low] + nums[high] == sum){
+                      vector<int>ans(3,0);
+                      ans[0] = nums[i];
+                      ans[1] = nums[low];
+                      ans[2] = nums[high];
+                      res.push_back(ans);
+
+                      while(low<high && nums[low] == nums[low+1]) low++;
+                      while(low<high && nums[high] == nums[high-1]) high--;
+                      high--;low++;
+                  }
+                  else if(nums[low] + nums[high] < sum) low++;
+                  else high--;
+              }
+          }
+      }
+      return res;
+
+  }

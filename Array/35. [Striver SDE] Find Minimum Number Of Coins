@@ -1,0 +1,23 @@
+Dora, the explorer, visits India and decides to try the famous Indian food. 
+However, the restaurant accepts only Indian currency i.e. [1, 2, 5, 10, 20, 50, 100, 500, 1000] valued coins.
+So, Dora goes to a bank that has an infinite supply of each of the denominations to make a change for a given ‘Amount’ of money. 
+As a cashier at the bank, your task is to provide Dora the minimum number of coins that add up to the given ‘Amount’.
+
+//There is a DP variant of this problem on leetcode, check that out
+
+int findMinimumCoins(int amount) 
+{   int coins[] = {1, 2, 5, 10, 20, 50, 100, 500, 1000};
+    int ans = 0;
+    if(amount == 0) return ans;
+    int i = 8;
+    while(amount && i>=0){
+        if(coins[i]<=amount && amount - coins[i]>=0){
+            ans++;
+            amount = amount - coins[i];
+        }
+        else{
+            i--;
+        }
+    }
+    return ans>0 && !amount ? ans : -1;
+}

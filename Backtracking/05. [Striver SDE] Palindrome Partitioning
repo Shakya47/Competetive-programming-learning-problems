@@ -1,0 +1,38 @@
+Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+
+A palindrome string is a string that reads the same backward as forward.
+
+
+bool isPalindrome(string s, int start, int end){
+    while(start<=end){
+        if(s[start] != s[end]) return false;
+        start++;
+        end--;
+    }
+    return true;
+}
+
+
+
+void f(int ind, string s, vector<string>& path,vector<vector<string>>& res){
+    if(ind == s.length()){
+        res.push_back(path);
+        return;
+    }
+
+    for(int i = ind; i<s.length(); i++){
+        if(isPalindrome(s, ind, i)){
+            path.push_back(s.substr(ind, i-ind+1));
+            f(i+1,s,path,res);
+            path.pop_back();
+        }
+    }
+}
+
+vector<vector<string>> partition(string s) {  //Starting function
+    vector<vector<string>> res;
+    vector<string> path;
+
+    f(0,s,path,res);
+    return res;
+}

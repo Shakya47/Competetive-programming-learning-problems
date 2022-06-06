@@ -1,0 +1,31 @@
+Given a collection of candidate numbers (candidates) and a target number (target), 
+find all unique combinations in candidates where the candidate numbers sum to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note: The solution set must not contain duplicate combinations.
+
+
+void f(int ind, int target, vector<int>& candidates, vector<int>& tempDS, vector<vector<int>>& ans){
+    if(target == 0){
+        ans.push_back(tempDS);
+        return;
+    }
+
+    for(int i = ind; i<candidates.size(); i++){
+        if(i>ind && candidates[i] == candidates[i-1]) continue;
+        if(candidates[i]>target) break;
+        tempDS.push_back(candidates[i]);
+        f(i+1, target-candidates[i], candidates, tempDS, ans);
+        tempDS.pop_back();
+    }
+
+}
+
+vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+    vector<vector<int>> ans;
+    vector<int> tempDS;
+    sort(candidates.begin(), candidates.end());
+    f(0, target, candidates, tempDS, ans);
+    return ans;
+}

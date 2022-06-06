@@ -1,0 +1,20 @@
+Given a list arr of N integers, print sums of all subsets in it.
+
+void f(int n, int sum, vector<int> &arr, vector<int> &sumArr){
+    if(n<0){
+        sumArr.push_back(sum);
+        return;
+    }
+
+    f(n-1, sum+arr[n], arr, sumArr);
+    f(n-1, sum, arr, sumArr);
+
+}
+
+vector<int> subsetSums(vector<int> arr, int N)
+{
+    vector<int> sumArr;
+    f(N-1, 0, arr, sumArr);
+    sort(sumArr.begin(), sumArr.end());
+    return sumArr;
+}

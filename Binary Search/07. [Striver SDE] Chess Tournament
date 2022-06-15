@@ -1,0 +1,38 @@
+Chess tournament is going to be organized in Ninjaland. There will be C chess players going to attend the tournament. 
+All the players will be staying in a hotel. The hotel has N free rooms available for the players, where one player will choose one room to live in. 
+The ith room is at position[i] in the hotel. All rooms are in distinct positions.
+Focus level of a chess player is defined as the minimum distance between his room and the room of another player. 
+The overall focus of a tournament is defined as the minimum focus level among all players. 
+You as an organizer obviously want the overall focus as high as possible so you assign the rooms to players such that the overall focus is as high as possible.
+
+
+bool isPossible(int mid, int c, vector<int> positions){
+    int count = 1;
+    int place = positions[0];
+    for(int i = 1; i<positions.size(); i++){
+        
+        if(positions[i] - place >= mid ){
+            count++;
+            place = positions[i];
+        }
+        if(count == c) return true;
+    }
+
+    return false;
+}
+
+int chessTournament(vector<int> positions , int n ,  int c){
+	sort(positions.begin(), positions.end());
+    int low = 1, high = positions[n-1] - positions[0];
+    
+    
+    while(low <= high){
+        int mid = (high + low)/2;
+        
+        if(isPossible(mid, c, positions)){
+            low = mid + 1;
+        }
+        else high = mid - 1;
+    }
+    return high;
+}

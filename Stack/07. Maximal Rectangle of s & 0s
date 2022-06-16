@@ -8,14 +8,14 @@ class Solution {
         vector<int>ns(n);
         vector<int>ps(n);
         stack<int> s;
-        for(int i=0; i<n;i++){
+        for(int i=0; i<n;i++){      //Previous smaller
             while(s.empty()==false && (a[s.top()])>=(a[i]))
                 s.pop();
             ps[i]= s.empty()?-1:s.top();
             s.push(i);      
         }
         while(s.empty()==false) s.pop();
-        for(int i=n-1; i>=0;i--){
+        for(int i=n-1; i>=0;i--){       //Next smaller
             while(s.empty()==false && (a[s.top()])>=(a[i]))
                 s.pop();
             ns[i]= s.empty()?n:s.top();
@@ -49,7 +49,7 @@ public:
             if(i==n-1) break;
             for(int j=0; j<m[i].size(); j++){
                 if(m[i+1][j]==0) continue;
-                m[i+1][j]=m[i][j]+m[i+1][j];
+                m[i+1][j]=m[i][j]+m[i+1][j];    //add the above value to bottom, so that we create an array like the previous problem
             }
         }
         return res;

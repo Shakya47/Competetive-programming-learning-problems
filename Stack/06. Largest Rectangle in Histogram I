@@ -1,7 +1,11 @@
-//Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, 
-//return the area of the largest rectangle in the histogram
+Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, 
+return the area of the largest rectangle in the histogram
 
 //Hint: Use previous & next smaller to calculated width of the rectangle
+- They can be easily found by modifying the previous problem "Previous and Next smaller"
+- if no smaller found, assign it the size of the array
+- Previous-smaller and next-smaller will tell us the width of the rectangle
+
 
 int main()
 {

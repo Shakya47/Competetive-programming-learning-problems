@@ -2,7 +2,7 @@ Given a string s containing just the characters '(', ')', '{', '}', '[' and ']',
 Input: s = "()[]{}"
 Output: true
 
-/Using Stack is the most efficient way to solve this problem
+//Using Stack is the most efficient way to solve this problem
 
 class Solution {
     bool matching(char a, char b){

@@ -9,6 +9,7 @@ Return a list of the operations needed to build target. The test cases are gener
 
 //Its more of an Array question than stack, but solved it while learning stack
 
+
 vector<string> buildArray(vector<int>& target, int n) {
         vector<string> s;
         int t=0;

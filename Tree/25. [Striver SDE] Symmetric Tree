@@ -1,0 +1,12 @@
+Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center
+
+ bool isCheck(TreeNode * left, TreeNode * right){
+    if(left == NULL || right == NULL) return left == right;
+    if(left->val != right->val) return false;
+    return isCheck(left->left, right->right) && isCheck(left->right,right->left);
+
+}
+bool isSymmetric(TreeNode* root) {
+    if(root->left == NULL && root->right == NULL) return true;
+    return isCheck(root->left, root->right);
+}

@@ -1,3 +1,10 @@
+//Idea:
+- While deleting we have to maintain the BST property
+- We will replace the node which is to be deleted by either its closest lower value or closest higher value
+- We chose closes higher value - we find it by going to the right of the node and finding left-most node
+- Replace the closest higher value with the node to be deleted.
+- Now delete this closest higher value by recursively calling the function to delete the closes highest value
+
 
 /**
  * Definition for a binary tree node.
@@ -33,7 +40,7 @@ public:
             else if(root->right == NULL) return root->left; //link root->left with the ancestor 
             else{   //if both left righ are NULL
                 root->val = inSuccessor(root->right);   //find the successor and replace the val of root with the successor
-                root->right = deleteNode(root->right, root->val);   //delete the successor node
+                root->right = deleteNode(root->right, root->val);  //delete the root->val node from the right tree
             }
         }
         return root;

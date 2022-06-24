@@ -1,6 +1,6 @@
 Given a Binary Search Tree and a target sum. Check whether there's a pair of Nodes in the BST with value summing up to the target sum. 
 
-//Steps:
+//Idea:
 - maintain a set, which would get the node->data
 - sum-set_element -> if this is found, that means a pair exists
 - make everthing in inorder/postorder/preorder

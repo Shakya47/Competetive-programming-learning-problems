@@ -1,7 +1,8 @@
 You are given the root of a binary search tree (BST), where the values of exactly two nodes of the tree were swapped by mistake. 
 Recover the tree without changing its structure.
 
-//Hint: idea is that inorder are sorted, so in this when we find incorrect values, we note them down
+//Idea: 
+- inorder are sorted, so in this when we find incorrect values, we note them down
 - 2 such values would be found and swapped
 
 /**
@@ -27,7 +28,7 @@ class Solution {
         
         if(prev!=NULL && root->val < prev-> val){ //to find issue in sorted traversal
             if(first == NULL) first = prev;   //when issue is found, the first is set to previous value
-            second = root;    //second is set to root not previous, if any confusion, watch sandeep sirs video
+            second = root;    //second is set to root not previous, if any confusion, watch sandeep sirs video, second is always the current node
         }
         prev = root;
         

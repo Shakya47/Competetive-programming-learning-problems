@@ -1,10 +1,10 @@
 Given a Binary Tree, find vertical sum of the nodes that are in same vertical line. 
 Print all sums through different vertical lines starting from left-most vertical line to right-most vertical line.
 
-//Steps:
-- Imp part is height distance, all the same height distance elements would be added
-- maintain a map, with key as height distance
-- run it in inorder
+//Idea:
+- Same as vertical traversal in binary tree
+- maintain a map[height][root->data]
+- for root->left, height -= 1, for root->right, height += 1
 
 
 class Solution{

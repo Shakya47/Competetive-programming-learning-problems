@@ -5,8 +5,10 @@ A valid BST is defined as follows:
 - The right subtree of a node contains only nodes with keys greater than the node's key.
 - Both the left and right subtrees must also be binary search trees.
 
-//Hint: We will be doing inorder traversal, as inorder gives the elements in sorted order
-but if there is a wrong value, it will be detected
+//Idea: 
+- We will be doing inorder traversal, as inorder gives the elements in sorted order
+- If there is a wrong value, it will be detected
+- we will keep storing the current value after comparison in a prev variable
 
 /**
  * Definition for a binary tree node.

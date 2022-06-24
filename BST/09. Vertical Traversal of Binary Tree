@@ -1,10 +1,12 @@
 Given a Binary Tree, find the vertical traversal of it starting from the leftmost level to the rightmost level.
 If there are multiple nodes passing through a vertical line, then they should be printed as they appear in level order traversal of the tree.
 
-//Steps:
-- Its important that we use Inorder traversal
-- its also imp to use queue method instead of recursion
-- rest of the things are same as Pair sum
+//Idea:
+- Same as vertical traversal in binary tree
+- Use BFS as the problem said to have level order traversal for multiple nodes on the same vertical line
+- for BFS we use a queue, in this queue there will be pair of Node & height
+- maintain a map[height][root->data]
+- for root->left, height -= 1, for root->right, height += 1
 
 vector<int> verticalOrder(Node *root)
     {

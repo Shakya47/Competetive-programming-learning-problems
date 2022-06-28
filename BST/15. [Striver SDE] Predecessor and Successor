@@ -1,0 +1,13 @@
+There is BST given with root node with key part as an integer only. You need to find the in-order successor and predecessor of a given key. 
+If either predecessor or successor is not found, then set it to NULL.
+
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+{
+
+    if(root == NULL) return;
+    findPreSuc(root->left, pre, suc, key);
+    if(root->key < key) pre = root;
+    if(root->key > key && !suc) suc = root;
+    findPreSuc(root->right, pre, suc,key);
+
+}

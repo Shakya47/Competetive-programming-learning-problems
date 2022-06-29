@@ -1,0 +1,15 @@
+Ninja is given a binary search tree and an integer. Now he is given a particular key in the tree and returns its ceil value. Can you help Ninja solve the problem?
+Ceil of an integer is the closest integer greater than or equal to a given number.
+
+int findCeil(BinaryTreeNode<int> *root, int x){
+    int ceilVal = -1;   //corner case, not node is equal or greater to x
+    while(root != NULL){
+        if(root->data == x) return ceilVal = root->data;
+        if(root->data > x){
+            ceilVal = root->data;
+            root = root->left;
+        }
+        else root = root->right;
+    }
+    return ceilVal;
+}

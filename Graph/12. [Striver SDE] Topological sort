@@ -1,0 +1,56 @@
+Given a Directed Acyclic Graph (DAG) with V vertices and E edges, Find any Topological Sorting of that Graph.
+
+//DFS:
+void makeTopo(int i, vector<int> adj[], vector<int> &vis, stack<int> &st){
+	    vis[i] = 1;
+	    for(auto it : adj[i]){
+	        if(!vis[it]) makeTopo(it,adj,vis,st);
+	    }
+	    st.push(i);
+	}
+	
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    vector<int>vis(V,0);
+	    stack<int> st;
+	    for(int i = 0; i<V; i++){
+	        if(!vis[i]){
+	            makeTopo(i,adj,vis,st);
+	        }
+	    }
+	    vector<int>ans;
+	    while(!st.empty()){
+	        ans.push_back(st.top());
+	        st.pop();
+	    }
+	    return ans;
+	}
+  
+//BFS - Kahn's algorithm
+  
+  vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    vector<int> res;
+	    queue<int> q;
+	    int indegree[V]={0};
+	    for(int i = 0; i<V; i++){
+	        for(int u : adj[i])
+	            indegree[u]++;
+	    }
+	    for(int i = 0; i<V; i++){
+	        if(indegree[i]==0)
+	            q.push(i);
+	    }
+	    while(!q.empty()){
+	        int u = q.front();
+	        q.pop();
+	        res.push_back(u);
+	        for(int v: adj[u]){
+	            indegree[v]--;
+	            if(indegree[v]==0)
+	                q.push(v);
+	                
+	        }
+	    }
+	    return res;
+	}

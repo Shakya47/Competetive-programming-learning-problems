@@ -1,0 +1,43 @@
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. 
+You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+
+For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+Return true if you can finish all courses. Otherwise, return false.
+
+//Idea: 
+- It's a detect a cycle in a directed graph problem.
+- If there's a cycle, return false
+
+bool isCycle(int i, int parent, vector<int>adj[], vector<bool> &vis, vector<bool> &dfsvis){
+    vis[i] = 1;
+    dfsvis[i] = 1;
+
+    for(int u: adj[i]){
+        if(!vis[u]){
+            if(isCycle(u, i, adj, vis, dfsvis))
+                return true;
+        }
+        else if(dfsvis[u])
+            return true;
+    }
+    dfsvis[i] = 0;
+    return false;
+}   
+
+bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+    vector<bool>vis(numCourses, false);
+    vector<bool>dfsvis(numCourses, false);
+
+    vector<int>adj[numCourses];
+
+    for(int i = 0;i<prerequisites.size();i++){
+        adj[prerequisites[i][0]].push_back(prerequisites[i][1]);
+    }
+
+    for(int i = 0; i<numCourses; i++){
+        if(!vis[i]){
+            if(isCycle(i,-1, adj, vis, dfsvis)) return false;
+        }
+    }
+    return true;
+}

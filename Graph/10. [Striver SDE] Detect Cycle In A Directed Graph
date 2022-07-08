@@ -1,0 +1,37 @@
+You are given a directed graph having ‘N’ nodes. A matrix ‘EDGES’ of size M x 2 is given which represents the ‘M’ edges 
+such that there is an edge directed from node EDGES[i][0] to node EDGES[i][1].
+Find whether the graph contains a cycle or not, return true if a cycle is present in the given directed graph else return false.
+
+//Note: as edge matrix is given, make an adjacecy list
+//Very imp: since it's a directed graph edges will be pushed only once.
+
+bool isCheck(int i, vector<int>adj[],  vector<int>&vis,  vector<int>&dfsvis){
+    vis[i] = 1;
+    dfsvis[i] = 1;
+    
+    for(auto it : adj[i]){
+        if(!vis[it]){
+            if(isCheck(it, adj, vis, dfsvis)) return true;
+        }
+        else if(dfsvis[it]) return true;
+    }
+    dfsvis[i] = 0;
+    return false;
+}
+
+int detectCycleInDirectedGraph(int n, vector < pair < int, int >> & edges) {
+    vector<int>adj[n+1];
+    for(int i = 0;i<edges.size();i++){   //Converting to adjancy list
+        adj[edges[i].first].push_back(edges[i].second);   //only once they will be pushed
+    }
+    
+    vector<int>vis(n+1,0);
+    vector<int>dfsvis(n+1,0);   //very imp
+    
+    for(int i = 1; i<= n; i++){
+        if(!vis[i]){
+            if(isCheck(i,adj,vis,dfsvis)) return true;
+        }
+    }
+    return false;
+}

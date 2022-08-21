@@ -1,6 +1,11 @@
 You are given an array/list of ‘N’ integers. 
 You are supposed to return the maximum sum of the subsequence with the constraint that no two elements are adjacent in the given array/list.
 
+//Idea:
+- take the current element -> then cannot take adjacent, so ind-2
+- not take the current element -> then take adjacent, so ind-1
+- keep max(take, notTake)
+
 //Memoization: time: O(n) space: O(n) + O(n)
 int find(int ind, vector<int> &nums, vector<int> &dp){
 	if(ind == 0) return nums[0];

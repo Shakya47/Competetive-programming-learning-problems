@@ -5,6 +5,13 @@ and it will automatically contact the police if two adjacent houses were broken 
 You are given an array/list of non-negative integers 'ARR' representing the amount of money of each house. 
 Your task is to return the maximum amount of money Mr. X can rob tonight without alerting the police.
 
+//Idea:
+- same as previous
+- only difference is here the houses are circular, 1st and last house are adjacent
+-- so 2,3,5 -> in this 2+5 cannot be the answer since 2 & 5 are circulary adjacent
+- so compute the index 0 to arr.size()-2  & 1 to arr.size()-1
+-- ie. 2,3 & 3,5
+
 long long int maximumNonAdjacentSum(vector<int> &nums, int s, int e){
 	long long int prev = nums[s];
 	long long int prev2 = 0;

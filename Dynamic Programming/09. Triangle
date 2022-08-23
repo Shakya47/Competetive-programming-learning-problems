@@ -3,9 +3,11 @@ Given a triangle array, return the minimum path sum from top to bottom.
 For each step, you may move to an adjacent number of the row below. 
 More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
 
-//Same as previous problem, difference is:
-there is fixed start(like previous) but a variable end;
-so we will start from 0 instead of n-1
+//Idea:
+- Same as previous problem, difference is:
+- there is fixed start(like previous) but a variable end;
+- so we will start from 0 instead of n-1, i.e in bottom up approach in recursion
+- and we will use top-down approach in tabulation
 
 _________________________________________
 Recursion - time: O(2^m*n)

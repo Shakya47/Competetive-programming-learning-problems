@@ -2,6 +2,9 @@ Given a m x n grid filled with non-negative numbers, find a path from top left t
 
 Note: You can only move either down or right at any point in time.
 
+//Idea:
+- Similar to unique grid path problem
+
 ____________________________________________
 Recursion - time: O(2^m*n)
 --------------------------------------------

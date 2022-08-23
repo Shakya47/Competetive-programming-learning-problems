@@ -6,6 +6,12 @@ As Ninja has to improve all his skills, he can’t do the same activity in two c
 Can you help Ninja find out the maximum merit points Ninja can earn?
 You are given a 2D array of size N*3 ‘POINTS’ with the points corresponding to each day and activity. 
 Your task is to calculate the maximum number of merit points that Ninja can earn.
+
+//Idea:
+- Think in top down approach for recursion
+- we are returning day & the last exercise performed
+- we try all possible values for exercise excluding the last performed exercise
+- for base case - maximum points excluding the last performed exercise
 ___________________________________________
 //Recurion: time: O(2^n) space: O(n) //TLE
 -------------------------------------------

@@ -3,7 +3,10 @@ find the maximum sum that can be obtained from a path starting from any cell in 
 From a cell in a row, you can move to another cell directly below that row, or diagonally below left or right. 
 So from a particular cell (row, col), we can move in three directions i.e.
 
-//Variable starting point , variable ending point
+//Idea:
+- here we have Variable starting point , variable ending point
+- we will use top-down approach and starting point will be looped
+- rest all are simple
 ____________________________________________
 Recursion - time: O(3^m*n)
 --------------------------------------------

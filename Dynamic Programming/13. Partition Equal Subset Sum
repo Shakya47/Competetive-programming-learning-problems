@@ -1,9 +1,9 @@
 Given a non-empty array nums containing only positive integers, 
 find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
 
-
-//Its same as previous question, over here target sum would be (total sum of array)/2
-//do the same optimization
+//Idea:
+-Its same as previous question, over here target sum would be (total sum of array)/2
+-do the same optimization
 
 bool f(int n, int k, vector<int>& nums, vector<vector<int>> &dp){
         if(k == 0) return true;

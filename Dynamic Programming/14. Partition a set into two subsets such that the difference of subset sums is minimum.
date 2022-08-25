@@ -2,7 +2,10 @@ You are given an array containing N non-negative integers.
 Your task is to partition this array into two subsets such that the absolute difference between subset sums is minimum.
 You just need to find the minimum absolute difference considering any valid division of the array elements.
 
-//Concept of dp[n-1][j] 
+//Idea:
+- use the tabulation of the previous question
+- we use the last row of the dp[][] which tells whether the 0 to target sum is possible or not
+- based on this we find the minimum subset sum difference 
 
 
 

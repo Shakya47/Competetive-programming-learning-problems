@@ -2,6 +2,9 @@ You are given an array/list ‘ARR’ of ‘N’ positive integers and an intege
 Your task is to check if there exists a subset in ‘ARR’ with a sum equal to ‘K’.
 Note: Return true if there exists a subset with sum equal to ‘K’. Otherwise, return false.
 
+//Idea:
+- concept of take and not take
+- very simple approach
 __________________________________________
 Recursion - time: O(2^n)
 ------------------------------------------

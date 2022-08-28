@@ -1,0 +1,32 @@
+A matrix diagonal is a diagonal line of cells starting from some cell in either the topmost row or leftmost column and going in 
+the bottom-right direction until reaching the matrix's end. For example, the matrix diagonal starting from mat[2][0], where mat is a 6 x 3 matrix, 
+includes cells mat[2][0], mat[3][1], and mat[4][2].
+
+Given an m x n matrix mat of integers, sort each matrix diagonal in ascending order and return the resulting matrix.
+
+//Idea:
+- every diagonal element have the same i-j value
+- use a map with priority queue to store the diagonal elements in min heap fashion
+- map will store elements based on i-j value
+- then simply add them back to the matrix
+
+vector<vector<int>> diagonalSort(vector<vector<int>>& mat) {
+    int r = mat.size();
+    int c = mat[0].size();
+
+    unordered_map<int, priority_queue<int, vector<int>, greater<int>>>map;
+    for(int i = 0; i<r; i++){
+        for(int j = 0; j<c; j++){
+            map[i-j].push(mat[i][j]);
+        }
+    }
+    for(int i = 0; i<r; i++){
+        for(int j = 0; j<c; j++){
+            mat[i][j] = map[i-j].top();
+            map[i-j].pop();
+        }
+    }
+
+    return mat;
+
+}

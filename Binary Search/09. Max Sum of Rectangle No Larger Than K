@@ -1,0 +1,40 @@
+Given an m x n matrix matrix and an integer k, return the max sum of a rectangle in the matrix such that its sum is no larger than k.
+It is guaranteed that there will be a rectangle with a sum no larger than k.
+
+//Idea:
+- use binary search traversal, we move left & right columns
+- for each column, add it to an array which has sum of (current element & previous element)
+- in this array we find a value no larger than k - then find the max of this value possible
+- to find max 
+-- we know runningSum - currentSum should be <= k, but we keep only the track of runningSum
+-- modify above, runningSum - k <= currentSum, here currentSum should be > or = which can be found using lower_bound
+-- after finding currentSum, we check for max runningSum - currentSum.
+--- it is guaranteed that runningSum - currentSum will be <= k
+
+int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+    int row = matrix.size();
+    int col = matrix[0].size();
+
+    int res = INT_MIN;
+
+    for(int l = 0; l<col; l++){
+        vector<int>sumArr(row,0);
+        for(int r = l; r<col; r++){
+            for(int i = 0; i<row; i++){
+                sumArr[i] += matrix[i][r];
+            }
+            set<int> s;
+            s.insert(0);
+            int runSum = 0;
+            int curSum = 0;
+            for(int i = 0; i<row; i++){
+                runSum += sumArr[i];
+                if(runSum == k) return runSum;
+                auto currentSum = s.lower_bound(runSum - k);
+                if(currentSum != s.end()) res = max(res, runSum - *currentSum);
+                s.insert(runSum);
+            }
+        }
+    }
+    return res;
+}

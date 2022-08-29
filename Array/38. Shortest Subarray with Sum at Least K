@@ -1,0 +1,34 @@
+Given an integer array nums and an integer k, return the length of the shortest non-empty subarray of nums with a sum of at least k. 
+If there is no such subarray, return -1.
+A subarray is a contiguous part of an array.
+
+//Idea: 
+- sum>=k ->min of shortest, i+1
+- if eliminating 1st value in deque still gives sum >=k, then, store, pop_front, min
+- if sum < last value in deque, pop_back then push_back sum,i -> this is to make sure deque is monotonically ascending
+
+int shortestSubarray(vector<int>& nums, int k) {
+    int n = nums.size();
+    long long sum = 0;
+    deque<pair<long long, long long>> dq;
+    long long shortest = INT_MAX;
+
+    for(long long i = 0; i<n; i++){
+        sum += nums[i];
+        if(sum >= k) shortest = min(shortest, i+1);
+
+        pair<long long, long long> cur = {INT_MIN, INT_MIN};
+
+        while(!dq.empty() && sum-dq.front().second >=k){
+            cur = dq.front();
+            dq.pop_front();
+        }
+
+        if(cur.second != INT_MIN)  shortest = min(shortest, i - cur.first);
+
+        while(!dq.empty() && sum <= dq.back().second) dq.pop_back();
+
+        dq.push_back({i,sum});
+    }
+    return (shortest == INT_MAX ? -1 : shortest);
+}

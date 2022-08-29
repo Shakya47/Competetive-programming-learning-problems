@@ -1,0 +1,26 @@
+Given an array of positive integers nums and a positive integer target, return the minimal length of a contiguous 
+subarray [numsl, numsl+1, ..., numsr-1, numsr] of which the sum is greater than or equal to target. 
+If there is no such subarray, return 0 instead.
+
+
+int minSubArrayLen(int target, vector<int>& nums) {
+    long long sum = 0;
+    int left = 0;
+    int right = 0;
+    int n = nums.size();
+    int res = INT_MAX;
+    while(right < n){
+        sum += nums[right];
+        if(sum >= target){
+            while(sum >= target){   //skip all left elements till sum is < target
+                sum -= nums[left];
+                left++;
+            }
+            res = min(res, right-left+2);   //size of window -> right-left +1, we add extra 1 because sum is < target
+        }                                   //to make the sum >= target, discarded left element has to be added back
+
+        right++;
+    }
+    return res == INT_MAX ? 0 : res;
+
+}

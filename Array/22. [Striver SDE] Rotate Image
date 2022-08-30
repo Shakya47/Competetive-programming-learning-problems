@@ -4,7 +4,7 @@ You have to rotate the image in-place, which means you have to modify the input 
 
 //Idea:
 - First transpose the matrix -> swap matrix[i][j] with matrix[j][i]
-- Reverse each row., can also use 2 pointer approach for reverse
+- Reverse each row, can also use 2 pointer approach for reverse
 - For 180 or 270 deg, there will be slight change but not thaat complicated
 
 

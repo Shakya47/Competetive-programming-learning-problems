@@ -1,0 +1,23 @@
+Given a binary tree root, a node X in the tree is named good if in the path from root to X there are no nodes with a value greater than X.
+Return the number of good nodes in the binary tree.
+
+//Idea
+- pre-order traversal
+- for each left and right subtree maintain a maxVal and compare it with the current value
+
+int find(TreeNode* root, int maxVal){
+    if(!root) return 0;
+    int goodNode = 0;
+
+    if(root->val >= maxVal){
+        maxVal = root->val;
+        goodNode++;
+    }
+
+    return goodNode + find(root->left, maxVal) + find(root->right, maxVal);
+}
+//driver
+int goodNodes(TreeNode* root) {
+    if(!root) return 0;
+    return find(root, root->val);
+}

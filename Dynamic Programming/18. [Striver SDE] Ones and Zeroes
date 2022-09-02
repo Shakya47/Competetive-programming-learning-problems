@@ -1,0 +1,115 @@
+You are given an array of binary strings strs and two integers m and n.
+Return the size of the largest subset of strs such that there are at most m 0's and n 1's in the subset.
+A set x is a subset of a set y if all elements of x are also elements of y.
+
+//Idea:
+- 0/1 knapsack
+
+________________________
+Recursion: O(2^n*m) TLE
+------------------------
+int f(int ind, vector<string>& strs, int m, int n){
+
+    int count0 = 0;
+    int count1 = 0;
+    string str = strs[ind];
+
+    for(int i = 0; i<str.length(); i++){
+        if(str[i]=='1') count1++;
+        if(str[i]=='0') count0++;
+    }
+  //base condition
+    if(ind == 0){
+        if(count0<=m && count1<=n) return 1;
+        return 0;
+    }
+
+    int notTake = f(ind-1, strs, m, n);
+    int take = INT_MIN;
+    if(count0<=m && count1<=n) take = f(ind-1, strs, m-count0, n - count1) + 1;
+
+    return max(notTake , take);
+}
+
+//driver code
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int z = strs.size();
+    return f(z-1, strs,m,n);
+}
+
+_____________________________
+Memoization: O(m*n*size)
+-----------------------------
+int f(int ind, vector<string>& strs, int m, int n, vector<vector<vector<int>>>& dp){
+    if(dp[ind][m][n] != -1) return dp[ind][m][n];
+    int count0 = 0;
+    int count1 = 0;
+    string str = strs[ind];
+
+    for(int i = 0; i<str.length(); i++){
+        if(str[i]=='1') count1++;
+        if(str[i]=='0') count0++;
+    }
+
+    if(ind == 0){
+        if(count0<=m && count1<=n) return 1;
+        return 0;
+    }
+
+    int notTake = f(ind-1, strs, m, n, dp);
+    int take = INT_MIN;
+    if(count0<=m && count1<=n) take = f(ind-1, strs, m-count0, n - count1, dp) + 1;
+
+    return dp[ind][m][n] = max(notTake , take);
+}
+
+int findMaxForm(vector<string>& strs, int m, int n) {
+    int z = strs.size();
+    vector<vector<vector<int>>> dp(z+1, vector<vector<int>>(m+1, vector<int>(n+1, -1)));
+    return f(z-1, strs,m,n, dp);
+}
+
+________________________________________
+Tabulation: O(m*n*size) space optimized
+----------------------------------------
+
+  int findMaxForm(vector<string>& strs, int m, int n) {
+    int z = strs.size();
+    int count0 = 0;
+    int count1 = 0;
+    string str = strs[0];
+
+    for(int i = 0; i<str.length(); i++){
+        if(str[i]=='1') count1++;
+        if(str[i]=='0') count0++;
+    }
+
+    vector<vector<vector<int>>> dp(z, vector<vector<int>>(m+1, vector<int>(n+1, 0)));
+  //base case
+    for(int i = count0; i<=m; i++)
+        for(int j = count1; j<=n; j++)
+            dp[0][i][j]=1;
+
+    for(int i = 1; i<z; i++){
+        count0 = 0;
+        count1 = 0;
+        str = strs[i];
+
+        for(int l = 0; l<str.length(); l++){
+            if(str[l]=='1') count1++;
+            if(str[l]=='0') count0++;
+        }
+
+        for(int j = 0; j<=m; j++){
+            for(int k = 0; k<=n; k++){
+                int notTake = dp[i-1][j][k];
+                int take = INT_MIN;
+                if(count0<=j && count1<=k) take = dp[i-1][j-count0][k-count1] + 1;
+                dp[i][j][k] = max(notTake, take);
+            }
+        }
+    }
+    return dp[z-1][m][n];
+
+}
+

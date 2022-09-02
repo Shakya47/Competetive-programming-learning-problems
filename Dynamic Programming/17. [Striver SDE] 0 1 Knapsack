@@ -49,3 +49,27 @@ int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight)
     
     return dp[n-1][maxWeight];
 }
+
+
+____________________________________________________
+Space Optimization - O(n*maxWeight), using 1D array
+----------------------------------------------------
+//minor changes, rest all is same as tabulation
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+    vector<int>prev(maxWeight+1, 0), cur(maxWeight+1, 0);   //change 1
+    for(int W = weight[0]; W <= maxWeight; W++) prev[W] = value[0];     //change 2
+    
+    for(int i = 1; i<n; i++){
+        for(int W = 0; W<=maxWeight; W++){
+           
+            int notTake = 0 + prev[W];      //change 3
+            int take = INT_MIN;
+            if(weight[i] <= W) take = value[i] + prev[W-weight[i]];     //change 4
+            cur[W] = max(notTake, take);    //change 5
+        }
+        prev = cur;     //change 6
+    }
+    
+    return prev[maxWeight];     //change 7
+}

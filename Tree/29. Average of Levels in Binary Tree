@@ -1,0 +1,29 @@
+Given the root of a binary tree, return the average value of the nodes on each level in the form of an array. 
+Answers within 10-5 of the actual answer will be accepted.
+
+//Idea:
+- Simple BFS
+
+vector<double> averageOfLevels(TreeNode* root) {
+
+    vector<double>ans;
+    queue<TreeNode *>q;
+    q.push(root);
+    double avg;
+    int n;
+
+    while(!q.empty()){
+        n = q.size();
+        avg = 0;
+        for(int i = 0; i<n; i++){
+            TreeNode* cur = q.front();
+            q.pop();
+            avg += cur->val;
+            if(cur->left!=NULL) q.push(cur->left);
+            if(cur->right!=NULL) q.push(cur->right);
+        }
+        ans.push_back(avg/n);
+    }
+    return ans;
+
+}

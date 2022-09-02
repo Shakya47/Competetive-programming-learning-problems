@@ -1,0 +1,51 @@
+A thief is robbing a store and can carry a maximal weight of W into his knapsack. 
+There are N items and the ith item weighs wi and is of value vi. 
+Considering the constraints of the maximum weight that a knapsack can carry, 
+you have to find and return the maximum value that a thief can generate by stealing items.
+
+//Idea:
+- Simple take and notTake idea
+
+____________________________________
+Memoization - O(n*maxWeight)
+------------------------------------
+int f(int n, int maxWeight, vector<int> weight, vector<int> value, vector<vector<int>>&dp){
+    if(n == 0){
+        if(weight[n] <= maxWeight) return value[n];
+        else return 0;
+    }
+    if(dp[n][maxWeight] != -1) return dp[n][maxWeight];
+    int notTake = 0 + f(n-1, maxWeight, weight, value, dp);
+    int take = INT_MIN;
+    if(weight[n] <= maxWeight) take = value[n] + f(n-1, maxWeight-weight[n], weight, value, dp);
+    return dp[n][maxWeight] = max(notTake, take);
+}
+
+//driver code
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+    vector<vector<int>>dp(n, vector<int>(maxWeight+1, -1));
+    return f(n-1, maxWeight, weight, value, dp);
+}
+
+
+____________________________________
+Tabulation - O(n*maxWeight)
+------------------------------------
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+    vector<vector<int>>dp(n, vector<int>(maxWeight+1, 0));
+    for(int W = weight[0]; W <= maxWeight; W++) dp[0][W] = value[0];
+    
+    for(int i = 1; i<n; i++){
+        for(int W = 0; W<=maxWeight; W++){
+           
+            int notTake = 0 + dp[i-1][W];
+            int take = INT_MIN;
+            if(weight[i] <= W) take = value[i] + dp[i-1][W-weight[i]];
+            dp[i][W] = max(notTake, take);
+        }
+    }
+    
+    return dp[n-1][maxWeight];
+}

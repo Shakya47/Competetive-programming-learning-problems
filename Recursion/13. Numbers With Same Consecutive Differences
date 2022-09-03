@@ -1,0 +1,55 @@
+Return all non-negative integers of length n such that the absolute difference between every two consecutive digits is k.
+Note that every number in the answer must not have leading zeros. For example, 01 has one leading zero and is invalid.
+You may return the answer in any order.
+
+//Idea:
+- we consider all numbers starting with 1 to 9, as number starting with 0 are invalid
+- we add & subtract difference k to the last digit of the number and add that to the number
+- we check k!=0 because if it is 0 then the above if and below if will yield the same result, so we avoid unecessary call
+
+______________________________________
+Recursion: O(2^n)
+--------------------------------------
+vector<int>res;
+void f(int ind, int k, int num){
+    if(ind == 0){
+        res.push_back(num);
+        return;
+    }
+
+    int digit = num%10; //last digit
+
+    if(digit + k <10) f(ind-1, k, num*10 + digit + k);
+    if(digit - k >=0 && k!=0) f(ind-1, k, num*10 + digit - k);
+}
+
+//driver code
+vector<int> numsSameConsecDiff(int n, int k) {
+    for(int i = 1; i<=9; i++){  //trying all numbers starting with 1 to 9
+        f(n-1,k, i);
+    }
+    return res;
+}
+
+___________________________________
+Tabulation: O(n*size)
+-----------------------------------
+
+//Idea:
+- as we consider numbers starting from 1 to 9, so have pre filled it
+- for each num in that prefilled array, we check whether its possible to make a number with the difference k
+vector<int> numsSameConsecDiff(int n, int k) {
+    vector<int>res = {1,2,3,4,5,6,7,8,9};
+
+    for(int i = 2; i<=n; i++){
+        vector<int>cur;
+        for(int num: res){
+            int digit = num % 10;
+            if(digit + k <10) cur.push_back(num*10 + digit + k);
+            if(digit - k >=0 && k!=0) cur.push_back(num*10 + digit - k);
+        }
+        res = cur;
+    }
+
+    return res;
+}

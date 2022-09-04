@@ -1,5 +1,7 @@
 Vertical traversal
 
+//Idea:
+- we will store vertical level & horizontal level of each node
 
 vector<vector<int>> verticalTraversal(TreeNode* root) {
     map<int,map<int,multiset<int>>> nodes;

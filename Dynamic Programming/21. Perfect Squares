@@ -1,0 +1,71 @@
+Given an integer n, return the least number of perfect square numbers that sum to n.
+
+A perfect square is an integer that is the square of an integer; in other words, it is the product of some integer with itself. 
+For example, 1, 4, 9, and 16 are perfect squares while 3 and 11 are not.
+Input: n = 12
+Output: 3
+Explanation: 12 = 4 + 4 + 4.
+
+//Idea:
+- unbounded knapsack
+- same as coin change
+
+------------------------------------------------------------
+Memoization(my solution): O(2^sq*n), acceptied but very bad
+------------------------------------------------------------
+int f(int sq, int n, vector<vector<int>>& dp){
+
+    if(n == 0) return 1;
+    if(sq * sq >= n){
+        return (sq * sq) == n ? 1 : 1e9;
+    }
+    if(dp[sq][n] != -1) return dp[sq][n];
+    int notTake = 0 + f(sq + 1, n, dp);
+    int take = INT_MAX;
+    if(sq * sq <= n) take = 1 + f(sq, n - (sq * sq), dp);
+    return dp[sq][n] = min(notTake, take);
+
+}
+//driver code
+int numSquares(int n) {
+    int root = sqrt(n);
+    vector<vector<int>> dp(root+1, vector<int>(n+1, -1));
+    return f(1, n, dp);
+}
+
+---------------------------------------------
+Little better memoization: O(n*sqrt(n))
+----------------------------------------------
+//Idea: 1D Knapsack
+  int f(int n, vector<int>& dp){
+
+      if(n == 0) return 0;
+      if(dp[n] != -1) return dp[n];
+      dp[n] = INT_MAX;
+      for(int i = 1; i*i<=n; i++){
+          dp[n] = min(dp[n], f(n - i*i, dp) + 1);
+      }
+      return dp[n];
+
+  }
+
+  int numSquares(int n) {
+
+      vector<int> dp(n+1, -1);
+      return f(n, dp);
+  }
+  
+ ----------------------------------------
+ Tabulation: O(n*sqrt(n))
+ ----------------------------------------
+ int numSquares(int n) {
+    vector<int> dp(n+1, 0);
+    dp[0] = 0;
+    for(int i = 1; i<=n; i++){
+        dp[i] = INT_MAX;
+        for(int j = 1; j*j<=i; j++){
+            dp[i] = min(dp[i], dp[i - j*j] + 1);
+        }
+    }
+    return dp[n];
+}

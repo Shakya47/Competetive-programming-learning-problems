@@ -1,0 +1,29 @@
+Given a binary tree where node values are digits from 1 to 9. 
+A path in the binary tree is said to be pseudo-palindromic if at least one permutation of the node values in the path is a palindrome.
+Return the number of pseudo-palindromic paths going from the root node to leaf nodes.
+
+//Idea:
+- there is at most one digit with odd frequency in pseudo-palindromic path
+- we maintain a freq array of size 10, then check the oddFrequency
+
+void dfs(TreeNode* node, vector<int>freq, int &count){
+     if(!node) return;
+     freq[node->val]++;
+     if(!node->left && !node->right){
+         int oddCount = 0;
+         for(auto x : freq){
+             if(x%2 !=0) oddCount++;
+         }
+         if(oddCount<=1) count++;
+     }
+     dfs(node->left, freq, count);
+     dfs(node->right, freq, count);
+ }
+
+//driver code
+ int pseudoPalindromicPaths(TreeNode* root) {
+     vector<int>freq(10,0);
+     int count = 0;
+     dfs(root, freq, count);
+     return count;
+ }

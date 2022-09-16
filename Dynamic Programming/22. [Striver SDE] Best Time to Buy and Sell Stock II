@@ -1,0 +1,88 @@
+You are given an integer array prices where prices[i] is the price of a given stock on the ith day.
+On each day, you may decide to buy and/or sell the stock. You can only hold at most one share of the stock at any time. 
+However, you can buy it then immediately sell it on the same day.
+Find and return the maximum profit you can achieve.
+
+//Idea:
+- we maintain a buy variable to indicate whether we allowed to buy or not
+- for buying we will have a take and not take case, and for selling also we will have the same
+- we start from 0 index
+- when we buy, we add -prices[i] because to be profitable prices[i+1] - prices[i] > 0
+
+--------------------------------
+Recursion
+-------------------------------
+
+int f(int ind, int n, int buy, vector<int>& a){
+
+    if(ind == n) return 0;
+
+    if(buy){
+       return max (-a[ind] + f(ind + 1, n, 0, a), //take
+                   0 + f(ind + 1, n, 1, a));      //notTake
+    }
+    else{
+        return max(a[ind] + f(ind + 1, n, 1, a),  //take
+                        0 + f(ind + 1, n, 0, a)); //notTake
+    }
+}
+
+//driver code
+int maxProfit(vector<int>& a) {
+    int n = a.size();
+    return f(0, n, 1, a);
+}
+
+
+-------------------------------
+Memoization
+-------------------------------
+int f(int ind, int n, int buy, vector<int>& a, vector<vector<int>>& dp){
+
+    if(ind == n) return 0;
+
+    if(dp[ind][buy] != -1) return dp[ind][buy];
+    if(buy){
+       return dp[ind][buy] = max (-a[ind] + f(ind + 1, n, 0, a, dp),
+                   0 + f(ind + 1, n, 1, a, dp));
+    }
+    else{
+        return dp[ind][buy] = max(a[ind] + f(ind + 1, n, 1, a, dp),
+                        0 + f(ind + 1, n, 0, a, dp));
+    }
+}
+
+//driver code
+int maxProfit(vector<int>& a) {
+    int n = a.size();
+    vector<vector<int>>dp(n, vector<int>(2, -1));
+    return f(0, n, 1, a, dp);
+}
+
+
+-------------------------
+Tabulation - in recursion we went from 0 -> n, in tabulation we go opposite
+-------------------------
+int maxProfit(vector<int>& a) {
+    int n = a.size();
+    vector<vector<int>>dp(n + 1, vector<int>(2, 0));
+
+    dp[n][0] = dp[n][1] = 0;
+
+    for(int ind = n-1; ind>=0; ind--){
+        for(int buy = 0; buy<=1; buy++){
+            long profit = 0;
+            if(buy){
+               profit = max (-a[ind] + dp[ind + 1][0],
+                           0 + dp[ind + 1][1]);
+            }
+            else{
+                profit = max(a[ind] + dp[ind + 1][1],
+                                0 + dp[ind + 1][0]);
+            }
+            dp[ind][buy] = profit;
+        }
+    }
+
+    return dp[0][1];
+}

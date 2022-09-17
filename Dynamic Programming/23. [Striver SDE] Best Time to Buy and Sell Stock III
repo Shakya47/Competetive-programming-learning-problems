@@ -1,0 +1,52 @@
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
+Find the maximum profit you can achieve. You may complete at most two transactions.
+Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+//Idea:
+- we have limited transactions, if transaction = 2, we can perform 2 buy and 2 sell, so we use 4 
+- we start from 0 as we have to move only from 0 to n-1
+- rest is same as bus and sell II
+
+--------------------------
+Memoization
+--------------------------
+int f(int ind, int buy, int n, vector<int>& prices, vector<vector<int>>& dp){
+
+    if(ind == n || buy ==0) return 0;
+
+    if(dp[ind][buy] != -1) return dp[ind][buy];
+    if(buy%2 == 0 ){  //buy
+        return dp[ind][buy] = max(-prices[ind] + f(ind + 1, buy - 1, n, prices, dp),
+                  0 + f(ind + 1, buy, n, prices, dp));
+    }
+    else{ //sell
+        return dp[ind][buy] = max(prices[ind] + f(ind + 1, buy - 1, n, prices, dp),
+                  0 + f(ind + 1, buy, n, prices, dp));
+    }
+}
+//driver code
+int maxProfit(vector<int>& prices) {
+    int n = prices.size();
+    vector<vector<int>> dp(n, vector<int>(5, -1));
+    return f(0, 4, n, prices, dp);
+}
+
+-------------------
+Tabulation - we go opposite of dp, base are taken care of in the loop and also while assigning the dp array with 0
+-------------------
+int maxProfit(vector<int>& prices) {
+    int n = prices.size();
+    vector<vector<int>> dp(n+1, vector<int>(5, 0));
+
+    for(int ind = n-1; ind>=0; ind--)
+        for(int buy = 1; buy<=4; buy++){
+            if(buy%2 == 0 ){
+                dp[ind][buy] = max(-prices[ind] + dp[ind + 1][buy-1], 0 + dp[ind + 1][buy]);
+            }
+            else{
+                dp[ind][buy] = max(prices[ind] + dp[ind + 1][buy-1], 0 + dp[ind + 1][buy]);
+            }
+        }
+
+    return dp[0][4];
+}

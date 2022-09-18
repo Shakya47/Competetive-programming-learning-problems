@@ -1,0 +1,43 @@
+Given the root of a perfect binary tree, reverse the node values at each odd level of the tree.
+For example, suppose the node values at level 3 are [2,1,3,4,7,11,29,18], then it should become [18,29,11,7,4,3,1,2].
+Return the root of the reversed tree.
+A binary tree is perfect if all parent nodes have two children and all leaves are on the same level.
+The level of a node is the number of edges along the path between it and the root node.
+
+//Idea:
+As the question states that we have to reverse Odd Levels, so BFS or Level order traversal is a good approach
+We maintain a level variable to indicate on which level we are, initially it's 0.
+We maintain an array to store each level's node->val
+If level is odd, we change the node->val to array's lastindex - i //
+When pushing the node->left and node->right into the queue, we also push the node->left->val & node->right->val into an array
+
+TreeNode* reverseOddLevels(TreeNode* root) {
+      queue<TreeNode*>q;
+      vector<int>value;    
+      q.push(root);
+      int level = 0;    //intial level
+
+      while(!q.empty()){
+          int size = q.size();
+          vector<int>temp;    //temp array to store the node->left->val & node->right->val
+          for(int i = 0; i<size; i++){
+              TreeNode* curNode = q.front();
+              q.pop();
+
+              if(level%2) curNode->val = value[size-i-1];    //if odd level, change the node->val
+
+
+              if(curNode->left) {
+                  q.push(curNode->left);
+                  temp.push_back(curNode->left->val);  //push node->left->val to use it in the next level's iteration
+              }
+              if(curNode->right) {
+                  q.push(curNode->right);
+                  temp.push_back(curNode->right->val);    //push node->left->val to use it in the next level's iteration
+              }
+          }
+          level++;
+          value = temp;  //store temp in value to use it to change the node->val if level is odd
+      }
+      return root;
+  }

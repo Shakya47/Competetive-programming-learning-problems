@@ -1,0 +1,53 @@
+You are given an integer array prices where prices[i] is the price of a given stock on the ith day, and an integer k.
+Find the maximum profit you can achieve. You may complete at most k transactions.
+Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+//Idea:
+- Same as previous 
+- only difference is we have a variable k
+
+-----------------------------
+Memoization
+-----------------------------
+int f(int ind, int buy, int n, vector<int>& prices, vector<vector<int>>& dp){
+
+    if(ind == n || buy ==0){
+        return 0;
+    }
+
+    if(dp[ind][buy] != -1) return dp[ind][buy];
+    if(buy%2 == 0 ){
+        return dp[ind][buy] = max(-prices[ind] + f(ind + 1, buy - 1, n, prices, dp),
+                  0 + f(ind + 1, buy, n, prices, dp));
+    }
+    else{
+        return dp[ind][buy] = max(prices[ind] + f(ind + 1, buy - 1, n, prices, dp),
+                  0 + f(ind + 1, buy, n, prices, dp));
+    }
+}
+//driver code
+int maxProfit(int k, vector<int>& prices) {
+    int n = prices.size();
+    vector<vector<int>> dp(n, vector<int>(k*2+1, -1));
+    return f(0, k*2, n, prices, dp);
+}
+
+-----------------------
+Tabulation
+-----------------------
+int maxProfit(int k, vector<int>& prices) {
+    int n = prices.size();
+    vector<vector<int>> dp(n+1, vector<int>(k*2+1, 0));
+
+    for(int ind = n-1; ind>=0; ind--)
+        for(int buy = 1; buy<=k*2; buy++){
+            if(buy%2 == 0 ){
+                dp[ind][buy] = max(-prices[ind] + dp[ind + 1][buy-1], 0 + dp[ind + 1][buy]);
+            }
+            else{
+                dp[ind][buy] = max(prices[ind] + dp[ind + 1][buy-1], 0 + dp[ind + 1][buy]);
+            }
+        }
+
+    return dp[0][k*2];
+}

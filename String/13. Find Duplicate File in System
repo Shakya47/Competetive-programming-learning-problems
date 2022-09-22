@@ -1,0 +1,31 @@
+Given a list paths of directory info, including the directory path, and all the files with contents in this directory, 
+return all the duplicate files in the file system in terms of their paths. You may return the answer in any order.
+A group of duplicate files consists of at least two files that have the same content.
+A single directory info string in the input list has the following format:
+"root/d1/d2/.../dm f1.txt(f1_content) f2.txt(f2_content) ... fn.txt(fn_content)"
+
+//Idea:
+- String manupulation
+- If the text content is same, add the directory to a hashmap
+
+vector<vector<string>> findDuplicate(vector<string>& paths) {
+  unordered_map<string, vector<string>> hash;
+  for (auto path : paths) {
+      stringstream ss(path);
+      string dir;
+      string file;
+      getline(ss, dir, ' ');
+      while (getline(ss, file, ' ')) {
+          string content = file.substr(file.find('(') + 1, file.find(')') - file.find('(') - 1);
+          string name = dir + '/' + file.substr(0, file.find('('));
+          hash[content].push_back(name);
+      }
+  }
+  vector<vector<string>> res;
+  for (auto it = hash.begin(); it != hash.end(); it++) {
+      if (it->second.size() > 1) {
+          res.push_back(it->second);
+      }
+  }
+  return res;
+}

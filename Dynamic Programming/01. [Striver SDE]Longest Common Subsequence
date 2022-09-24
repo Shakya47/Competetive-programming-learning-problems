@@ -1,0 +1,52 @@
+Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0.
+A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
+For example, "ace" is a subsequence of "abcde".
+A common subsequence of two strings is a subsequence that is common to both strings.
+
+//Idea:
+- Idea is similar to take and not take
+
+---------------------------------
+Memoization: TLE
+---------------------------------
+int f(int ind1, int ind2, string text1, string text2, vector<vector<int>> &dp){
+
+        if(ind1 < 0 || ind2 < 0) return 0;
+        if(dp[ind1][ind2] != -1) return dp[ind1][ind2];
+        
+        int notMatch = 0 + max(f(ind1 - 1, ind2, text1, text2, dp), f(ind1, ind2 - 1, text1, text2, dp));
+        int match = 0;
+        if(text1[ind1] == text2[ind2]) match = 1 + f(ind1-1, ind2-1, text1, text2, dp);
+
+        return dp[ind1][ind2] = max(notMatch, match);
+}
+//driver code
+int longestCommonSubsequence(string text1, string text2) {
+        int n1 = text1.length();
+        int n2 = text2.length();
+        vector<vector<int>>dp(n1, vector<int>(n2, 0));
+        return f(n1 - 1, n2 - 1, text1, text2, dp);
+}
+
+--------------------------------------------
+Tabulation: 
+--------------------------------------------
+//we use 1 based indexing so that we can handle negative indices
+
+int longestCommonSubsequence(string text1, string text2) {
+        int n1 = text1.length();
+        int n2 = text2.length();
+        vector<vector<int>>dp(n1+1, vector<int>(n2+1, 0));
+
+        for(int ind1 = 1; ind1 <= n1; ind1++)
+            for(int ind2 = 1; ind2 <= n2; ind2++){
+                int notMatch = 0 + max(dp[ind1 - 1][ind2], dp[ind1][ind2 - 1]);
+                int match = 0;
+                if(text1[ind1-1] == text2[ind2-1]) match = 1 + dp[ind1-1][ind2-1];
+                dp[ind1][ind2] = max(notMatch, match);
+            }
+
+        return dp[n1][n2];
+}
+
+

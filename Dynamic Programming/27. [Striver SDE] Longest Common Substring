@@ -4,7 +4,6 @@ A string “s1” is a substring of another string “s2” if “s2” contains
 //Idea:
 - almost same as longest common subsequence
 
-
 int lcs(string &text1, string &text2){
 	int n1 = text1.length();
     int n2 = text2.length();

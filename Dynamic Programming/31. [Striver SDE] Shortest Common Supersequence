@@ -1,0 +1,54 @@
+Given two strings str1 and str2, return the shortest string that has both str1 and str2 as subsequences. If there are multiple valid strings, return any of them.
+A string s is a subsequence of string t if deleting some number of characters from t (possibly 0) results in the string s.
+
+//Idea:
+- get a DP table of lcs
+- we will not repeat the lcs in the ans string
+- using DP table, get the sequence
+
+
+string shortestCommonSupersequence(string str1, string str2) {
+    int n1 = str1.length();
+    int n2 = str2.length();
+    vector<vector<int>>dp(n1+1, vector<int>(n2+1, 0));
+
+    for(int ind1 = 1; ind1 <= n1; ind1++) //creating DP table
+        for(int ind2 = 1; ind2 <= n2; ind2++){
+            int notMatch = 0 + max(dp[ind1 - 1][ind2], dp[ind1][ind2 - 1]);
+            int match = 0;
+            if(str1[ind1-1] == str2[ind2-1]) match = 1 + dp[ind1-1][ind2-1];
+            dp[ind1][ind2] = max(notMatch, match);
+        }
+
+    int i = n1, j = n2;
+    string ans="";
+    while(i>0 && j>0){
+        if(str1[i-1] == str2[j-1]){ //if it's common
+            ans += str1[i-1];
+            i--;
+            j--;
+        }
+        else if(dp[i-1][j] > dp[i][j-1]){   //if we move up, then take the cur
+            ans += str1[i-1];
+            i--;
+        }
+        else{
+            ans += str2[j-1]; //if we move left, then take the cur
+            j--;
+        }
+    }
+
+    while(i>0){     //if something remains 
+        ans += str1[i-1];
+        i--;
+    } 
+
+    while(j>0){
+        ans += str2[j-1];
+        j--;
+    }
+
+    reverse(ans.begin(), ans.end());
+
+    return ans;
+}

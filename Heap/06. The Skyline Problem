@@ -1,0 +1,44 @@
+Too long description
+
+//Idea:
+- we are given input as {start, end, height} we split it into 2
+-- {start, -height} {end, height}, we use negative to know it's starting point height
+-- we push -height in pq & remove it when we encounter +height
+- if curHeight != pq.top() then we add it into the answer
+
+ vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
+    vector<vector<int>> ans;
+    multiset<int> pq{0};
+
+    vector<pair<int, int>> points;
+
+    for(auto b: buildings){
+        points.push_back({b[0], -b[2]});    //-ve represents height at starting point
+        points.push_back({b[1], b[2]}); //represents height at ending point
+    }
+
+    sort(points.begin(), points.end());
+
+    int ongoingHeight = 0;
+
+    // points.first = x coordinate, points.second = height
+    for(int i = 0; i < points.size(); i++){
+        int currentPoint = points[i].first;
+        int heightAtCurrentPoint = points[i].second;
+
+        if(heightAtCurrentPoint < 0){
+            pq.insert(-heightAtCurrentPoint);
+        } else {
+            pq.erase(pq.find(heightAtCurrentPoint));
+        }
+
+        // after inserting/removing heightAtI, if there's a change
+        auto pqTop = *pq.rbegin();
+        if(ongoingHeight != pqTop){
+            ongoingHeight = pqTop;
+            ans.push_back({currentPoint, ongoingHeight});
+        }
+    }
+
+    return ans;
+}

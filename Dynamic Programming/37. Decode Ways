@@ -1,0 +1,42 @@
+A message containing letters from A-Z can be encoded into numbers using the following mapping:
+
+'A' -> "1"
+'B' -> "2"
+...
+'Z' -> "26"
+To decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, "11106" can be mapped into:
+
+"AAJF" with the grouping (1 1 10 6)
+"KJF" with the grouping (11 10 6)
+Note that the grouping (1 11 06) is invalid because "06" cannot be mapped into 'F' since "6" is different from "06".
+
+//Idea:
+- we take and notTake
+- we make a substring of length 2 and check if it is between 1 & 26
+- if we reach n or n-1, return 1
+
+-----------------------
+Memoization:
+-----------------------
+int f(int i, int n, string s, vector<int>& dp){
+    if(s[i] == '0') return 0;
+    if(i>=n-1) return 1;
+    if(dp[i] != -1) return dp[i];
+
+    string temp = s.substr(i,2);
+    int notTake =  f(i+1, n, s, dp);
+    int take = 0;
+    if(stoi(temp)>0 && stoi(temp)<27) take = f(i+2, n, s, dp);
+    return dp[i] = notTake + take;
+}
+
+int numDecodings(string s) {
+    int n = s.size();
+    vector<int> dp(n+1, -1);
+
+    return f(0, n, s, dp);
+}
+
+----------------------
+Tabulation
+----------------------

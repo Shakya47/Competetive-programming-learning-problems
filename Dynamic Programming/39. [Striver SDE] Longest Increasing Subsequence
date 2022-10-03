@@ -1,0 +1,49 @@
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+A subsequence is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements. 
+For example, [3,6,2,7] is a subsequence of the array [0,3,1,6,2,2,7].
+
+//Idea:
+- simple take & notTake
+- carry the prev taken index
+
+//There exist another aproach where the previous LIS is used to compute current LIS
+
+
+----------------------
+Memoization
+----------------------
+int f(int ind, int prev, int n, vector<int>& nums, vector<vector<int>>&dp){
+
+    if(ind==n) return 0;
+    if(dp[ind][prev+1] != -1) return dp[ind][prev+1];
+    int notTake = 0 + f(ind+1, prev, n, nums, dp);
+    int take = 0;
+    if(prev == -1 || nums[ind]>nums[prev]) take = 1 + f(ind+1, ind, n, nums, dp);
+    return dp[ind][prev+1] = max(notTake, take);
+
+}
+
+int lengthOfLIS(vector<int>& nums) {
+    int n = nums.size();
+    vector<vector<int>>dp(n, vector<int>(n+1, -1));
+    return f(0, -1, n, nums, dp);
+}
+
+------------------------
+Tabulation
+------------------------
+int lengthOfLIS(vector<int>& nums) {
+    int n = nums.size();
+    vector<vector<int>>dp(n+1, vector<int>(n+1, 0));
+
+    for(int ind = n-1; ind>=0; ind--)
+        for(int prev = ind-1; prev >=-1; prev--){
+            int notTake = 0 + dp[ind+1][prev+1];
+            int take = 0;
+            if(prev == -1 || nums[ind]>nums[prev]) take = 1 + dp[ind+1][ind+1];
+            dp[ind][prev+1] = max(notTake, take);
+        }
+
+    return dp[0][0];
+}
+

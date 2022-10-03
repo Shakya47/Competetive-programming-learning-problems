@@ -1,0 +1,58 @@
+You have n dice and each die has k faces numbered from 1 to k.
+
+Given three integers n, k, and target, return the number of possible ways (out of the kn total ways) to roll the dice so the sum of the face-up numbers equals target. 
+Since the answer may be too large, return it modulo 109 + 7.
+
+//Idea:
+- we take whatever the dice roll shows, so no take and notTake scenario
+- for each dice face we right a loop.
+- have to be careful with the mod
+
+--------------------------
+Memoization
+--------------------------
+int MOD = 1e9 + 7;
+int f(int n, int k, int target, vector<vector<int>>&dp){
+    if(n == 0 && target == 0) return 1;
+    if(target < 0) return 0;
+
+    if(dp[n][target] != -1) return dp[n][target];
+
+    int ways = 0;
+    for(int i = 1; i<=k; i++){
+        if(n > 0){
+            ways = (ways%MOD + f(n-1, k, target - i, dp)%MOD)%MOD;
+        }
+    }
+    return dp[n][target] = ways;
+}
+//driver code
+int numRollsToTarget(int n, int k, int target) {
+    vector<vector<int>>dp(32, vector<int>(target + 1, -1));
+    return f(n, k, target, dp);
+}
+
+
+---------------------------
+Tabulation
+---------------------------
+int MOD = 1e9 + 7;
+
+int numRollsToTarget(int n, int k, int target) {
+    vector<vector<int>>dp(32, vector<int>(target + 1, 0));
+
+    dp[0][0] = 1;
+
+    for(int d = 1; d<=n; d++){
+        for(int t = 1; t<=target; t++){
+            int ways = 0;
+            for(int i = 1; i<=k; i++){
+                if(t>=i)
+                    ways = (ways%MOD + dp[d-1][t-i]%MOD)%MOD;
+            }
+            dp[d][t] = ways;
+        }
+    }
+
+    return dp[n][target];
+}

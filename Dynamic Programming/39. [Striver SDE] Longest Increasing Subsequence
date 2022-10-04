@@ -6,7 +6,10 @@ For example, [3,6,2,7] is a subsequence of the array [0,3,1,6,2,2,7].
 - simple take & notTake
 - carry the prev taken index
 
-//There exist another aproach where the previous LIS is used to compute current LIS
+//There exist another aproach with binary search concept
+- maintain a temp array
+- insert the nums[i] if they are greater than the temp array back()
+- if not greater, replace the nums[i] with it's lower_bound in array
 
 
 ----------------------
@@ -45,5 +48,28 @@ int lengthOfLIS(vector<int>& nums) {
         }
 
     return dp[0][0];
+}
+
+--------------------------
+Binary Search: O(n)
+--------------------------
+int lengthOfLIS(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> temp;
+    temp.push_back(nums[0]);
+
+    int len = 1;
+
+    for(int i = 1; i<n; i++){
+        if(nums[i]>temp.back()){
+            temp.push_back(nums[i]);
+            len++;
+        }
+        else{
+            int ind = lower_bound(temp.begin(), temp.end(), nums[i]) - temp.begin();
+            temp[ind] = nums[i];
+        }
+    }
+    return len;
 }
 

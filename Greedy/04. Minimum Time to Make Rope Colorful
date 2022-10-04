@@ -1,0 +1,24 @@
+Alice has n balloons arranged on a rope. You are given a 0-indexed string colors where colors[i] is the color of the ith balloon.
+
+Alice wants the rope to be colorful. She does not want two consecutive balloons to be of the same color, so she asks Bob for help. Bob can remove some balloons from the rope to make it colorful. You are given a 0-indexed integer array neededTime where neededTime[i] is the time (in seconds) that Bob needs to remove the ith balloon from the rope.
+
+Return the minimum time Bob needs to make the rope colorful.
+
+//Idea:
+- take min time if adjacent colors are same
+- replace the current time with max of adjacent 
+-- we this because when we take min, we might take out the current element and in the next iteration
+   that min will also be considered, but instead we take the max which was not taken and it will be considered in the next iteration
+   
+   
+int minCost(string colors, vector<int>& neededTime) {
+    int ans = 0;
+
+    for(int i = 1; i<colors.length(); i++){
+        if(colors[i] == colors[i-1]){
+            ans += min(neededTime[i], neededTime[i-1]);
+            neededTime[i] = max(neededTime[i], neededTime[i-1]);
+        }
+    }
+    return ans;
+}

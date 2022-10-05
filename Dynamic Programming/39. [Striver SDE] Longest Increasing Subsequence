@@ -35,6 +35,7 @@ int lengthOfLIS(vector<int>& nums) {
 ------------------------
 Tabulation
 ------------------------
+//we shifted the DP for prev by 1
 int lengthOfLIS(vector<int>& nums) {
     int n = nums.size();
     vector<vector<int>>dp(n+1, vector<int>(n+1, 0));

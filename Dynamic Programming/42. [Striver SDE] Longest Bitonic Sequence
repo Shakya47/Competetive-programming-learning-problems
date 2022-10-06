@@ -1,0 +1,38 @@
+You are given an array/list 'ARR' consisting of 'N' positive integers. 
+A subsequence of 'ARR' is called bitonic if it is first increasing and then decreasing.
+A bitonic can also be strictly increasing or strictly decreasing
+
+eg: 1,2,2,1
+    1,2,3,4,2,1
+    1,2,3,4
+return the longest bitonic sequence
+
+//Idea:
+- notice the dp array of LIS
+- make another dp array but consider the array is reverse
+- simply dp1[i] + dp2[i] - 1 will give the length, we did -1 because in both dp 1 element will be considered twice
+
+int longestBitonicSequence(vector<int>& arr, int n) {
+    vector<int>dp1(n,1);
+    vector<int>dp2(n,1);
+    
+    for(int i = 0; i<n; i++)
+        for(int prev = 0; prev < i; prev++){
+            if(arr[i]>arr[prev] && dp1[i] < dp1[prev] + 1){
+                dp1[i] = 1 + dp1[prev];
+            }
+        }
+    
+    for(int i = n-1; i>=0; i--)
+        for(int prev = n-1; prev > i; prev--){
+            if(arr[i]>arr[prev] && dp2[i] < dp2[prev] + 1){
+                dp2[i] = 1 + dp2[prev];
+            }
+        }
+    
+    int ans = 1;
+    for(int i = 0; i < n; i++){
+        ans = max(ans, dp1[i]+dp2[i]-1);
+    }
+    return ans;
+} 

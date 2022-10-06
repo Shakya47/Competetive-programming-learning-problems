@@ -1,0 +1,52 @@
+You are given an array of words where each word consists of lowercase English letters.
+
+wordA is a predecessor of wordB if and only if we can insert exactly one letter anywhere in wordA 
+without changing the order of the other characters to make it equal to wordB.
+
+For example, "abc" is a predecessor of "abac", while "cba" is not a predecessor of "bcad".
+A word chain is a sequence of words [word1, word2, ..., wordk] with k >= 1, where word1 is a predecessor of word2, 
+word2 is a predecessor of word3, and so on. A single word is trivially a word chain with k == 1.
+
+Return the length of the longest possible word chain with words chosen from the given list of words.
+
+//Idea:
+- first sort the array in increasing 
+-- because question is about sequence not sub-sequence 
+- simple LIS but we have to make a isChain comparator
+
+bool isChain(string &s1, string &s2){
+    if(s1.size() != s2.size() + 1) return false;
+    int i = 0;
+    int j = 0;
+
+    while(i < s1.size()){
+        if(s1[i] == s2[j]){
+            i++;
+            j++;
+        }
+        else i++;
+    }
+    if(i == s1.size() && j == s2.size()) return true;
+    return false;
+
+}
+
+static bool cmp(string &s1, string &s2){
+    return s1.length() < s2.length();
+}
+//driver code
+int longestStrChain(vector<string>& words) {
+    int n = words.size();
+    sort(words.begin(), words.end(), cmp);
+    vector<int>dp(n, 1);
+    int len = 1;
+    for(int i = 1; i<n; i++){
+        for(int prev = 0; prev<i; prev++){
+            if(isChain(words[i], words[prev]) && dp[i]<1+dp[prev]){
+                dp[i] = 1 + dp[prev];
+            }
+        }
+        if(dp[i] > len) len = dp[i];
+    }
+    return len;
+}

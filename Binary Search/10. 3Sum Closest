@@ -1,0 +1,33 @@
+Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to target.
+Return the sum of the three integers.
+You may assume that each input would have exactly one solution.
+
+//Idea:
+- similar to 3sum problem
+- we keep find the minDifference b/w the curSum and targett
+- if we find, update ans with curSum
+- rest all code if similar to binary search
+
+
+int threeSumClosest(vector<int>& nums, int target) {
+    int n = nums.size();
+    int ans = 0;
+    int minDifference = INT_MAX;
+    sort(nums.begin(), nums.end());
+
+    for(int i = 0; i < n-2; i++){
+        int low = i + 1;
+        int high = n - 1;
+        while(low < high){
+            int curSum = nums[low] + nums[high] + nums[i];
+            if(curSum == target) return target; 
+            if(abs(target - curSum) < minDifference){
+                minDifference = abs(target - curSum);
+                ans = curSum;
+            }
+            else if(curSum < target) low++;
+            else high--;
+        }
+    }
+    return ans;
+}

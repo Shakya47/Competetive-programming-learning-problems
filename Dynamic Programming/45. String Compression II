@@ -1,0 +1,49 @@
+Run-length encoding is a string compression method that works by replacing consecutive identical characters (repeated 2 or more times) 
+with the concatenation of the character and the number marking the count of the characters (length of the run). 
+For example, to compress the string "aabccc" we replace "aa" by "a2" and replace "ccc" by "c3". Thus the compressed string becomes "a2bc3".
+
+Notice that in this problem, we are not adding '1' after single characters.
+
+Given a string s and an integer k. You need to delete at most k characters from s such that the run-length encoded version of s has minimum length.
+
+Find the minimum length of the run-length encoded version of s after deleting at most k characters.
+
+//Idea:
+- we can choose to delete or keep the cur char
+- if we keep
+-- if curChar is same as prev
+-----if len of frequency of curChar if 1 || 9 || 99 (we only take till 99 as constraint if 100 length) then we have to increment the overall length + 1
+
+
+
+int dp[101][27][101][101];
+class Solution {
+public:
+    string str;
+    int solve(int i, int prev, int len, int k ){
+        if(k<0)return INT_MAX;
+        if(i>=str.size())return 0;
+        
+        if(dp[i][prev][len][k] != -1)  return dp[i][prev][len][k];
+        
+       int del = solve(i+1,prev, len,k-1);
+        int keep=0;
+        if(str[i]-'a'==prev){
+             if(len==1||len==9||len==99)
+             {
+                 keep+=1;
+             }
+            keep = keep + solve(i+1,prev, len+1, k);
+        }
+        else 
+            keep=1+solve(i+1, str[i]-'a', 1, k);
+
+        return dp[i][prev][len][k] = min(del,keep);
+
+    }
+    int getLengthOfOptimalCompression(string s, int k) {
+        str=s;
+        memset(dp,-1,sizeof(dp));
+        return solve(0, 26, 0, k);
+    }
+};

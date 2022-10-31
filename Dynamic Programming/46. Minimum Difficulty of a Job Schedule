@@ -1,0 +1,40 @@
+You want to schedule a list of jobs in d days. Jobs are dependent (i.e To work on the ith job, you have to finish all the jobs j where 0 <= j < i).
+
+You have to finish at least one task every day. The difficulty of a job schedule is the sum of difficulties of each day of the d days. 
+The difficulty of a day is the maximum difficulty of a job done on that day.
+
+You are given an integer array jobDifficulty and an integer d. The difficulty of the ith job is jobDifficulty[i].
+
+Return the minimum difficulty of a job schedule. If you cannot find a schedule for the jobs return -1.
+
+//Idea:
+- We have to group the array in D parts
+- find the max value in each part
+- the sum should be minimum
+
+int dp[301][11];
+int f(int ind, int n, vector<int>& A, int D){
+    if(D == 1)
+        return *max_element(A.begin() + ind, A.end());
+
+    if(dp[ind][D] != -1) return dp[ind][D];
+
+    int result = INT_MAX;
+    int currD = INT_MIN;
+
+    for(int i = ind; i<=n-D; i++){
+        currD = max(currD, A[i]);
+        result = min(result, currD + f(i+1, n, A, D-1));
+    }
+
+    return dp[ind][D] = result;
+}
+
+ int minDifficulty(vector<int>& A, int D) {
+     int n = A.size();
+     if(n < D) return -1;
+     memset(dp, -1, sizeof(dp));
+     return f(0, n, A, D);
+}
+
+ 

@@ -1,0 +1,74 @@
+Given an array of strings words and an integer k, return the k most frequent strings.
+Return the answer sorted by the frequency from highest to lowest. Sort the words with the same frequency by their lexicographical order.
+
+//Idea:
+//1. A PQ can be used to store duplicate values 
+//2. Here we use a min heap using a trick, since by default, the PQ is a max heap in CPP STL
+//3. for duplicate values in the PQ, the values will automatically be popped in reverse lexicograhical manner, since it is still a maxheap.
+//we push -freq into the PQ so that the top is always a -ve-smaller number and when popping this -ve-smaller > -ve-bigger, so -ve-smaller will be popped
+//if the freq are same, the max heap stores in lexicographical higer order, i.e, d > a
+
+//Dry Run:
+MAP
+coding 1
+leetcode 1
+love 2
+i 2
+
+Pushing -1 coding
+PQ
+-1 coding
+
+Pushing -1 leetcode
+PQ
+-1 leetcode
+-1 coding
+
+Pushing -2 love
+PQ
+-1 leetcode
+-1 coding
+-2 love
+
+Popping leetcode
+Pushing -2 i
+PQ
+-1 coding
+-2 love
+-2 i
+
+Popping coding
+
+Result: i love 
+
+//Code
+
+vector<string> topKFrequent(vector<string>& words, int k) 
+{
+  vector<string> result;
+  unordered_map<string, int> map;
+
+  for(auto& s:words) map[s]++;
+
+  priority_queue<pair<int, string>> pq;
+
+  for(auto& p:map){
+    pq.push(make_pair(-p.second, p.first)); // use -1 to turn default max heap into min heap
+
+    if(pq.size() > k) {
+      pq.pop();
+    }
+  }
+
+  //Since the pq is still maxheap, popping the elements will be in reverse lexicographical way,
+  //so we need to arrange it per the question again.
+  result.resize(pq.size());
+
+  while(!pq.empty()){
+    auto ele = pq.top();
+    result[pq.size() - 1] = ele.second;
+    pq.pop();
+  }
+
+  return result;
+}

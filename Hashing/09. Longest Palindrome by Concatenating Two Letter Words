@@ -1,0 +1,38 @@
+You are given an array of strings words. Each element of words consists of two lowercase English letters.
+Create the longest possible palindrome by selecting some elements from words and concatenating them in any order. Each element can be selected at most once.
+Return the length of the longest palindrome that you can create. If it is impossible to create any palindrome, return 0.
+A palindrome is a string that reads the same forward and backward.
+
+//Idea:
+- before storing the string and its freq in map, check if it's reverse already exists
+-- if it exists, decrement the count of the already present string freq & if the count is 0 erase it from map
+-- increment the ans += 4
+- later again traverse the map to look for symmetric string eg: "aa", "bb", etc.
+-- there can be only one such string in the ans, hence when found, ans += 2 and break from loop
+
+
+ int longestPalindrome(vector<string>& words) {
+    map<string,int>mp;
+    long long ans=0;
+    for(string x:words){
+        string y=x;
+        reverse(y.begin(),y.end());
+        if(mp.find(y)!=mp.end()){
+            ans+=4;
+            mp[y]--;
+            if(mp[y]==0){
+                mp.erase(y);
+            }
+
+        }else{
+            mp[x]++;
+        }
+    }
+    for(auto x:mp){     //to check for symmetric strings
+        if(x.first[0]==x.first[1]){
+            ans+=2;
+            break;
+        }
+    }
+    return ans;
+}

@@ -1,0 +1,31 @@
+Given a chain of matrices A1, A2, A3,.....An. Your task is to find out the minimum cost to multiply these matrices. 
+The cost of matrix multiplication is defined as the number of scalar multiplications. 
+A Chain of matrices A1, A2, A3,.....An is represented by a sequence of numbers in an array ‘arr’ where 
+the dimension of 1st matrix is equal to arr[0] * arr[1] , 2nd matrix is arr[1] * arr[2], and so on.
+
+For arr[ ] = { 10, 20, 30, 40}, matrix A1 = [10 * 20], A2 = [20 * 30], A3 = [30 * 40]
+Scalar multiplication of matrix with dimension 10 * 20 is equal to 200.
+
+//Idea:
+- we figure out all the possible matrix associativity using i & j
+- for partitioning we use a loop using k = i -> j-1
+
+
+int f(int i, int j, vector<int> &arr, vector<vector<int>>&dp){
+    if(i==j) return 0;
+    if(dp[i][j] != -1) return dp[i][j];
+    int mini = 1e9;
+    for(int k = i; k<j; k++){
+        int steps = arr[i-1]*arr[k]*arr[j] + f(i,k,arr, dp) + f(k+1,j,arr, dp);
+        mini = min(mini, steps);
+    }
+    
+    return dp[i][j] = mini;
+}
+
+//driver code
+int matrixMultiplication(vector<int> &arr, int N)
+{
+    vector<vector<int>>dp(N, vector<int>(N,-1));
+    return f(1, N-1, arr, dp);
+}

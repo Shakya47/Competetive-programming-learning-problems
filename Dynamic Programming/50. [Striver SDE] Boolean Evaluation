@@ -1,0 +1,67 @@
+You are given an expression ‘EXP’ in the form of a string where operands will be : (TRUE and FALSE) and operators will be :  (AND, OR, XOR). 
+Now you have to find the number of ways we can parenthesize the expression such that it will evaluate to TRUE.
+
+As the answer can be very large, return the output modulo 1000000007.
+
+ Input: 
+ 'EXP’ = T|T &amp; F
+ There are total 2  ways to parenthesize this expression:
+ (i) (T | T) &amp; (F) = F
+ (ii) (T) | (T &amp; F) = T
+ Out of 2 ways, one will result in True, so we will return 1.
+
+ Output :
+ 1
+
+
+//Idea:
+- we will use partition to find left and right
+- we start with finding whether the exp is true or not
+- we also have to find the number of ways to get true based on getting false as well
+-- so find the false as well in each partition
+
+-----------------------------
+Tabulation
+------------------------------
+
+#define ll long long
+int mod = 1e9+7;
+
+int f(int i, int j, int isTrue, string & exp, vector<vector<vector<ll>>>&dp){
+    if(i>j) return 0;
+    if(i==j){
+        if(isTrue) return exp[i] == 'T';
+        else return exp[i] == 'F';
+    }
+    
+    if(dp[i][j][isTrue] != -1) return dp[i][j][isTrue]; 
+        
+    ll ways = 0;
+    for(int ind = i+1; ind <j; ind+=2){
+        ll lT = f(i, ind-1, 1, exp, dp);
+        ll lF = f(i, ind-1, 0, exp, dp);
+        ll rT = f(ind+1, j, 1, exp, dp);
+        ll rF = f(ind+1, j, 0, exp, dp);
+        
+        if(exp[ind] == '&'){
+            if(isTrue) ways = (ways + (lT*rT)%mod)%mod;
+            else ways = (ways + (lF*rT)%mod + (lT*rF)%mod + (lF*rF)%mod)%mod;
+        }
+        else if(exp[ind] == '|'){
+            if(isTrue) ways = (ways + (lF*rT)%mod + (lT*rF)%mod + (lT*rT)%mod)%mod;
+            else ways = (ways + (lF*rF)%mod)%mod;
+        }
+        else{
+            if(isTrue) ways = (ways + (lF*rT)%mod + (lT*rF)%mod)%mod;
+            else ways = (ways + (lF*rF)%mod + (lT*rT)%mod)%mod;
+        }
+    }
+    return dp[i][j][isTrue] = ways;
+}
+
+//driver code
+int evaluateExp(string & exp) {
+    int n = exp.size();
+    vector<vector<vector<ll>>>dp(n, vector<vector<ll>>(n, vector<ll>(2, -1)));
+    return f(0, n-1, 1, exp, dp);
+}

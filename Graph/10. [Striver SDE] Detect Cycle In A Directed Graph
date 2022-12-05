@@ -2,6 +2,47 @@ You are given a directed graph having ‘N’ nodes. A matrix ‘EDGES’ of siz
 such that there is an edge directed from node EDGES[i][0] to node EDGES[i][1].
 Find whether the graph contains a cycle or not, return true if a cycle is present in the given directed graph else return false.
 
+
+-------------------------
+GFG - Adjacency List is given
+//Idea
+- use a pathVisisted array which tells whether the node is visited in a path or not
+- after a successful visit of the node, reset the pathVisited array
+- For cycle detection - if node is visited and pathVisited in also 1 then it's a cycle
+
+bool dfs(int i, vector<int> adj[], int vis[], int pathVis[]){
+    vis[i] = 1;
+    pathVis[i] = 1;
+
+    for(auto it : adj[i]){
+        if(!vis[it]){
+            if(dfs(it, adj, vis, pathVis)) return true;
+        }
+        else if(pathVis[it])
+            return true;
+    }
+
+    pathVis[i] = 0;
+    return false;
+}
+
+// Driver code
+bool isCyclic(int V, vector<int> adj[]) {
+    int vis[V] = {0};
+    int pathVis[V] = {0};
+
+    for(int i = 0; i<V; i++){
+        if(!vis[i]){
+            if(dfs(i, adj, vis, pathVis)) return true;
+        }
+    }
+    return false;
+}
+
+
+
+--------------------------------------
+Coding Ninja
 //Note: as edge matrix is given, make an adjacecy list
 //Very imp: since it's a directed graph edges will be pushed only once.
 

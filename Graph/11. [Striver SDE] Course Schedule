@@ -41,3 +41,43 @@ bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
     }
     return true;
 }
+
+-----------------------------------------------
+Topological Sort  helpful as it will return the sequence of course as well
+//Idea:
+- make sure to push into the stack only if there is no cycle
+
+bool dfs(int node, vector<int> adj[], vector<int>& vis, stack<int>& st){
+    vis[node] = 1;
+    for(auto it : adj[node]){
+        if(!vis[it]){
+            if(!dfs(it, adj, vis, st))
+                return false;
+        }
+
+        else if(vis[it] == 1)
+            return false;
+    }
+    vis[node] = 2;
+    st.push(node);
+    return true;
+
+}
+
+//driver code
+bool canFinish(int n, vector<vector<int>>& prerequisites) {
+    vector<int> adj[n];
+    stack<int>st;
+    vector<int>vis(n, 0);
+    for(auto node : prerequisites){
+        adj[node[1]].push_back(node[0]);
+    }
+
+    for(int i = 0; i<n; i++){
+        if(!vis[i])
+            dfs(i, adj, vis, st);
+    }
+
+    if(st.size() == n) return true;
+    return false;
+}

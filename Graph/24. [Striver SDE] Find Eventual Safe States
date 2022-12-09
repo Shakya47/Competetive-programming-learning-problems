@@ -11,6 +11,10 @@ Return an array containing all the safe nodes of the graph. The answer should be
 - Use the Cycle detection Directed graph concept of using pathVisited
 - have a isSafe[] which contains the safe nodes
 
+//Idea2: using Kahn's BFS topological sort algo
+- reverse the adjancey
+- do the topo sort
+
 
 bool dfs(int i, vector<vector<int>>& graph, vector<int>& vis, vector<int>& pathVis, vector<int>& isSafe){
     vis[i] = 1;

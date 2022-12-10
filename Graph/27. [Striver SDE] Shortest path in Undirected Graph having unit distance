@@ -1,0 +1,42 @@
+You are given an Undirected Graph having unit weight, Find the shortest path from src(0) to all the vertex and if it is unreachable to reach any vertex, 
+then return -1 for that vertex.
+
+//Idea:
+- As it is undirected, no need for topo sort, just do a BFS
+- We do BFS because be want to consider all the adjacent nodes at once
+- remember that adjacency list has both a->b & b->a
+
+vector<int> shortestPath(vector<vector<int>>& edges, int N,int M, int src){
+    vector<int> adj[N];
+    vector<int>dist(N, 1e9);
+    queue<int>q;
+
+    dist[src] = 0;
+    q.push(src);
+
+    for(int i = 0; i<M; i++){
+        int u = edges[i][0];
+        int v = edges[i][1];
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+        for(auto it: adj[node]){
+            if(dist[node] + 1 < dist[it]){
+                dist[it] = dist[node] + 1;
+                q.push(it);
+            }
+        }
+    }
+
+    for(int i = 0; i<N; i++){
+        if(dist[i] == 1e9){
+            dist[i] = -1;
+        }
+    }
+
+    return dist;
+}

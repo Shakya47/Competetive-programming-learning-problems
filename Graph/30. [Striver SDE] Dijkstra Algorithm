@@ -1,0 +1,61 @@
+Given a weighted, undirected and connected graph of V vertices and an adjacency list adj where adj[i] is a list of lists containing two integers where the first integer of each list j denotes there is edge between i and j , second integers corresponds to the weight of that  edge . 
+You are given the source vertex S and You to Find the shortest distance of all the vertex's from the source vertex S. 
+You have to return a list of integers denoting shortest distance between each node and Source vertex S.
+
+//Idea:
+- We have done this in finding the shortest path in 27.
+- We will optimise is, we go from queue, to priority queue to set
+
+--------------
+Queue
+--------------
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+{
+    // Code here
+    vector<int>dist(V, 1e9);
+    dist[S] = 0;
+    queue<int> q;
+    q.push(S);
+
+    while(!q.empty()){
+        int node = q.front();
+        // int wt = q.front().first;
+        q.pop();
+        for(auto it : adj[node]){
+            int v = it[0];
+            int wt = it[1];
+            if(dist[node] + wt < dist[v]){
+                dist[v] = dist[node] + wt;
+                q.push(v);
+            }
+        }
+    }
+    return dist;
+}
+
+--------------
+Priority Queue - O(EdgeLogVertex)
+--------------
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+{
+    // Code here
+    vector<int>dist(V, 1e9);
+    dist[S] = 0;
+    priority_queue<int, vector<int>, greater<int>> pq;
+    pq.push(S);
+
+    while(!pq.empty()){
+        int node = pq.top();
+        // int wt = q.front().first;
+        pq.pop();
+        for(auto it : adj[node]){
+            int v = it[0];
+            int wt = it[1];
+            if(dist[node] + wt < dist[v]){
+                dist[v] = dist[node] + wt;
+                pq.push(v);
+            }
+        }
+    }
+    return dist;
+}

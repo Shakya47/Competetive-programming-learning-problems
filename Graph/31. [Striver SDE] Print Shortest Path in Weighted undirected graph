@@ -1,0 +1,53 @@
+You are given a weighted undirected graph having n+1 vertices numbered from 0 to n and m edges describing there are edges between a to b with some weight, 
+find the shortest path between the vertex 1 and the vertex n and if path does not exist then return a list consisting of only -1.
+
+//Idea:
+- use dijkstra's algo, can use set also here
+- have a parent array which stores the index of parent from which it came from and got the shortest path
+- iterate through the parent by jumping index
+
+vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;//{dist, node}
+    vector<vector<pair<int,int>>> adj(n+1);//{node, weight} //remember to give size here
+    vector<int>dist(n+1, 1e9);
+    vector<int>parent(n+1);
+    vector<int>ans;
+
+    for(int i = 1; i<=n; i++){
+        parent[i] = i;
+    }
+    dist[1] = 0;
+    pq.push({0,1}); 
+
+    for(auto it: edges){
+        adj[it[0]].push_back({it[1], it[2]});   
+        adj[it[1]].push_back({it[0], it[2]});   
+    }
+
+    while(!pq.empty()){
+        int node = pq.top().second;
+        int wt = pq.top().first;
+        pq.pop();
+
+        for(auto it : adj[node]){
+            int adjNode = it.first;
+            int edgWt = it.second;
+            if(wt + edgWt < dist[adjNode]){
+                dist[adjNode] = wt + edgWt;
+                parent[adjNode] = node;
+                pq.push({dist[adjNode], adjNode});
+            }
+        }
+    }
+
+    if(dist[n] == 1e9) return {-1};
+
+    int node = n;
+    while(parent[node] != node){
+        ans.push_back(node);
+        node = parent[node];
+    }
+    ans.push_back(1);
+    reverse(ans.begin(), ans.end());
+    return ans;
+}

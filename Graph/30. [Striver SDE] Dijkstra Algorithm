@@ -11,7 +11,6 @@ Queue
 --------------
 vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
 {
-    // Code here
     vector<int>dist(V, 1e9);
     dist[S] = 0;
     queue<int> q;
@@ -38,7 +37,6 @@ Priority Queue - O(EdgeLogVertex)
 --------------
 vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
 {
-    // Code here
     vector<int>dist(V, 1e9);
     dist[S] = 0;
     priority_queue<int, vector<int>, greater<int>> pq;
@@ -54,6 +52,36 @@ vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
             if(dist[node] + wt < dist[v]){
                 dist[v] = dist[node] + wt;
                 pq.push(v);
+            }
+        }
+    }
+    return dist;
+}
+
+----------------------
+Set - we use set as it removes any existing {node, dist} pair in the set
+-----------------------
+vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+{
+    vector<int>dist(V, 1e9);
+    set<pair<int,int>> st;
+    dist[S] = 0;
+    st.insert({S,0}); //node, dist
+
+    while(!st.empty()){
+        auto it = *(st.begin());
+        int node = it.first;
+        int wt = it.second;
+        st.erase(it);
+        for(auto it : adj[node]){
+            int adjNode = it[0];
+            int edgWt = it[1];
+            if(wt + edgWt < dist[adjNode]){
+                if(dist[adjNode] != 1e9){
+                    st.erase({adjNode, dist[adjNode]});
+                }
+                dist[adjNode] = wt + edgWt;
+                st.insert({adjNode, dist[adjNode]});
             }
         }
     }

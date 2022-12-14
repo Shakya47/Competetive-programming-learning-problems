@@ -1,0 +1,45 @@
+Given a n * m matrix grid where each element can either be 0 or 1. You need to find the shortest distance between a given source cell to a destination cell. 
+The path can only be created out of a cell if its value is 1. 
+
+If the path is not possible between source cell and destination cell, then return -1.
+
+Note : You can move into an adjacent cell if that adjacent cell is filled with element 1. 
+Two cells are adjacent if they share a side. In other words, you can move in one of the four directions, Up, Down, Left and Right.
+
+//Idea:
+- use dijkstra's algo
+- we use queue, as we are inrementing the distance by 1 so no need of priority queue here as all values will be in ascending order
+
+int shortestPath(vector<vector<int>> &grid, pair<int, int> source, pair<int, int> destination) {
+
+    int n = grid.size();
+    int m = grid[0].size();
+
+    vector<vector<int>>dist(n, vector<int>(m, 1e9));
+    queue<pair<int, pair<int,int>>> q;  //{dist,{row,col}}
+    q.push({0,{source.first, source.second}});
+    dist[source.first][source.second] = 0;
+
+    while(!q.empty()){
+        int wt = q.front().first;
+        int row = q.front().second.first;
+        int col = q.front().second.second;
+        q.pop();
+
+        int delR[] = {-1, 0, 1, 0};
+        int delC[] = {0, 1, 0, -1};
+        for(int i = 0; i<4; i++){
+            int newR = row + delR[i];
+            int newC = col + delC[i];
+            if(newR>=0 && newC>=0 && newR<n && newC<m && grid[newR][newC] == 1){
+                if(wt + 1 <dist[newR][newC]){
+                    dist[newR][newC] = wt + 1;
+                    q.push({wt + 1, {newR, newC}});
+                }
+            }
+        }
+    }
+
+    return (dist[destination.first][destination.second] == 1e9 ? -1 : dist[destination.first][destination.second] );
+
+}

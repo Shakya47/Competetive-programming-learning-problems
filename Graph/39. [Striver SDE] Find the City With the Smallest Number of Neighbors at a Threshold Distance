@@ -1,0 +1,51 @@
+There are n cities numbered from 0 to n-1. Given the array edges where edges[i] = [fromi, toi, weighti] represents a 
+bidirectional and weighted edge between cities fromi and toi, and given the integer distanceThreshold.
+Return the city with the smallest number of cities that are reachable through some path and whose distance is at most distanceThreshold, 
+If there are multiple such cities, return the city with the greatest number.
+Notice that the distance of a path connecting cities i and j is equal to the sum of the edges' weights along that path.
+
+//Idea:
+- Use floyd Warshall
+- after relaxing the matrix, find the possible cities
+
+int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+    vector<vector<int>> mat(n, vector<int>(n, 1e9));
+    int city = -1;
+    int countMax = n;
+    for(auto it: edges){
+        int u = it[0];
+        int v = it[1];
+        int wt = it[2];
+        mat[u][v] = wt;
+        mat[v][u] = wt;
+    }
+
+    for(int i = 0; i<n; i++){
+        for(int j = 0; j<n; j++){
+            if(i==j) mat[i][j] = 0;
+        }
+    }
+
+    for(int via = 0; via<n; via++){
+        for(int i = 0; i<n; i++){
+            for(int j = 0; j<n; j++){
+                if(mat[i][via] == 1e9 || mat[via][j] == 1e9) continue;
+                mat[i][j] = min(mat[i][j], mat[i][via] + mat[via][j]) ;
+            }
+        }
+    }
+
+    for(int i = 0; i<n; i++){
+        int count = 0;
+        for(int j = 0; j<n; j++){
+            if(mat[i][j] <= distanceThreshold){
+                count++;
+            }
+        }
+        if(count <= countMax){
+            city = i;
+            countMax = count;
+        }
+    }
+    return city;
+}

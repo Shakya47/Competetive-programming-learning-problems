@@ -1,0 +1,43 @@
+You are given an array points representing integer coordinates of some points on a 2D-plane, where points[i] = [xi, yi].
+The cost of connecting two points [xi, yi] and [xj, yj] is the manhattan distance between them: |xi - xj| + |yi - yj|, where |val| denotes the absolute value of val.
+Return the minimum cost to make all points connected. All points are connected if there is exactly one simple path between any two points.
+
+//Idea:
+- Use prims algo
+- use the co-ordinates only to find the weight, do not store it
+-- use index of points instead
+
+int minCostConnectPoints(vector<vector<int>>& points) {
+    int n = points.size();
+    vector<vector<pair<int,int>>> adj(n);
+    int sum = 0;
+    vector<int>vis(n, 0);
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    pq.push({0, 0}); //{wt, node};
+
+    for(int i = 0; i<n; i++){
+        for(int j = i+1; j<n; j++){
+            int wt = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
+            adj[i].push_back({j, wt});
+            adj[j].push_back({i, wt});
+        }
+    }
+
+    while(!pq.empty()){
+        int node = pq.top().second;
+        int wt = pq.top().first;
+        pq.pop();
+
+        if(vis[node]) continue;
+        vis[node] = 1;
+        sum += wt;
+        for(auto it: adj[node]){
+            int adjNode = it.first;
+            int edgWt = it.second;
+            if(!vis[adjNode]){
+                pq.push({edgWt, adjNode});
+            }
+        }
+    }
+    return sum;
+}

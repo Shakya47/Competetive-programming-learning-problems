@@ -1,0 +1,75 @@
+It is a Data Structure, helpful to find whether 2 nodes belong to the same graph or not
+It computes this in 4alpha which is approx constant
+
+- findUPar()
+-- used to find the ultimate parent of a node which will help us in comparing it with the ultimate parent of another node
+   thereby telling us to whether they belong to same graph or not
+-- it also does size compression
+
+- unionByRank()
+-- adds the nodes u & v based on their rank
+-- rank is nothing but the height of the disjoint set
+-- we always try to make the disjoint set of small size, so attach the smaller rank node to larger rank node so that rank won't increase
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class DisjointSet{
+    vector<int>parent, rank;
+public:
+    
+    DisjointSet(int n){
+        rank.resize(n+1, 0);
+        parent.resize(n+1);
+        for(int i = 0; i<n; i++){
+            parent[i] = i;
+        }
+    }
+    
+    int findUPar(int node){
+        if(node == parent[node]){
+            return node;
+        }
+        return parent[node] = findUPar(parent[node]);
+    }
+    
+    void unionByRank(int u, int v){
+        int ulp_u = findUPar(u);
+        int ulp_v = findUPar(v);
+        
+        if(ulp_u == ulp_v) return;
+        if(rank[ulp_u] < rank[ulp_v]){
+            parent[ulp_u] = ulp_v;
+        }
+        else if(rank[ulp_u] > rank[ulp_v]){
+            parent[ulp_v] = ulp_u;
+        }
+        else{
+            parent[ulp_v] = ulp_u;
+            rank[ulp_u]++;
+        }
+    }
+};
+
+int main()
+{
+    printf("Hello World");
+    DisjointSet ds(7);
+    ds.unionByRank(1,2);
+    ds.unionByRank(2,3);
+    ds.unionByRank(4,5);
+    ds.unionByRank(6,7);
+    ds.unionByRank(5,6);
+    if(ds.findUPar(3) == ds.findUPar(7)){
+        cout<<"Same";
+    }
+    else cout<<"Not Same";
+    
+    ds.unionByRank(3,7);
+    
+    if(ds.findUPar(3) == ds.findUPar(7)){
+        cout<<"Same";
+    }
+    else cout<<"Not Same";
+    return 0;
+}

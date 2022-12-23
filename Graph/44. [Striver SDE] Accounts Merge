@@ -1,0 +1,56 @@
+Given a list of accounts where each element accounts[i] is a list of strings, where the first element accounts[i][0] is a name, 
+and the rest of the elements are emails representing emails of the account.
+
+Now, we would like to merge these accounts. Two accounts definitely belong to the same person if there is some common email to both accounts. 
+Note that even if two accounts have the same name, they may belong to different people as people could have the same name. 
+A person can have any number of accounts initially, but all of their accounts definitely have the same name.
+
+After merging the accounts, return the accounts in the following format: the first element of each account is the name, 
+and the rest of the elements are emails in sorted order. The accounts themselves can be returned in any order.
+
+
+//Idea:
+- we use disjointset data strcuture
+- we put the mails in a map of type {mails, node} node is simply the index from 0 to n-1
+-- if mail already exists in map, union it
+- put all the mails from map to a 2D array according to their nodes
+- now put them in 2D array ans while sorting each node
+
+
+vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+    unordered_map<string, int> mapMailNode; //{mail, node}
+    int n = accounts.size();
+    DisjointSet ds(n);
+    for(int i = 0; i<n; i++){
+        for(int j = 1; j<accounts[i].size(); j++){
+            string mail = accounts[i][j];
+            if(mapMailNode.find(mail) == mapMailNode.end()){
+                mapMailNode[mail] = i;
+            }
+            else{
+                ds.unionByRank(mapMailNode[mail],i);
+            }
+        }
+    }
+
+    vector<vector<string>> mergedMails(n);
+    for(auto it : mapMailNode){
+        string mail = it.first;
+        int node = ds.findUPar(it.second);
+        mergedMails[node].push_back(mail);
+    }
+
+    vector<vector<string>>ans;
+    for(int i = 0; i<n; i++){
+        if(mergedMails[i].size() == 0) continue;
+        sort(mergedMails[i].begin(), mergedMails[i].end());
+        vector<string>temp;
+        temp.push_back(accounts[i][0]);
+        for(auto it : mergedMails[i]){
+            temp.push_back(it);
+        }
+        ans.push_back(temp);
+    }
+
+    return ans;
+}

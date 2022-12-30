@@ -1,0 +1,60 @@
+You are given an n x n binary matrix grid. You are allowed to change at most one 0 to be 1.
+Return the size of the largest island in grid after applying this operation.
+An island is a 4-directionally connected group of 1s.
+
+//Idea:
+- We will use unionBySize so that we can get the size of the parent
+- for each 0 we check adjacent whether they are 1 and add size of adjacent Ulitmate parent
+- use set so that same ultimate parent's are not taken
+- take care of edge case
+
+int largestIsland(vector<vector<int>>& grid) {
+    int n = grid.size();
+    DisjointSet ds(n*n);
+    int ans = 0;
+
+//Step 1 - make disjoint set unionBySize
+    for(int row = 0; row<n; row++){
+        for(int col = 0; col<n; col++){
+            if(grid[row][col] == 0) continue;
+            int dr[] = {-1, 0, 1, 0};
+            int dc[] = {0, 1, 0, -1};
+            for(int i = 0; i<4; i++){
+                int newR = row + dr[i];
+                int newC = col + dc[i];
+                if(newR>=0 && newC>=0 && newR<n && newC<n && grid[newR][newC] == 1){
+                    int node = row*n + col;
+                    int adjNode = newR*n + newC;
+                    ds.unionBySize(node, adjNode);
+                }
+            }
+        }
+    }
+
+//Step-2 using 0 find the adjacent 1's
+    for(int row = 0; row<n; row++){
+        for(int col = 0; col<n; col++){
+            if(grid[row][col] == 1) continue;
+            int dr[] = {-1, 0, 1, 0};
+            int dc[] = {0, 1, 0, -1};
+            unordered_set<int> components;
+            for(int i = 0; i<4; i++){
+                int newR = row + dr[i];
+                int newC = col + dc[i];
+                if(newR>=0 && newC>=0 && newR<n && newC<n && grid[newR][newC] == 1){
+                    int adjNode = newR*n + newC;
+                    components.insert(ds.findUPar(adjNode));  //so that same ulimate parents are not encountered more than once
+                }
+            }
+            int size = 0;
+            for(auto it: components){
+                size += ds.size[it];
+            }
+            ans = max(ans, size + 1);   //+1 because we also add the current 0 node
+        }
+    }
+    //for edge case if all the nodes are 1
+    ans = max(ans , ds.size[ds.findUPar(0)]);
+
+    return ans;
+}

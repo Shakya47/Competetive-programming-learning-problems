@@ -1,0 +1,35 @@
+Given a pattern and a string s, find if s follows the same pattern.
+Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in s.
+
+ //Idea:
+ - put pattern[i] -> str[i] in map
+ - also put the str[i] in set to make sure next time whether it is encountered again
+
+ 
+bool wordPattern(string pattern, string str) 
+{
+    stringstream ss(str);
+    vector<string> vstr;
+    string word;
+    while(ss >> word){  //to get all the words and remove spaces
+        vstr.push_back(word);
+    }
+
+    if(vstr.size() != pattern.size()) return false;
+
+    unordered_map<char, string> mp;
+    unordered_set<string> taken;
+
+    for(int i = 0; i<pattern.size(); i++){
+        if(mp.find(pattern[i]) == mp.end() && taken.find(vstr[i]) == taken.end()){
+            mp[pattern[i]] = vstr[i];
+            taken.insert(vstr[i]);
+        }
+        else{
+            if(mp[pattern[i]] != vstr[i])
+                return false;
+        }
+    }
+    return true;
+
+}

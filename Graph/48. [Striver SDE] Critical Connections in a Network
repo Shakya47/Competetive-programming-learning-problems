@@ -1,0 +1,49 @@
+There are n servers numbered from 0 to n - 1 connected by undirected server-to-server connections forming a network where connections[i] = [ai, bi] represents 
+a connection between servers ai and bi. Any server can reach other servers directly or indirectly through the network.
+
+A critical connection is a connection that, if removed, will make some servers unable to reach some other server.
+
+Return all critical connections in the network in any order.
+
+//Idea:
+- maintain a time_of_insertion(tin) array and low array
+-- tin -> when was the node visited
+-- low -> lowest time a node can be visited, we update the parent by looking at it's child call
+- if the tin[parent] < low[child] then it's a bridge
+
+
+int timer = 0;
+void dfs(int node, int parent, vector<vector<int>>&adj, vector<int>&vis, vector<vector<int>>&bridges, vector<int>&tin, vector<int>&low){
+    vis[node] = 1;
+    tin[node] = low[node] = timer;
+    timer++;
+
+    for(auto it: adj[node]){
+        if(it == parent) continue;
+        if(!vis[it]){
+            dfs(it, node, adj, vis, bridges, tin, low);
+            low[node] = min(low[node], low[it]); //parent can take the low
+            if(low[it] > tin[node]){
+                bridges.push_back({it, node});
+            }
+        }
+        else{
+            low[node] = min(low[it], low[node]);
+        }
+    }
+}
+//driver code
+vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+
+    vector<vector<int>>adj(n);
+    for(auto it: connections){
+        adj[it[0]].push_back(it[1]);
+        adj[it[1]].push_back(it[0]);
+    }
+    vector<int>vis(n);
+    vector<vector<int>>bridges;
+    vector<int>tin(n);
+    vector<int>low(n);
+    dfs(0, -1, adj, vis, bridges, tin, low);
+    return bridges;
+}

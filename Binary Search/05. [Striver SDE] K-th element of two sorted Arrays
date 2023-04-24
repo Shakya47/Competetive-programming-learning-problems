@@ -2,6 +2,11 @@ Given two sorted arrays arr1 and arr2 of size N and M respectively and an elemen
 The task is to find the element that would be at the k’th position of the final sorted array.
 
 //Idea is based on the previous problem
+- the low and high are also dependent on the K
+- Note that n = size  of  1st array, m = size of 2nd array
+- low = max(0,k-m) - if the size of the first array is small then low has to take some values from the 1st array
+- high = min(k,n) - can't take more than k otherwise won't be able to find the kth element
+- the answer will be the max(left1, left2)
 
 int kthElement(int arr1[], int arr2[], int n, int m, int k)
 {

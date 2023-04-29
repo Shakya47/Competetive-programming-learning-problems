@@ -9,42 +9,51 @@ Each student has to be allocated at least one book.
 Allotment should be in contiguous order, for example: A student cannot be allocated book 1 and book 3, skipping book 2.
 Calculate and return that minimum possible number.
 
+//Idea:
+- We have to create a search space for binary search
+- lowest allocation can be min.a[] and highest can be Sum.a[i]
+- just take a mid and find if that's the answer by having a helper isPossible()
 
-
-
-
-bool isPossible(int mid, int n, vector<int> time){
-    int chapter = 0;
-    int day = 1;
-    for(int i = 0; i < time.size(); i++){
-
-        if(time[i] > mid) return false;
-        if(chapter + time[i] > mid){
-            chapter = time[i];
-            day += 1;
+isPossible(a, m, mid){
+        let student = 1;
+        let pages = 0;
+        
+        for(let i = 0; i<a.length; i++){
+            if(a[i] > mid) return false;
+            if(a[i] + pages > mid){
+                pages = a[i]; //because the pages for the next student will start from here
+                student++;
+            }
+            else{
+                pages += a[i];
+            }
         }
-        else chapter += time[i];
+        if(student > m) return false;
+        return true;
     }
-    if(day > n) return false;
-    return true;
-}
+    
+//Function to find minimum number of pages.
+findPages(a, n, m)
+{
+    if(m > a.length) return -1;
+    let low = a[0];
+    let high = 0;
 
-int Solution::books(vector<int> &time, int B) {
-    if (B > time.size()) return -1;
-    int low = time[0];
-    int high = 0;
-    for(int i = 0; i< time.size(); i++){
-        low = min(low, time[i]);
-        high += time[i];
+    for(let i = 0; i<a.length; i++){
+        low = Math.min(low, a[i]);
+        high += a[i];
     }
+
     while(low <= high){
-        int mid = (low + high)/2;
-        if(isPossible(mid, B, time)){
+        let mid = Math.floor((low + high) / 2);
+        if(this.isPossible(a, m, mid)){
             high = mid - 1;
         }
-        else low = mid + 1;
+        else{
+            low = mid + 1;
+        }
     }
+
     return low;
-    
 }
 

@@ -5,6 +5,10 @@ Focus level of a chess player is defined as the minimum distance between his roo
 The overall focus of a tournament is defined as the minimum focus level among all players. 
 You as an organizer obviously want the overall focus as high as possible so you assign the rooms to players such that the overall focus is as high as possible.
 
+//Idea:-[aka Aggresive cows]
+- we have a search space.
+- similar to previous question
+
 
 bool isPossible(int mid, int c, vector<int> positions){
     int count = 1;

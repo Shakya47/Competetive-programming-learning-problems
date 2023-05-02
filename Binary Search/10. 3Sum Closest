@@ -7,6 +7,7 @@ You may assume that each input would have exactly one solution.
 - we keep find the minDifference b/w the curSum and targett
 - if we find, update ans with curSum
 - rest all code if similar to binary search
+- easy to understand
 
 
 int threeSumClosest(vector<int>& nums, int target) {

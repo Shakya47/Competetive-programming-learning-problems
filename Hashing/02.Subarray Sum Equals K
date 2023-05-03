@@ -25,3 +25,22 @@ int subarraySum(vector<int>& a, int k) {
         }
         return count;
     }
+
+
+JavaScript:
+var subarraySum = function(nums, k) {
+    const map = new Map();
+    let pSum = 0;
+    let count = 0;
+    // map.set(0,1);
+    for(let i = 0; i<nums.length; i++){
+        pSum += nums[i];
+        if(pSum == k) count++;
+        if(map.has(pSum - k)){
+            count += map.get(pSum - k);
+        }
+        map.set(pSum, (map.get(pSum) || 0) + 1);
+
+    }
+    return count;
+};

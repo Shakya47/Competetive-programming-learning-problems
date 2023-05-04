@@ -5,8 +5,9 @@
 
 //Idea:
 - Store everything in unordered_set
-- then find the element whose element-1 does not exist, then run while loop with element+1
-- this way its O(n) instead of sorting O(nlogn)
+- find the smallest number or the number whose -1 does not exist
+- increment the cur=1 has we found something,
+- do a while loop to check whether the elements greated that the number exists or not - this has to be done in a +1 increment
 
 int longestConsecutive(vector<int>& a) {
         unordered_set<int> h;
@@ -26,3 +27,29 @@ int longestConsecutive(vector<int>& a) {
         }
         return res;
     }
+
+JavaScript:
+var longestConsecutive = function(nums) {
+    let res = 0;
+    let cur = 0;
+    let set = new Set();
+
+    for(let i = 0; i<nums.length; i++){
+        set.add(nums[i]);
+    }
+
+    if(set.size <= 1) return set.size;
+
+    for(let i = 0; i<nums.length; i++){
+        if(!set.has(nums[i] - 1)){
+            cur = 1;
+            while(set.has(nums[i] + cur)){
+                cur++;
+            }
+            res = Math.max(res, cur);
+        }
+        cur = 0;
+    }
+
+    return res;
+};

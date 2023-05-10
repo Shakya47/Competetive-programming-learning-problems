@@ -2,6 +2,7 @@ Given an array having both positive and negative integers. The task is to comput
 
 //Idea:
 - Simple idea
+- if a sum repeats that means some part of the subarray is zero
 
 sum = 3    this means this part is zero 
 +------+  +-------------+
@@ -21,6 +22,27 @@ int maxLen(vector<int>&A, int n)
             if(sum==0) res = max(res, i+1);
             if(mp.find(sum) == mp.end()) mp[sum] = i;
             else res = max(res, i - mp[sum]);
+        }
+        return res;
+    }
+   
+   
+JavaScript:
+    maxLen(arr,n){
+        //code here
+        let map = {};
+        let res = 0;
+        let sum = 0;
+        
+        for(let i = 0; i<n; i++){
+            sum += arr[i];
+            if(sum == 0) res = Math.max(res, i+1);
+            if(!map.hasOwnProperty(sum)){
+                map[sum] = i;
+            }
+            else{
+                res = Math.max(res, i - map[sum]);
+            }
         }
         return res;
     }

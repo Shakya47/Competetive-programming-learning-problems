@@ -40,3 +40,59 @@ string minWindow(string s, string t) {
         }
         return result;
     }
+    
+JavaScript:
+var minWindow = function(s, t) {
+    // Create two maps, map1 and map2
+    let map1 = new Map();
+    let map2 = new Map();
+
+    // Populate map1 with the character counts in t
+    for(const char of t){
+        map1.set(char, (map1.get(char) || 0) + 1);
+    }
+
+    // Initialize two pointers, fast and slow, and a counter for letters in the window
+    let fast = 0, slow = 0, letterCounter = 0;
+    let check = Infinity;
+    let result = "";
+
+    // While fast pointer is less than the length of the string
+    while(fast < s.length){
+        // Get the current character
+        let ch = s[fast];
+
+        // If the current character is in map1
+        if(map1.has(ch)){
+            // Increment the count of the character in map2
+            map2.set(ch, (map2.get(ch) || 0 ) + 1);
+            // If the count of the character in map2 is less than or equal to the count in map1, increment the letter counter
+            if(map2.get(ch) <= map1.get(ch)){
+                letterCounter++;
+            }
+        }
+
+        // If the window contains all the letters in t
+        if(letterCounter >= t.length){
+            // While the window still contains all the letters in t and the count of a letter in map2 is greater than the count in map1
+            while(!map1.has(s[slow]) || map2.get(s[slow]) > map1.get(s[slow])){
+                // Decrement the count of the letter in map2 and move the slow pointer
+                map2.set(s[slow] ,map2.get(s[slow]) - 1);
+                slow++;
+            }
+
+            // If the current window is smaller than the previous minimum window size, update the check variable and result string
+            if(fast - slow + 1 < check){
+                check = fast - slow + 1;
+                result = s.substring(slow, slow + check);
+            }
+        }
+
+        // Move the fast pointer to the next character
+        fast++;
+    }
+
+    // Return the minimum window
+    return result;
+};
+

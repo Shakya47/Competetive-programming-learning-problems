@@ -18,3 +18,17 @@ vector<vector<string>> groupAnagrams(vector<string>& strs) {
     }
     return anagrams;
 }
+
+JavaScritp:
+var groupAnagrams = function(strs) {
+ const mp = new Map();
+    for (const s of strs) {
+        const t = s.split('').sort().join('');
+        if (!mp.has(t)) {
+            mp.set(t, []);
+        }
+        mp.get(t).push(s);
+    }
+    const anagrams = Array.from(mp.values());
+    return anagrams;
+};

@@ -1,0 +1,40 @@
+You are given a string s. You can convert s to a palindrome by adding characters in front of it.
+
+Return the shortest palindrome you can find by performing this transformation.
+
+//Idea:
+- create a string like = s + "#" + s.reverse()
+- find the lps[len-1]
+- answer will be = s.substring(lps[len-1]).reverse() + s
+
+var longestPrefix = function(s) {
+    const n = s.length;
+    const lps = Array(n).fill(0);
+    let len = 0, i = 1;
+
+    while(i < n){
+        if(s[i] == s[len]){
+            len++;
+            lps[i] = len;
+            i++;
+        }
+        else{
+            if(len == 0){
+                lps[i] = 0;
+                i++;
+            }
+            else{
+                len = lps[len-1];
+            }
+        }
+    }
+    return lps[n - 1];
+};
+
+//Main
+var shortestPalindrome = function(s) {
+    let temp = s + "#" + s.split('').reverse().join('');
+    let n = longestPrefix(temp);
+    let p = s.substring(n);
+    return p.split('').reverse().join('') + s;
+};

@@ -35,3 +35,30 @@ Even though longest is 3, have to take 2 i.e lps[n-1] // Important
         return s.substr(0, lps[n-1]);
         
     }
+
+
+JavaScript
+
+var longestPrefix = function(s) {
+    const n = s.length;
+    const lps = Array(n).fill(0);
+    let len = 0, i = 1;
+
+    while(i < n){
+        if(s[i] == s[len]){
+            len++;
+            lps[i] = len;
+            i++;
+        }
+        else{
+            if(len == 0){
+                lps[i] = 0;
+                i++;
+            }
+            else{
+                len = lps[len-1];
+            }
+        }
+    }
+    return s.substring(0, lps[n - 1]);
+};

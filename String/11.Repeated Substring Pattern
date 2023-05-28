@@ -34,3 +34,14 @@ Explanation: It is the substring "abc" four times or the substring "abcabc" twic
         return n>1 && lps[n-1]!=0 && n%(n-lps[n-1])==0;
         
     }
+    
+    
+JavaScript:
+var repeatedSubstringPattern = function(s) {
+    let sub = "";
+  for (let i = 0; i < Math.floor(s.length / 2); i++) {
+    sub += s[i];
+    if (sub.repeat(s.length / sub.length) === s) return true;
+  }
+  return false;
+};

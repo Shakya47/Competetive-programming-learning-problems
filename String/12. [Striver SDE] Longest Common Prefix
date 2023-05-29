@@ -13,3 +13,18 @@ string longestCommonPrefix(vector<string>& strs) {
     }
     return ans;
 }
+
+JavaScript:
+
+var longestCommonPrefix = function(strs) {
+    let n = strs.length;
+    strs.sort();
+    let a = strs[0];
+    let b = strs[n-1];
+    let ans = "";
+    for(let i = 0; i<a.length; i++){
+        if(a[i] === b[i]) ans += a[i];
+        else break;
+    }
+    return ans;
+};

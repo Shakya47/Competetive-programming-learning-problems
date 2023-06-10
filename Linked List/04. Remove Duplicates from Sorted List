@@ -1,3 +1,7 @@
+//Idea:
+- simply check if the next.val == val
+- delete the next.val
+
 
 /**
  * Definition for singly-linked list.
@@ -25,4 +29,21 @@ public:
         }
         return head;
     }
+};
+
+JavaScript:
+var deleteDuplicates = function(head) {
+    if(head == null) return null;
+    if(head.next == null) return head;
+
+    let curr = head
+    while(curr!==null && curr.next!==null){
+        if(curr.val === curr.next.val){
+            let temp = curr.next;
+            curr.next = curr.next.next;
+            delete temp;
+        }
+        else curr = curr.next;
+    }
+    return head;
 };

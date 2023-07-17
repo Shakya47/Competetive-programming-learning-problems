@@ -44,3 +44,27 @@ public:
         
     }
 };
+
+JavaScript:
+var deleteMiddle = function(head) {
+    if(!head || !head.next) return null;
+    if(!head.next.next){
+        head.next = null;
+        return head;
+    }
+    
+    let fast = head;
+    let slow = head;
+
+    while(fast && fast.next !== null){
+        fast = fast.next.next;
+        slow = slow.next;
+    }
+
+    let temp = slow.next;
+    slow.val = temp.val;
+    slow.next = slow.next.next;
+
+    delete temp;
+    return head;    
+};

@@ -21,3 +21,23 @@ Output: Intersected at '8'
         return currA;
         
     }
+
+JavaScript
+var getIntersectionNode = function(headA, headB) {
+    let curA = headA;
+    let curB = headB;
+
+    while(curA !== curB){
+        if(curA === null){
+            curA = headA;
+        }
+        else if(curB === null){
+            curB = headB;
+        }
+        else{
+            curA = curA.next;
+            curB = curB.next;
+        }
+    }
+    return curA
+};

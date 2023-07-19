@@ -69,7 +69,7 @@ var oddEvenList = function(head) {
         }
         index++;
     }
-
+ 
     if(oS === null && eS === null) return head;
     oE.next = eS;
     eE.next = null;

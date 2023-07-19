@@ -5,6 +5,8 @@ Input: listA = [4,1,8,4,5], listB = [5,6,1,8,4,5] //intersectVal = 8,
 Output: Intersected at '8'
 
 //Very tricky and simple solution
+Idea:
+- Reset them to each others head once they become null
 
  ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         int c1=0, c2=0;
@@ -29,10 +31,10 @@ var getIntersectionNode = function(headA, headB) {
 
     while(curA !== curB){
         if(curA === null){
-            curA = headA;
+            curA = headB;
         }
         else if(curB === null){
-            curB = headB;
+            curB = headA;
         }
         else{
             curA = curA.next;

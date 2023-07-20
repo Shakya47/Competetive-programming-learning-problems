@@ -4,7 +4,9 @@ You must solve the problem without modifying the values in the list's nodes (i.e
 Input: head = [1,2,3,4]
 Output: [2,1,4,3]
 
-//Hint: without recursion this solution could be a mess, master recursion
+//Hint: without recursion, this solution could be a mess, master recursion
+Idea:
+- use recursion to swap the last pair and then use the swapped pair as head for the previous head
 
  ListNode* swapPairs(ListNode* head) {
         if(head==NULL || head->next==NULL)
@@ -14,3 +16,14 @@ Output: [2,1,4,3]
         temp->next = head;
         return temp;
     }
+
+JavaScript:
+var swapPairs = function(head) {
+    if(head === null || head.next === null){
+        return head;
+    }
+    let temp = head.next;
+    head.next  = swapPairs(head.next.next);
+    temp.next = head;
+    return temp;
+};

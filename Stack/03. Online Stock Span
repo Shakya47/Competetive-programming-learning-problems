@@ -19,3 +19,36 @@ int main()
         cout<<res[i]<<" ";
     }
 }
+
+JavaScript:
+var StockSpanner = function() {
+  // Private arrays and variables to store price data and indices
+  let arr = []; // To store prices
+  let stack = []; // To store indices
+  let i = 0; // To keep track of the current index
+
+  // The function that calculates the span of the stock's price for the current day
+  this.next = function(price) {
+    // Add the current price to the price data array
+    arr.push(price);
+
+    while (stack.length !== 0 && arr[stack[stack.length - 1]] <= price) {
+      // If the current price is greater than or equal to the price at the top of the stack,
+      // it means we can pop the stack as the previous prices are no longer relevant for calculating the span
+      stack.pop();
+    }
+
+    // If the stack is empty, it means the current price is the highest so far, so the span is i + 1 (current index + 1)
+    // Otherwise, the span is the difference between the current index and the index at the top of the stack
+    let res = stack.length === 0 ? i + 1 : i - stack[stack.length - 1];
+
+    // Push the current index to the stack for future calculations
+    stack.push(i);
+
+    // Increment the current index for the next call
+    i++;
+
+    // Return the calculated span for the current day
+    return res;
+  };
+};

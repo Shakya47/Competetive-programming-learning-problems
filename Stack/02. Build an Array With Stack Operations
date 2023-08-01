@@ -25,3 +25,21 @@ vector<string> buildArray(vector<int>& target, int n) {
         }
         return s;
     }
+
+JavaScript:
+var buildArray = function(target, n) {
+    let t = 0;
+    let res = [];
+
+    for(let i = 1; i<=n && t<target.length; i++){
+        if(i === target[t]){
+            res.push("Push");
+            t++;
+        }
+        else if(i < target[t]){
+            res.push("Push");
+            res.push("Pop");
+        }
+    }
+    return res;
+};

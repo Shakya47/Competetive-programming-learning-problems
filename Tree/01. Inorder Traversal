@@ -33,3 +33,19 @@ int main()
 
     return 0;
 }
+
+
+JavaScript:
+const inorder = function(root, res){
+    if(root !== null){
+        inorder(root.left, res);
+        res.push(root.val);
+        inorder(root.right, res);
+    }
+}
+
+var inorderTraversal = function(root) {
+    let res = [];
+    inorder(root, res);
+    return res;
+};

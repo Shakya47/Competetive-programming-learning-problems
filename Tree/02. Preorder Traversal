@@ -24,3 +24,18 @@ public:
         return pre;
     }
 };
+
+JavaScript:
+const preorder = function(root, res){
+    if(root !== null){
+        res.push(root.val);
+        preorder(root.left, res);
+        preorder(root.right, res);
+    }
+}
+
+var preorderTraversal = function(root) {
+    let res = [];
+    preorder(root, res);
+    return res;
+};

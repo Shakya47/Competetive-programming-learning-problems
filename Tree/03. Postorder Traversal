@@ -24,3 +24,18 @@ public:
         return post;
     }
 };
+
+JavaScript:
+const postorder = function(root, res){
+    if(root !== null){
+        postorder(root.left, res);
+        postorder(root.right, res);
+        res.push(root.val);
+    }
+}
+
+var postorderTraversal = function(root) {
+    let res = [];
+    postorder(root, res);
+    return res;
+};

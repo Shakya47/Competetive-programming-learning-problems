@@ -60,4 +60,23 @@ vector<vector<int>> levelOrder(TreeNode* root) {
     }
 
 
+JavaScript:
+var levelOrder = function(root) {
+    let q = [];
+    let res = [];
+    if(root === null) return res;
+    q.push(root);
 
+    while(q.length){
+        let n = q.length;
+        let tr = [];
+        for(let i = 0; i<n; i++){
+            let cur = q.shift();
+            tr.push(cur.val);
+            if(cur.left) q.push(cur.left);
+            if(cur.right) q.push(cur.right);
+        }
+        res.push(tr);
+    }    
+    return res;
+};

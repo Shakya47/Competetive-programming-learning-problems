@@ -46,3 +46,30 @@ public:
         return root;
     }
 };
+
+JavaScript:
+var mkInorder = function(root, inorder){
+    if(root === null) return null;
+    mkInorder(root.left, inorder);
+    inorder.push(root.val);
+    mkInorder(root.right, inorder);
+}
+
+var createBalTree = function(start, end, inorder){
+    if(start > end) return null;
+    let mid = Math.floor((start + end)/2);
+    let root = new TreeNode(inorder[mid]);
+    root.left = createBalTree(start, mid - 1, inorder);
+    root.right = createBalTree(mid+1, end, inorder);
+    return root;
+}
+
+var balanceBST = function(root) {
+    if(root === null) return null;
+    let inorder = [];
+    mkInorder(root, inorder);
+    let start = 0;
+    let end = inorder.length - 1;
+    root = createBalTree(start, end, inorder);
+    return root;
+};

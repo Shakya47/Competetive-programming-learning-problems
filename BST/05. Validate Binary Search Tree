@@ -32,3 +32,24 @@ public:
         return isValidBST(root->right);
     }
 };
+
+JavaScript:
+const mkInorder = (root, inorder) =>{
+    if(root === null) return null;
+    mkInorder(root.left, inorder);
+    inorder.push(root.val);
+    mkInorder(root.right, inorder);
+}
+
+var isValidBST = function(root) {
+    if(root === null) return null;
+
+    let inorder = [];
+    mkInorder(root, inorder);
+    for(let i = 0; i<inorder.length - 1; i++){
+        if(inorder[i] >= inorder[i+1]){
+            return false;
+        }
+    }
+    return true;
+};

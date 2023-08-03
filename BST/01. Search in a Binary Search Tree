@@ -26,6 +26,7 @@ public:
     }
 };
 
+JavaScript:
 var searchBST = function(root, val) {
     if(root === null) return null;
     else if(root.val === val) return root;

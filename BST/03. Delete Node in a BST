@@ -18,8 +18,8 @@
  * };
  */
 class Solution {
-    int inSuccessor(TreeNode* root){    //to find successor we use root->right, then left most root->left (smallest of right tree)
-        TreeNode* cur = root;           //or we can also do root->left, then right most root->right (greatest of left tree)
+    int inSuccessor(TreeNode* root){    //to find successor we use root->right, then left most root->left (smallest of right tree or closest greatest val)
+        TreeNode* cur = root;           //or we can also do root->left, then right most root->right (greatest of left tree or closest smallest val)
         while(cur->left!=NULL)
             cur = cur->left;
         return cur->val;
@@ -38,11 +38,40 @@ public:
         else{   //found the node to be deleted
             if(root->left == NULL) return root->right;  //link root->right with the ancestor 
             else if(root->right == NULL) return root->left; //link root->left with the ancestor 
-            else{   //if both left righ are NULL
+            else{   //if both left right are not NULL
                 root->val = inSuccessor(root->right);   //find the successor and replace the val of root with the successor
                 root->right = deleteNode(root->right, root->val);  //delete the root->val node from the right tree
             }
         }
         return root;
     }
+};
+
+JavaScript:
+const successor = function(root){
+    let cur = root;
+    while(cur.left !== null){
+        cur = cur.left;
+    }
+    return cur.val;
+}
+
+var deleteNode = function(root, key) {
+    if(root === null) return null;
+    if(root.val > key){
+        root.left = deleteNode(root.left, key);
+    }
+    else if(root.val < key){
+        root.right = deleteNode(root.right, key);
+    }
+    else{
+        if(root.left === null) return root.right;
+        else if(root.right === null) return root.left;
+        else{
+            root.val = successor(root.right);
+            root.right = deleteNode(root.right, root.val);
+        }
+    }
+    return root;
+    
 };

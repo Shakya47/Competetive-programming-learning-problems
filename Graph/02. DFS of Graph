@@ -20,3 +20,29 @@ vector<int> res;
         return res;
     }
  }   
+
+JavaScript:
+//Make sure to use "this"
+class Solution {
+    
+    constructor() {
+        this.res = []
+    }
+    
+    dfsRecursion(s, adj, visited) {
+        visited[s] = 1;
+        this.res.push(s);
+        for(let i of adj[s]){
+            if(visited[i] === 0){
+                this.dfsRecursion(i, adj, visited);
+            }
+        }
+    }
+    
+    dfsOfGraph(V, adj) {
+        // code here
+        let visited = Array(V).fill(0);
+        this.dfsRecursion(0, adj, visited);
+        return this.res;
+    }
+}

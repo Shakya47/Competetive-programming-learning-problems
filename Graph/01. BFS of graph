@@ -22,3 +22,26 @@ vector<int> bfsOfGraph(int V, vector<int> adj[]) {
         }
         return res;
     }
+
+JavaScript:
+   bfsOfGraph(V, adj) {
+        // code here
+        let res = [];
+        let q = [];
+        let visited = Array(V).fill(0);
+        q.push(0);
+        visited[0] = 1;
+        
+        while(q.length){
+            let cur = q[0];
+            q.shift();
+            res.push(cur);
+            for(let i of adj[cur]){
+                if(visited[i] === 0){
+                    visited[i] = 1;
+                    q.push(i);
+                }
+            }
+        }
+        return res;
+    }

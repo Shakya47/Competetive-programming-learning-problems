@@ -1,7 +1,5 @@
 Given an undirected graph with V vertices and E edges, check whether it contains any cycle or not. 
 
-
-
 bool dfscycle(vector<int> adj[], int s, int *visited, int parent){
         visited[s]=1;
         for(int u: adj[s]){
@@ -26,3 +24,37 @@ bool dfscycle(vector<int> adj[], int s, int *visited, int parent){
         return 0;
         
     }
+
+JavaScript:
+class Solution {
+    
+    checkIsCycle(i, parent, visited, adj){
+        visited[i] = 1;
+        for(let it of adj[i]){
+            if(!visited[it]){
+                if(this.checkIsCycle(it, i, visited, adj)){
+                    return true;
+                }
+            }
+            else if(it != parent){
+                return true;
+            }
+        }
+        return false;
+    }
+
+//main
+    isCycle(V, adj) {
+        // code here
+        let visited = Array(V).fill(0);
+        
+        for(let i = 0; i<V; i++){
+            if(!visited[i]){
+                if(this.checkIsCycle(i, -1, visited, adj)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}

@@ -33,3 +33,41 @@ bool dfscycle(vector<int> adj[], int s, int *vis, int *rec){
         }
         return false;
     }
+
+
+JavaScript:
+
+class Solution {
+    
+    isCycleDetected(i,adj,vis,rec){
+        vis[i] = 1;
+        rec[i] = 1;
+        
+        for(let u of adj[i]){
+            if(vis[u] === 0){
+                if(this.isCycleDetected(u,adj,vis,rec)){
+                    return true;
+                }
+            }
+            else if(rec[u] === 1){
+                return true;
+            }
+        }
+        rec[i] = 0;
+        return false;
+    }
+    // Function to detect cycle in a directed graph.
+    isCyclic(V, adj) {
+        // code here
+        let vis = Array(V).fill(0);
+        let rec = Array(V).fill(0);
+        
+        for(let i = 0; i<V; i++){
+            if(vis[i] == 0){
+                if(this.isCycleDetected(i,adj,vis,rec))
+                    return true;
+            }
+        }
+        return false;
+    }
+}

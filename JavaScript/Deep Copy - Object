@@ -1,0 +1,42 @@
+const obj1 = {
+   "name": "Widget",
+   "color": "Blue",
+   "price": 19.99,
+   "in_stock": true,
+   "values": [1,2,2,3]
+}
+
+
+const obj2 = {
+   "city": "New York",
+   "population": 8537673,
+   "landmark": "Statue of Liberty",
+   "weather": "Sunny",
+    "new_obj": {
+      "flat": "402",
+      "PG": "Rainbow"
+    }
+}
+
+let obj = Object.assign(obj1, obj2);
+
+
+const deepCopy = (obj) => {
+  if(typeof obj !== 'object' || obj == null) return obj;
+
+  if(Array.isArray(obj)){
+    let newArray = [];
+    for(let i = 0; i<obj.length; i++){
+      newArray.push(deepCopy(obj[i]));
+    }
+    return newArray;
+  }
+
+  let newObj = {};
+  for(let key in obj){
+    newObj[key] = deepCopy(obj[key]);
+  }
+
+  return newObj;
+}
+console.log("Object", deepCopy(obj));

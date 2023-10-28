@@ -1,0 +1,64 @@
+//Promise.all()
+const myPromiseAll = function (tasklist) {
+  const result = [];
+  let resolveCount = 0;
+
+  return new Promise((resolve, reject) => {
+    tasklist.forEach((task, index) => {
+      task
+        .then((val) => {
+          result[index] = val;
+          resolveCount++;
+
+          if (resolveCount === tasklist.length) {
+            resolve(result);
+          }
+        })
+        .catch((error) => reject(error));
+    });
+  });
+};
+
+//Promise.any() //Opposite of Promise.all, we send the errors in an array if all get rejected
+const myPromiseAny = function(tasklist){
+  let resultError = [];
+  let counter = 0;
+
+  return new Promise((resolve, reject) => {
+    tasklist.forEach((task) => {
+      task.then(val => {
+        resolve(val);
+      }).catch(error => {
+        resultError[counter] = error;
+        counter++;
+        if(counter === tasklist.length){
+          reject(resultError);
+        }
+      })
+    })
+  })
+}
+
+//Promise.race() //it's simple just return whatever 1st fullfilment is
+const myPromiseRace = function (promisesArray) {
+  return new Promise((resolve, reject) => {
+    promisesArray.forEach((promise) => {
+      Promise.resolve(promise).then(resolve, reject).catch(reject);
+    });
+  });
+};
+
+
+//Promise.allSettled //simple only
+
+const myPromiseallSettled = (promises) => {
+  // map the promises to return a custom response.
+  const mappedPromises = promises.map((p) =>
+    Promise.resolve(p).then(
+      (val) => ({ status: "fulfilled", value: val }),
+      (err) => ({ status: "rejected", reason: err }),
+    ),
+  );
+  // run all the promises once with .all
+  return Promise.all(mappedPromises);
+};

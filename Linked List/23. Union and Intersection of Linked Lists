@@ -1,0 +1,62 @@
+Statement
+Given the heads of two linked lists, head1 and head2, as inputs. Implement the union and intersection functions for the linked lists. The order of elements in the output lists doesn’t matter.
+Here’s how you will implement the functions:
+Union: This function will take two linked lists as input and return a new linked list containing all the unique elements.
+Intersection: This function will take two linked lists as input and return all the common elements between them as a new linked list.
+
+Idea:
+- For union, link the 1st list with the 2nd list and then use a helper function to remove all the duplicates
+- For intersection, have a set with values from 1st list, then check if the 2nd list have the values from the set, add those values to a new linked list
+
+Solution(JS)
+function union(head1, head2) {
+    if(!head1) return head2;
+    if(!head2) return head1;
+    
+    let current = head1;
+    while(current.next){
+        current = current.next;
+    }
+    current.next = head2;
+    removeDuplicates(head1);
+    return head1;
+}
+
+//helper function
+function removeDuplicates(head){
+    let cur = head;
+    let seen = new Set();
+    seen.add(cur.data);
+    while(cur.next !== null){
+        if(seen.has(cur.next.data)){
+            cur.next = cur.next.next;
+        }
+        else{
+            seen.add(cur.data);
+            cur = cur.next;
+        }
+    }
+    return head;
+}
+
+function intersection(head1, head2) {
+
+    let current = head1;
+    let seen = new Set();
+    while(current){
+        seen.add(current.data);
+        current = current.next;
+    }
+    let result = new LinkedListNode(0);
+    let resCur = result;
+    current = head2;
+    while(current){
+        if(seen.has(current.data)){
+            let newNode = new LinkedListNode(current.data);
+            resCur.next = newNode;
+            resCur = newNode;
+        }
+        current = current.next;
+    }
+    return result.next;
+}

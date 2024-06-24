@@ -40,7 +40,6 @@ function removeDuplicates(head){
 }
 
 function intersection(head1, head2) {
-
     let current = head1;
     let seen = new Set();
     while(current){

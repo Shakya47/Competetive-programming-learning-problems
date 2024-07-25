@@ -33,3 +33,28 @@ vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
     f(0, target, candidates, tempds, ans);
     return ans;
 }
+
+
+JavaScript:
+//Same, take not take concept
+var combinationSum = function(candidates, target) {
+    let res = [];
+    let n = candidates.length;
+    findSets(0, [], n, candidates, target, res);
+    return res;
+};
+
+function findSets(ind, set, n, arr, target, res){
+    if(ind === n){
+        if(target === 0){
+            res.push([...set]);
+        }
+        return;
+    }
+    if(arr[ind] <= target){
+        set.push(arr[ind]);
+        findSets(ind, set, n, arr, target - arr[ind], res);
+        set.pop();
+    }
+    findSets(ind+1, set, n, arr, target, res);
+}

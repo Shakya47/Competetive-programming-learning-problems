@@ -29,3 +29,32 @@ vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
     f(0, target, candidates, tempDS, ans);
     return ans;
 }
+
+JavaScript:
+
+var combinationSum2 = function(candidates, target) {
+    let res = [];
+    candidates.sort((a,b) => a-b)
+    findSet(0, [], candidates, target, res);
+    return res;
+};
+
+function findSet(ind, set, arr, target, res){
+    if(target === 0){
+        res.push([...set]);
+        return;
+    }
+    
+    if (target < 0) {
+        return;
+    }
+    for (let i = ind; i < arr.length; i++) {
+        if (i > ind && arr[i] === arr[i - 1]) continue;  // Skip duplicates
+
+        if (arr[i] > target) break;  // Early termination
+        
+        set.push(arr[i]);
+        findSet(i + 1, set, arr, target - arr[i], res);
+        set.pop();
+    }
+}

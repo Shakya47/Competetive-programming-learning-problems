@@ -25,3 +25,25 @@ vector<vector<int>> permute(vector<int>& nums) {
     f(nums,ds,ans);
     return ans;
 }
+
+JavaScript:
+var permute = function(nums) {
+    let res = [];
+    findSet([], nums, res);
+    return res;
+};
+
+function findSet(set, nums, res){
+    if(set.length === nums.length){
+        res.push([...set]);
+        return;
+    }
+
+    for(let i = 0; i<nums.length; i++){
+        if(!set.includes(nums[i])){
+            set.push(nums[i]);
+            findSet(set, nums, res);
+            set.pop();
+        }
+    }
+}

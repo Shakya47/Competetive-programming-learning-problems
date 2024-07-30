@@ -32,3 +32,83 @@ long long int houseRobber(vector<int>& valueInHouse)
     long long int loot2 = maximumNonAdjacentSum(valueInHouse, 1, valueInHouse.size()-1);
 	return max(loot1, loot2);
 }
+
+
+````````````````````````````````````````````````````````````````````````````````````````````````````
+JavaScript:
+Recursion:
+```````````
+//As its a circular array we will consider 2 arrays
+
+var rob = function(nums) {
+    let n = nums.length;
+    let loot1 = rec(n-2, nums.slice(0, n-1)); //in both case we have n-2 because the size of the array is same after splicing
+    let loot2 = rec(n-2, nums.slice(1, n));
+    return Math.max(loot1, loot2);
+};
+
+function rec(ind, nums){
+    if(ind < 0){
+        return 0;
+    }
+    if(ind === 0){
+        return nums[ind];
+    }
+    let take = nums[ind] + rec(ind - 2, nums);
+    let notTake = rec(ind - 1, nums);
+    return Math.max(take, notTake);
+}
+
+Memoization
+``````````````
+//2 different dp array as in JS it is passed by reference
+var rob = function(nums) {
+    let n = nums.length;
+    if(n == 1) return nums[0];
+    let dp1 = Array(n).fill(-1) //size is n as we are going to splice it later, otherwise it would have been n+1
+    let dp2 = Array(n).fill(-1)
+
+    let loot1 = rec(n-2, nums.slice(0, n-1), dp1);
+    let loot2 = rec(n-2, nums.slice(1, n), dp2);
+    return Math.max(loot1, loot2);
+};
+
+function rec(ind, nums, dp){
+    if(ind < 0){
+        return 0;
+    }
+    if(ind === 0){
+        return nums[ind];
+    }
+    if(dp[ind] !== -1){
+        return dp[ind];
+    }
+    let take = nums[ind] + rec(ind - 2, nums, dp);
+    let notTake = rec(ind - 1, nums, dp);
+    return dp[ind] = Math.max(take, notTake);
+}
+
+Tabulation
+```````````
+var rob = function(nums) {
+    let n = nums.length;
+    if(n == 1) return nums[0];
+
+    let loot1 = rec(nums.slice(0, n-1));
+    let loot2 = rec(nums.slice(1, n));
+    return Math.max(loot1, loot2);
+};
+
+function rec(nums){
+    let n = nums.length;
+    let dp = Array(n+1).fill(-1);
+    dp[0] = nums[0];
+    dp[1] = Math.max(nums[0], nums[1]); //in recursion it was already taken care of but here we have to do for our base case as in for loop we have dp[i-2]
+
+    for(let i = 2; i<n; i++){
+        let take = nums[i] + dp[i-2]
+        let notTake = dp[i-1]
+        dp[i] = Math.max(take, notTake);
+    }
+    return dp[n-1]
+}

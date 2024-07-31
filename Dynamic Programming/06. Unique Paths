@@ -57,3 +57,71 @@ r = out of total directions, total no. of either down move or right move
         }
         return res;
     }
+
+_________________________________________________________________________________
+JavaScript:
+
+Recursion: 
+````````````
+var uniquePaths = function(m, n) {
+    return rec(m-1, n-1);
+};
+
+function rec(step1, step2){
+    if(step1 === 0 && step2 === 0){
+        return 1;
+    }
+
+    if(step1 < 0 || step2 < 0){
+        return 0;
+    }
+    let up = rec(step1 - 1, step2);
+    let left = rec(step1, step2 - 1);
+    return up + left;
+}
+
+Memoization:
+`````````````
+var uniquePaths = function(m, n) {
+    let dp = Array.from({length: m}, () => Array.from({length: n}, () => -1));
+    return rec(m-1, n-1, dp);
+};
+
+function rec(step1, step2, dp){
+    if(step1 === 0 && step2 === 0){
+        return 1;
+    }
+
+    if(step1 < 0 || step2 < 0){
+        return 0;
+    }
+
+    if ( dp[step1][step2] !== -1 ){
+        return dp[step1][step2];
+    }
+    let up = rec(step1 - 1, step2, dp);
+    let left = rec(step1, step2 - 1, dp);
+    return dp[step1][step2] = up + left;
+}
+
+Tabulation:
+````````````
+
+var uniquePaths = function(m, n) {
+    let dp = Array.from({length: m}, () => Array.from({length: n}, () => -1));
+
+     // Set the base case: there's only one way to reach any cell in the first row or first column
+    for (let i = 0; i < m; i++) {
+        dp[i][0] = 1;
+    }
+    for (let j = 0; j < n; j++) {
+        dp[0][j] = 1;
+    }
+
+    for(let i = 1; i<m; i++){
+        for(let j = 1; j<n; j++){
+           dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+        }
+    }
+    return dp[m-1][n-1]
+};

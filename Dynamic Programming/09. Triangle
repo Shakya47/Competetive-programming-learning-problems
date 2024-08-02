@@ -65,3 +65,27 @@ int minimumTotal(vector<vector<int>>& triangle) {
         }
         return dp[0][0];        
     }
+
+______________________________________________________________________
+JavaScript:
+var minimumTotal = function(triangle) {
+    let m = triangle.length;
+    let n = triangle[m-1].length;
+    let dp = Array.from({length: m}, () => Array.from({length: n}, () => -1))
+    return rec(0, 0, m-1, triangle, dp);
+};
+
+function rec(i, j, n, triangle, dp){
+    if(i === n){
+        return triangle[i][j]
+    }
+
+    if(dp[i][j] !== -1){
+        return dp[i][j]
+    }
+
+    let down = triangle[i][j] + rec(i+1, j, n, triangle, dp);
+    let diag = triangle[i][j] + rec(i+1, j+1, n, triangle, dp);
+
+    return dp[i][j] = Math.min(down, diag);
+}

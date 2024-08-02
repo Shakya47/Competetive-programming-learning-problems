@@ -91,3 +91,31 @@ Space optimization - time: O(m*n)
         }      
         return prev[n-1];
     }
+
+
+___________________________________________________________________________
+JavaScript:
+var minPathSum = function(grid) {
+    let m = grid.length;
+    let n = grid[0].length;
+    let dp = Array.from({length: m}, () => Array.from({length: n}, () => -1));
+    return rec(m-1, n-1, grid, dp);
+};
+
+function rec(m, n, grid, dp){
+    if(m === 0 && n === 0){
+        return grid[m][n];
+    }
+
+    if(m < 0 || n < 0){
+        return 1e9;
+    }
+
+    if(dp[m][n] !== -1){
+        return dp[m][n];
+    }
+
+    let up = grid[m][n] + rec(m-1, n, grid, dp);
+    let left = grid[m][n] + rec(m, n-1, grid, dp);
+    return dp[m][n] = Math.min(up, left); 
+}

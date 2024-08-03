@@ -84,3 +84,65 @@ int getMaxPathSum(vector<vector<int>> &matrix)
 	}
 	return maxi;
 }
+
+____________________________________________________________________________
+JavaScript:
+Recursion:
+````````````
+maximumPath(Matrix,m){
+	let maxSum = 0;
+	for(let j = 0; j<m; j++){
+	    maxSum = Math.max(maxSum, this.rec(0, j, m-1, Matrix));
+	}
+	return maxSum;
+}
+
+rec(i, j, m, matrix){
+	if(j < 0 || j > m){
+	    return 0;
+	}
+	
+	if(i === m){
+	    return matrix[i][j];
+	}
+	
+	let down = matrix[i][j] + this.rec(i+1, j, m, matrix);
+	let leftDiag = matrix[i][j] + this.rec(i+1, j-1, m, matrix);
+	let rightDiag = matrix[i][j] + this.rec(i+1, j+1, m, matrix);
+	
+	return Math.max(down, Math.max(leftDiag, rightDiag));
+}
+
+Memoization:
+`````````````
+maximumPath(Matrix,m){
+	let maxSum = 0;
+	let dp = Array.from({length: m}, () => Array.from({length: m}, () => -1));
+	for(let j = 0; j<m; j++){
+	    maxSum = Math.max(maxSum, this.rec(0, j, m-1, Matrix, dp));
+	}
+	return maxSum;
+}
+
+rec(i, j, m, matrix, dp){
+	if(j < 0 || j > m){
+	    return 0;
+	}
+	
+	if(i === m){
+	    return matrix[i][j];
+	}
+	
+	if(dp[i][j] !== -1){
+	    return dp[i][j];
+	}
+	
+	let down = matrix[i][j] + this.rec(i+1, j, m, matrix, dp);
+	let leftDiag = matrix[i][j] + this.rec(i+1, j-1, m, matrix, dp);
+	let rightDiag = matrix[i][j] + this.rec(i+1, j+1, m, matrix, dp);
+	
+	return dp[i][j] = Math.max(down, Math.max(leftDiag, rightDiag));
+}
+
+Tabulation:
+````````````

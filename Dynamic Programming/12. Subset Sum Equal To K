@@ -90,3 +90,32 @@ bool subsetSumToK(int n, int k, vector<int> &arr) {
 	}
 	return prev[k];
 }
+
+_______________________________________________________________________________________
+JavaScript:
+````````````
+isSubsetSum(arr,n,sum){
+	let dp = Array.from({length: n}, () => Array.from({length: sum+1}, () => -1))
+	return this.rec(n-1, 0, arr, sum, dp);
+}
+
+rec(i, subSum, arr, sum, dp){
+	if(subSum === sum){
+	    return 1;
+	}
+	
+	if(i < 0){
+	    return 0;
+	}
+	
+	if(dp[i][subSum] !== -1){
+	    return dp[i][subSum];
+	}
+	
+	let take = 0;
+	if (subSum + arr[i] <= sum){
+	    take = this.rec(i-1, subSum + arr[i], arr, sum, dp);
+	}
+	let notTake = this.rec(i-1, subSum, arr, sum, dp);
+	return dp[i][subSum] = take || notTake;
+}

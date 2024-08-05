@@ -73,3 +73,29 @@ int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight)
     
     return prev[maxWeight];     //change 7
 }
+
+_______________________________________________________________________________
+JavaScript:
+``````````````
+knapSack(W, wt, val, n)
+{ 
+    let dp = Array.from({length: n}, () => Array.from({length: W+1}, () => -1));
+    return this.rec(n-1, wt, val, W, dp);
+}
+
+rec(i, wt, val, W, dp){
+    if(i<0 || W === 0){
+        return 0;
+    }
+    
+    if(dp[i][W] !== -1){
+        return dp[i][W]
+    }
+    
+    let take = 0;
+    if(W-wt[i] >= 0){
+        take = val[i] + this.rec(i-1, wt, val, W-wt[i], dp);
+    }
+    let notTake = this.rec(i-1, wt, val, W, dp);
+    return dp[i][W] = Math.max(take, notTake);
+}

@@ -50,3 +50,32 @@ int maxProfit(vector<int>& prices) {
 
     return dp[0][4];
 }
+
+_____________________________________________________________________________
+JavaScript:
+````````````
+var maxProfit = function(prices) {
+    let n = prices.length;
+    let dp = Array.from({length: n}, () => Array.from({length: 5}, () => -1))
+    return rec(0, 4, n, prices, dp);
+};
+
+function rec(i, buy, n, prices, dp) {
+    if( i === n || buy === 0) {
+        return 0;
+    }
+
+    if(dp[i][buy] !== -1) {
+        return dp[i][buy];
+    }
+
+    if(buy % 2 == 0) {
+        return dp[i][buy] = Math.max(
+            (rec(i+1, buy-1, n, prices, dp) - prices[i]), 
+            rec(i+1, buy, n, prices, dp));
+    } else {
+        return dp[i][buy] = Math.max(
+            (rec(i+1, buy-1, n, prices, dp) + prices[i]), 
+            rec(i+1, buy, n, prices, dp));
+    }
+}

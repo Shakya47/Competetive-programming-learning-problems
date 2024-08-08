@@ -49,3 +49,30 @@ int minInsertions(string s1) {
         }
     return n - dp[n][n];
   }
+
+______________________________________________________________________
+JavaScript:
+````````````
+var minInsertions = function(s) {
+    let n = s.length;
+    let p = s.split('').reverse().join('');
+    let dp = Array.from({length: n}, () => Array.from({length: n}, () => -1));
+    return n - rec(n-1, n-1, s, p, dp);
+};
+
+function rec(i, j, s, p, dp){
+    if(i < 0 || j < 0){
+        return 0;
+    }
+
+    let take = 0;
+    if(s[i] === p[j]){
+        take = 1 + rec(i-1, j-1, s, p, dp);
+    }
+    if(dp[i][j] !== -1){
+        return dp[i][j]
+    }
+
+    let notTake = Math.max(rec(i-1, j, s, p, dp), rec(i, j-1, s, p, dp));
+    return dp[i][j] = Math.max(take, notTake);
+}

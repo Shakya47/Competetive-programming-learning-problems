@@ -48,5 +48,28 @@ int longestCommonSubsequence(string text1, string text2) {
 
         return dp[n1][n2];
 }
+_____________________________________________________________________________
+JavaScript:
+`````````````
 
+var longestCommonSubsequence = function(text1, text2) {
+    let n1 = text1.length;
+    let n2 = text2.length;
+    let dp = Array.from({length: n1}, () => Array.from({length: n2}, () => -1));
+    return rec(n1-1, n2-1, text1, text2, dp);
+};
 
+function rec(i, j, text1, text2, dp){
+    if(i < 0 || j<0 ){
+        return 0;
+    }
+    if(dp[i][j] !== -1){
+        return dp[i][j];
+    }
+    let take = 0;
+    if(text1[i] === text2[j]){
+        take = 1 + rec(i-1, j-1, text1, text2, dp);
+    }
+    let notTake = Math.max(rec(i-1, j, text1, text2, dp), rec(i, j-1, text1, text2, dp));
+    return dp[i][j] = Math.max(take, notTake);
+}

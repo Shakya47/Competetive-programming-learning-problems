@@ -81,3 +81,46 @@ bool canFinish(int n, vector<vector<int>>& prerequisites) {
     if(st.size() == n) return true;
     return false;
 }
+
+
+___________________________________________________________
+JavaScript: 
+`````````````
+var canFinish = function(numCourses, prerequisites) {
+    let adj = Array.from({length: numCourses}, () => []);
+
+    for(let i = 0; i<prerequisites.length; i++){
+        adj[prerequisites[i][0]].push(prerequisites[i][1]);
+    }
+
+    let vis = Array(numCourses).fill(0)
+    let dfsVis = Array(numCourses).fill(0)
+
+    for(let i = 0; i<numCourses; i++){
+        if(!vis[i]){
+            if(isCycle(i, adj, vis, dfsVis)){
+                return false;
+            }
+        }
+    }
+
+    return true;
+};
+
+function isCycle(i, adj, vis, dfsVis) {
+    vis[i] = 1;
+    dfsVis[i] = 1;
+
+    for(let it of adj[i]){
+        if(!vis[it]){
+            if(isCycle(it, adj, vis, dfsVis)){
+                return true;
+            }
+        }
+        else if (dfsVis[it]){
+            return true;
+        }
+    }
+    dfsVis[i] = 0;
+    return false;
+}

@@ -31,3 +31,31 @@ vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int co
     dfs(sr, sc, image[sr][sc], color, ans);
     return ans;
 }
+
+____________________________________________________________________________
+JavaScript
+```````````
+var floodFill = function(image, sr, sc, color) {
+    let ans = image;
+    dfs(sr, sc, image[sr][sc], color, ans);
+    return ans;
+};
+
+function dfs(row, col, initialColor, color, ans){
+    let m = ans.length;
+    let n = ans[0].length;
+
+    if(row < 0 || col < 0 || row >= m || col >= n){
+        return;
+    }
+    if(ans[row][col] !== initialColor || ans[row][col] === color){
+        return;
+    }
+
+    ans[row][col] = color;
+    
+    dfs(row-1, col, initialColor, color, ans);
+    dfs(row+1, col, initialColor, color, ans);
+    dfs(row, col-1, initialColor, color, ans);
+    dfs(row, col+1, initialColor, color, ans);
+}

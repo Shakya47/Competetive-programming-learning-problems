@@ -43,3 +43,49 @@ int orangesRotting(vector<vector<int>>& grid) {
     if(ans == -1) return 0;
     return ans;
 }
+
+______________________________________________________
+JavaScript:
+````````````
+var orangesRotting = function(grid) {
+    let queue = new Queue();
+    let fresh = 0;
+    let m = grid.length;
+    let n = grid[0].length;
+
+    for(let i = 0; i<m; i++){
+        for(let j = 0; j<n; j++){
+            if (grid[i][j] === 1) {
+                fresh++;
+            } else if (grid[i][j] === 2) {
+                queue.push([i, j]);
+            }
+        }
+    }
+
+    let ds = [-1, 0, 1, 0, -1];
+    let ans = -1;
+
+    while(!queue.isEmpty()){
+        let qSize = queue.size();
+        while(qSize--){
+            let fruit = queue.dequeue();
+            let row = fruit[0];
+            let col = fruit[1];
+            for(let i = 0; i < 4; i++){
+                let newRow = row + ds[i];
+                let newCol = col + ds[i+1];
+                if(newRow >= 0 && newCol >= 0 && newRow <m && newCol < n && grid[newRow][newCol] === 1){
+                    grid[newRow][newCol] = 2;
+                    fresh--;
+                    queue.push([newRow, newCol]);
+                }
+            }
+        }
+        ans++;
+    }
+
+    if(fresh > 0) return -1;
+    if(ans === -1) return 0;
+    return ans;
+};

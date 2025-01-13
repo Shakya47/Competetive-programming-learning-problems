@@ -1,0 +1,39 @@
+Given an integer array nums and an integer k, split nums into k non-empty subarrays such that the largest sum of any subarray is minimized.
+Return the minimized largest sum of the split.
+A subarray is a contiguous part of the array.
+
+//Idea:
+- similar to the ship capacity problem
+
+var splitArray = function(nums, k) {
+    
+    const isFeasible = (threshold) => {
+        let curSum = 0;
+        let count = 1;  //this is important
+        for(let num of nums){
+            curSum += num;
+            if(curSum > threshold) {
+                count++;
+                curSum = num;
+            }
+            if(count > k) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    let left = Math.max(...nums);
+    let right = nums.reduce((val, acc) => val + acc, 0);
+
+    while(left < right) {
+        let mid = left + Math.floor((right - left)/2)
+        if(isFeasible(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    return left;
+};

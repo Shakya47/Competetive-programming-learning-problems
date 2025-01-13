@@ -13,4 +13,4 @@ return function(n) {
         }
     }
     return left;
-  }
+}

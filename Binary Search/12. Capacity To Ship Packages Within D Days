@@ -1,0 +1,41 @@
+A conveyor belt has packages that must be shipped from one port to another within days days.
+The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the conveyor belt (in the order given by weights). We may not load more weight than the maximum weight capacity of the ship.
+Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within days days.
+
+//Idea:
+- have to really think of how can we use monotonicity here
+- we figure out that left is max(weights) and right is sum(weights), our answer should lie in between
+- then think of the condition we want to make
+
+var shipWithinDays = function (weights, days) {
+    const isFeasible = (capacity) => {
+        let total = 0;
+        let dayCount = 1;
+
+        for (let weight of weights) {
+            total += weight;
+            if (total > capacity) {
+                dayCount++;
+                total = weight
+            }
+            if (dayCount > days) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    let left = Math.max(...weights);
+    let right = weights.reduce((w, acc) => w + acc, 0);
+
+    while (left < right) {
+        let mid = left + Math.floor((right - left) / 2);
+        if (isFeasible(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    return left;
+};

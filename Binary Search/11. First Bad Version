@@ -1,4 +1,3 @@
-
 Most general binary search temlate
 
 return function(n) {

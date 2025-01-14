@@ -1,0 +1,32 @@
+Nearly everyone has used the Multiplication Table. The multiplication table of size m x n is an integer matrix mat where mat[i][j] == i * j (1-indexed).
+Given three integers m, n, and k, return the kth smallest element in the m x n multiplication table.
+
+//Idea: 
+- the trickiest part is this Math.min(Math.floor(small/i), n)
+- we calculate how many elements in the multiplication table are less than or equal to a given number 
+-  For a specific row i, the elements are i * 1, i * 2, i * 3, ..., i * n.
+- To find how many elements are ≤ small:
+   * Solve i x j <= small, which gives j <= small/i.
+   * The number of valid elements in the row j = smalli.
+
+var findKthNumber = function(m, n, k) {
+    const isKSmallest = (small) => {
+        let curCount = 0;
+        for(let i = 1; i<=m; i++) {
+            curCount += Math.min(Math.floor(small/i), n);
+        }
+        return curCount >= k;
+    }
+    
+    let left = 1;
+    let right = m * n;
+    while(left < right) {
+        let mid = left + Math.floor((right - left) / 2);
+        if(isKSmallest(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+};

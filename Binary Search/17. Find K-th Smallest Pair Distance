@@ -1,0 +1,44 @@
+The distance of a pair of integers a and b is defined as the absolute difference between a and b.
+Given an integer array nums and an integer k, return the kth smallest distance among all the pairs nums[i] and nums[j] where 0 <= i < j < nums.length.
+
+//Idea:
+- now I have understood how to find the monotonicity 
+- make sure to sort the array is order is not important
+
+var smallestDistancePair = function (nums, k) {
+
+    const isSmall = (small) => {
+        let count = 0;
+        let j = 0;
+        for (let i = 0; i < nums.length - 1; i++) {  //This implementation is O(n)
+            while (j < nums.length && nums[j] - nums[i] <= small) {
+                j++;
+            }
+            count += j - i - 1;
+        }
+
+        This implementation is O(n2)
+        //for (let i = 0; i < nums.length - 1; i++) {
+        //    for (let j = i + 1; j < nums.length; j++) {
+        //        if(nums[j] - nums[i] <= small) {
+        //            count++;
+        //        }
+        //    }
+        //}
+        
+        return count >= k;
+    }
+
+    nums.sort((a, b) => a - b);
+    let left = 0;
+    let right = nums[nums.length - 1] - nums[0];
+    while (left < right) {
+        let mid = left + Math.floor((right - left) / 2);
+        if (isSmall(mid)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+};

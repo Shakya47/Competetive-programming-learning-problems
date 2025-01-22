@@ -35,3 +35,40 @@ int maxDistance(vector<int>& position, int m) {
     }
     return high;
 }
+
+----------------------------------------------------------------------
+JavaScript: 
+// Its based on our template but our left and right are making sure we get maximum value instead of minimum
+----------------------------------------------------------------------
+var maxDistance = function(position, m) {
+    let n = position.length;
+    position.sort((a,b) => a-b);
+    let left = 1;
+    let right = position[n-1] - position[0]; 
+
+    while(left <= right) {
+        let mid = left + Math.floor((right - left) / 2); 
+        if(isMaxForce(mid)) { 
+            left = mid + 1; 
+        } else {
+            right = mid - 1; 
+        }
+    }
+
+    function isMaxForce(magForce) {
+        let count = 1;
+        let curForce = position[0]; 
+        for(let i = 1; i<n; i++) { 
+            if(position[i] - curForce >= magForce) { 
+                count++; 
+                curForce = position[i]; 
+            } if (count === m) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    return right;
+};
+

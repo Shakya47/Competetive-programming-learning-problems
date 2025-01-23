@@ -32,3 +32,34 @@ int threeSumClosest(vector<int>& nums, int target) {
     }
     return ans;
 }
+
+--------------------------------------------------------------------------
+Javascript:
+// In 3 sum instead of target we have 0 and we don't check minDifference and stuff
+--------------------------------------------------------------------------
+var threeSumClosest = function(nums, target) {
+    let n = nums.length;
+    nums.sort((a,b) => a-b);
+    let minDifference = Infinity;
+    let ans = 0;
+    
+    for(let i = 0; i<n; i++) {
+        let j = i + 1;
+        let k = n - 1;
+        while(j < k) {
+            let sum = nums[i] + nums[j] + nums[k];
+            if(sum === target) {
+                return sum;
+            } else if (sum < target) {
+                j++;
+            } else if (sum > target) {
+                k--;
+            }
+            if(Math.abs(target - sum) < minDifference) {
+                minDifference = Math.abs(target - sum);
+                ans = sum;
+            }
+        }
+    }
+    return ans;
+};

@@ -33,8 +33,9 @@ int countGoodSubstrings(string s) {
         return count;
         
     }
-
+---------------------------------------------------------------
 JavaScript:
+---------------------------------------------------------------
 var countGoodSubstrings = function(s) {
   let count = 0;
   let mp = {};
@@ -69,4 +70,22 @@ var countGoodSubstrings = function(s) {
   }
 
   return count;
+};
+
+---------------------------------------------------------------
+Javascript: Better solution
+// remember: new Set('abc') will store it as {'a', 'b', 'c'}
+// also new Set(['a', 'b', 'c']) will also store it as {'a', 'b', 'c'}
+---------------------------------------------------------------
+var countGoodSubstrings = function(s) {
+    let set = new Set();
+    let count = 0;
+    for(let i = 0; i<s.length - 2; i++){
+        const subStr = s.slice(i, i+3);
+        const window = new Set(subStr);
+        if(window.size === 3) {
+            count++;
+        }
+    }
+    return count;
 };

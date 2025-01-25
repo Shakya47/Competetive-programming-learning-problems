@@ -27,8 +27,9 @@ int longestConsecutive(vector<int>& a) {
         }
         return res;
     }
-
-JavaScript:
+-------------------------------------------------
+JavaScript: give TLE now
+--------------------------------------------------
 var longestConsecutive = function(nums) {
     let res = 0;
     let cur = 0;
@@ -46,6 +47,35 @@ var longestConsecutive = function(nums) {
             while(set.has(nums[i] + cur)){
                 cur++;
             }
+            res = Math.max(res, cur);
+        }
+        cur = 0;
+    }
+
+    return res;
+};
+
+------------------------------------------------------------
+Javascript: Accepted
+Iterate over set not nums
+------------------------------------------------------------
+var longestConsecutive = function(nums) {
+    let res = 0;
+    let set =  new Set();
+    let cur = 0;
+
+    for(let num of nums) {
+        set.add(num);
+    }
+
+    if(set.size <= 1) return set.size;
+
+    for(let num of set) { // remember, we iterage over set not nums, otherwise it gives TLE
+        if(!set.has(num - 1)) {
+            cur = 1;
+            while(set.has(num + cur)) {
+                cur++;
+            }        
             res = Math.max(res, cur);
         }
         cur = 0;

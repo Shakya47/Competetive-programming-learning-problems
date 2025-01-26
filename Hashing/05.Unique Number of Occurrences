@@ -23,3 +23,23 @@ bool uniqueOccurrences(vector<int>& a) {
         }
         return true;
     }
+
+-------------------------------------------------------
+Javascript
+-------------------------------------------------------
+var uniqueOccurrences = function(arr) {
+    let map = new Map();
+    let set = new Set();
+
+    for(let a of arr) {
+        map.set(a, (map.get(a) || 0) + 1);
+    }
+
+    for(let [k,v] of map) {
+        if(set.has(v)) {
+            return false;
+        }
+        set.add(v);
+    }
+    return true;
+};

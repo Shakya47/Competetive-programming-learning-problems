@@ -7,10 +7,9 @@ Implement the MyCalendarThree class:
 - int book(int start, int end) Returns an integer k representing the largest integer such that there exists a k-booking in the calendar.
 
 //Idea:
-- create a map with time as key
-- increment the value if the show starts
-- decrement the value if the show ends
-
+- sweep algo - have a map, startTime with +1 and endTime with -1
+- to check active events, sort this map based on key, and add its value to a counter
+- maintain a max so that even if -ve value comes, we know the max event
 
 
  map<int,int> mp;
@@ -32,4 +31,25 @@ Implement the MyCalendarThree class:
         return maxCount;
         
     }
+};
+
+-------------------------------------
+Javascript:
+-----------------------------------------
+var MyCalendarThree = function () {
+    this.timeline = new Map();
+};
+
+MyCalendarThree.prototype.book = function (startTime, endTime) {
+    this.timeline.set(startTime, (this.timeline.get(startTime) || 0) + 1);
+    this.timeline.set(endTime, (this.timeline.get(endTime) || 0) - 1);
+
+    let events = 0;
+    let maxEvents = 0;
+    for(let time of [...this.timeline.keys()].sort((a,b) => a - b)) {
+        events += this.timeline.get(time);
+        maxEvents = Math.max(events, maxEvents);
+    }
+    return maxEvents;
+
 };

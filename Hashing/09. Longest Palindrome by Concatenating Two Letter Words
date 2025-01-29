@@ -36,3 +36,32 @@ A palindrome is a string that reads the same forward and backward.
     }
     return ans;
 }
+
+------------------------------------------------------
+Javascript:
+--------------------------------------------------------
+var longestPalindrome = function(words) {
+    let map = new Map();
+    let count = 0;
+    
+    for(let word of words) {
+        let reverseWord = word.split("").reverse().join("")
+        if(map.has(reverseWord)) {
+            map.set(reverseWord, map.get(reverseWord) - 1);
+            count += 4;
+            if(map.get(reverseWord) === 0) {
+                map.delete(reverseWord);
+            }
+        } else {
+            map.set(word, (map.get(word) || 0) + 1)
+        }
+    }
+
+    for(let [k, v] of map) { //only one symmetric string can be there
+        if(k[0] === k[1]) {
+            count += 2;
+            break;
+        }
+    }
+    return count;
+};

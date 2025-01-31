@@ -1,0 +1,62 @@
+For Substring Problems:
+//Idea:
+- conditionCheck -> when we should shrink the window
+- Problems:
+- Minimum Window Substring ->	have === need
+- Longest Substring with At Most k Distinct Characters ->	winMap.size > k
+- Longest Substring Without Repeating Characters ->	winMap.size < have
+- Find Anagrams ->	have === need
+-------------------------
+function slidingWindowTemplate(s, t, conditionCheck) {
+    let winMap = new Map(); //for storing current window, consider it as grocery bag into which we will put items based on grocery list
+    let subMap = new Map(); //substring map, this will not change, this is our grocery list, what all and how much we want
+
+    let have = 0; //how many items from grocery(with their correct quantity) we have
+    let need = 0; //total products we need from grocery list (not quantity)
+    let start = 0, end = 0;
+    let resLen = Infinity;
+    let res = [-1, -1];
+
+    // Step 1: Fill subMap with target string `t` counts hence creating the map of grocery list (product, quantity of product)
+    for (let c of t) {
+        subMap.set(c, (subMap.get(c) || 0) + 1);
+    }
+    need = subMap.size; // total products 
+
+    // Step 2: Expand window from the right, we start picking the products availabe in store 's'
+    while (end < s.length) {
+        let charEnd = s[end];
+
+        // Include current character in window
+        if (subMap.has(charEnd)) { //if it is in our grocery list, then add to out grocery bag
+            winMap.set(charEnd, (winMap.get(charEnd) || 0) + 1);
+            if (winMap.get(charEnd) === subMap.get(charEnd)) { //if quantity of product from grocery bag and grocery list match
+                have++;
+            }
+        }
+
+        // Step 3: Shrink the window while the condition holds
+        while (conditionCheck(have, need, winMap, subMap)) {
+            if (end - start + 1 < resLen) {
+                resLen = end - start + 1;
+                res = [start, end]; // Update best result
+            }
+
+            let charStart = s[start];
+
+            // Remove leftmost character from the window, if we have filled our grocery bag with unecessary items, then have to remove it
+            if (subMap.has(charStart)) {
+                winMap.set(charStart, winMap.get(charStart) - 1);
+                if (winMap.get(charStart) < subMap.get(charStart)) { //while removing unecessary items, we end up removing required item
+                    have--;
+                }
+            }
+
+            start++; // Shrink window from the left
+        }
+
+        end++; // Expand window from the right
+    }
+
+    return resLen === Infinity ? "" : s.slice(res[0], res[1] + 1);
+}

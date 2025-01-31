@@ -3,7 +3,7 @@
 //Output: 3
 //Explanation: The answer is "abc", with the length of 3.
 
-//Idea:
+//Idea: Best is to use the sliding window template
 - 2 pointer approach, j pointer will be the end of the substring and i will be the start index of the substring
 - keep storing the index of the characters till now
 - i = max(i, prev[s[j]] + 1), this takes care of duplicates
@@ -24,36 +24,26 @@ int lengthOfLongestSubstring(string s) {
         return res;
     }
 
-
-JavaScript:
+----------------------------------------------------------------
+JavaScript: Sliding Window template solution
+----------------------------------------------------------------
 var lengthOfLongestSubstring = function(s) {
-    // Initialize variables
-    let i = 0; // Starting index of current substring
-    let maxEnd = 0; // Ending index of current substring
-    let res = 0; // Length of longest substring found so far
+    let winMap = new Map();
+    let start = 0, end = 0;
+    let resLen = 0;
 
-    // Map to store the most recent index of each character
-    let prev = new Map();
+    while(end < s.length) {
+        winMap.set(s[end], (winMap.get(s[end]) || 0) + 1);
 
-    // Iterate over the string characters
-    for (let j = 0; j < s.length; j++) {
-        // Check if the character is already present in the substring
-        if (prev.has(s[j])) {
-            // If the character is found, update the starting index of the substring
-            // by moving it to the next index after the repeated character
-            i = Math.max(i, prev.get(s[j]) + 1);
+        while(winMap.get(s[end]) > 1) { //if we find repeating characters
+            winMap.set(s[start], winMap.get(s[start]) - 1);
+            if(winMap.get(s[start]) === 0) {
+                winMap.delete(s[start]); 
+            }
+            start++;
         }
-
-        // Calculate the length of the current substring (from i to j)
-        maxEnd = j - i + 1;
-
-        // Update the maximum length found so far
-        res = Math.max(res, maxEnd);
-
-        // Store the current character and its index in the map
-        prev.set(s[j], j);
+        resLen = Math.max(resLen, end - start + 1);
+        end++;
     }
-
-    // Return the length of the longest substring without repeating characters
-    return res;
+    return resLen;
 };

@@ -40,59 +40,45 @@ string minWindow(string s, string t) {
         }
         return result;
     }
-    
-JavaScript:
-var minWindow = function(s, t) {
-    // Create two maps, map1 and map2
-    let map1 = new Map();
-    let map2 = new Map();
+-------------------------------------------------------------
+Javascript: Based on template in sliding window for substring
+-------------------------------------------------------------
+var minWindow = function (s, t) {
+    let winMap = new Map();
+    let subMap = new Map();
 
-    // Populate map1 with the character counts in t
-    for(const char of t){
-        map1.set(char, (map1.get(char) || 0) + 1);
+    let have = 0, need = 0;
+    let start = 0, end = 0;
+    let resLen = Infinity;
+    let res = [-1, -1];
+
+    for (let c of t) {
+        subMap.set(c, (subMap.get(c) || 0) + 1);
     }
+    need = subMap.size;
 
-    // Initialize two pointers, fast and slow, and a counter for letters in the window
-    let fast = 0, slow = 0, letterCounter = 0;
-    let check = Infinity;
-    let result = "";
-
-    // While fast pointer is less than the length of the string
-    while(fast < s.length){
-        // Get the current character
-        let ch = s[fast];
-
-        // If the current character is in map1
-        if(map1.has(ch)){
-            // Increment the count of the character in map2
-            map2.set(ch, (map2.get(ch) || 0 ) + 1);
-            // If the count of the character in map2 is less than or equal to the count in map1, increment the letter counter
-            if(map2.get(ch) <= map1.get(ch)){
-                letterCounter++;
-            }
+    while (end < s.length) {
+        if (subMap.has(s[end])) {
+            winMap.set(s[end], (winMap.get(s[end]) || 0) + 1);
+        }
+        if (subMap.has(s[end]) && subMap.get(s[end]) === winMap.get(s[end])) {
+            have++;
         }
 
-        // If the window contains all the letters in t
-        if(letterCounter >= t.length){
-            // While the window still contains all the letters in t and the count of a letter in map2 is greater than the count in map1
-            while(!map1.has(s[slow]) || map2.get(s[slow]) > map1.get(s[slow])){
-                // Decrement the count of the letter in map2 and move the slow pointer
-                map2.set(s[slow] ,map2.get(s[slow]) - 1);
-                slow++;
+        while (have === need) {
+            if(resLen > end - start + 1) {
+                resLen = end - start + 1;
+                res = [start, end];
             }
-
-            // If the current window is smaller than the previous minimum window size, update the check variable and result string
-            if(fast - slow + 1 < check){
-                check = fast - slow + 1;
-                result = s.substring(slow, slow + check);
+            winMap.set(s[start], (winMap.get(s[start]) || 0) - 1);
+            if(subMap.has(s[start])) {
+                if(winMap.get(s[start]) < subMap.get(s[start])) {
+                    have--;
+                }
             }
+            start++;
         }
-
-        // Move the fast pointer to the next character
-        fast++;
+        end++;
     }
-
-    // Return the minimum window
-    return result;
+    return resLen === Infinity ? "" : s.slice(res[0], res[1] + 1);
 };
-

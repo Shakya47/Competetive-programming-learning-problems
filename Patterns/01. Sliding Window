@@ -6,8 +6,11 @@ For Substring Problems:
 - Longest Substring with At Most k Distinct Characters ->	winMap.size > k
 - Longest Substring Without Repeating Characters ->	winMap.size < have
 - Find Anagrams ->	have === need
+
+The time complexity is O(n) because both pointers (start and end) move from left to right and each character is processed at most twice—once when it's added to the window and once when it's removed.
+Since we never revisit a character after processing it, the total number of operations is at most 2n, which simplifies to O(n).
 -------------------------
-function slidingWindowTemplate(s, t, conditionCheck) {
+function slidingWindowTemplate(s, t) {
     let winMap = new Map(); //for storing current window, consider it as grocery bag into which we will put items based on grocery list
     let subMap = new Map(); //substring map, this will not change, this is our grocery list, what all and how much we want
 
@@ -36,7 +39,7 @@ function slidingWindowTemplate(s, t, conditionCheck) {
         }
 
         // Step 3: Shrink the window while the condition holds
-        while (conditionCheck(have, need, winMap, subMap)) {
+        while (condition) {
             if (end - start + 1 < resLen) {
                 resLen = end - start + 1;
                 res = [start, end]; // Update best result

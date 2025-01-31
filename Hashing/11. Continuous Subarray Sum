@@ -11,6 +11,7 @@ An integer x is a multiple of k if there exists an integer n such that x = n * k
 //Idea:
 -  [23,2,4,6,7], k = 6
 - sum = 23 % 6 = 5, if you add multiple of 6 to 23 the remainder will be same, eg: 23+6%6 = 5, 23+12%6 = 5
+-- we can use this as our advantage, if we find the same remainder again, that would mean that we have added k or multiple of k to the sum
 - In map add this remainder and index + 1, we do +1 because we need to compare
 - keep adding nums[i] to sum prefix and get the remainder
 - if the remainder already exists, check the i & index+1 stored in the map
@@ -32,19 +33,25 @@ bool checkSubarraySum(vector<int>& nums, int k) {
     return false;
 }
 
-
-JavaScript:
-var checkSubarraySum = function(nums, k) {
+-----------------------------------------------------
+Javascript
+-----------------------------------------------------
+var checkSubarraySum = function (nums, k) {
     let map = new Map();
-    map.set(0, 0);
+    map.set(0, -1);
     let sum = 0;
-    for(let i = 0; i<nums.length; i++){
-        sum += nums[i];
-        if(!map.has(sum%k)){
-            map.set(sum%k, i + 1);
-        }else if(map.get(sum%k) < i){
-            return true;
+
+    let start = 0;
+    while (start < nums.length) {
+        sum += nums[start];
+        if (map.has(sum % k)) {
+            if (start - map.get(sum % k) > 1) {
+                return true;
+            }
+        } else {
+            map.set(sum % k, start);
         }
+        start++;
     }
     return false;
 };

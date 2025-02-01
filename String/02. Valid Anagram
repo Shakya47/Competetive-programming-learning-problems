@@ -20,23 +20,22 @@ bool isAnagram(string s, string t) {
         return true;
     }
 
+---------------------------------------------------------
 JavaScript:
-//In JS we can't use arry as above, so have to use object
-
+----------------------------------------------------------
 var isAnagram = function(s, t) {
-    if (s.length !== t.length) return false;
-    const charCount = {};
+    if(s.length !== t.length) {
+        return false;
+    }
+    let map = new Map();
 
-    for (let i = 0; i < s.length; i++) {
-        charCount[s[i]] = (charCount[s[i]] || 0) + 1;
-        charCount[t[i]] = (charCount[t[i]] || 0) - 1;
+    for(let i = 0; i<s.length; i++) {
+        map.set(s[i], (map.get(s[i]) || 0) + 1)
+        map.set(t[i], (map.get(t[i]) || 0) - 1)
     }
 
-    for (let char in charCount) {
-        if (charCount[char] !== 0) {
-            return false;
-        }
+    for(let [k,v] of map) {
+        if(v !== 0) return false;
     }
-
     return true;
 };

@@ -38,3 +38,44 @@ var shortestPalindrome = function(s) {
     let p = s.substring(n);
     return p.split('').reverse().join('') + s;
 };
+
+-----------------------------------------------
+Javascript:
+-----------------------------------------------
+var shortestPalindrome = function (s) {
+    if (s.length === 0) return '';
+    if (s === s.split('').reverse().join('')) return s;
+    
+    let combinedString = s + '#' + s.split('').reverse().join('');
+    let combinedLength = combinedString.length;
+    let originalLength = s.length;
+    
+    let lps = new Array(combinedLength).fill(0);
+    computeLPS(combinedString, lps);
+    
+    let prefixToAdd = s.slice(lps[combinedLength - 1], originalLength).split('').reverse().join('');
+    let shortestPalin = prefixToAdd + s;
+    
+    return shortestPalin;
+}
+
+function computeLPS(combinedString, lps) {
+    let prefixLength = 0;
+    lps[0] = 0;
+    let i = 1;
+
+    while (i < combinedString.length) {
+        if (combinedString[i] === combinedString[prefixLength]) {
+            prefixLength++;
+            lps[i] = prefixLength;
+            i++;
+        } else {
+            if (prefixLength === 0) {
+                lps[i] = 0;
+                i++;
+            } else {
+                prefixLength = lps[prefixLength - 1];
+            }
+        }
+    }
+}

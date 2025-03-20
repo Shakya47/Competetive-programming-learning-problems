@@ -5,7 +5,9 @@ Arrival and departure time can never be the same for a train but we can have arr
 At any given instance of time, same platform can not be used for both departure of a train and arrival of another train. 
 In such cases, we need different platforms.
 
-
+//Idea:
+- sort arr and dep separately as we care only about platforms, not the timing of arr and dep
+- Platforms are only needed based on the order of arrivals and departures, not train pairs.
 
 int findPlatform(int arr[], int dep[], int n)
 {
@@ -29,4 +31,28 @@ int findPlatform(int arr[], int dep[], int n)
         res = max(res, count);
     }
     return res;
+}
+----------------------------------------------------------
+JavaScript:
+----------------------------------------------------------
+findPlatform(arr, dep) {
+    let platform = 0;
+    let maxPlatform = 0;
+    
+    arr.sort((a, b) => a - b);
+    dep.sort((a, b) => a - b);
+    
+    let i = 0, j = 0;
+    
+    while(i < arr.length && j < dep.length) {
+        if(arr[i] <= dep[j]) {
+            platform++;
+            maxPlatform = Math.max(platform, maxPlatform);
+            i++;
+        } else {
+            platform--;
+            j++;
+        }
+    }
+    return maxPlatform;
 }

@@ -4,6 +4,10 @@ What is the maximum number of meetings that can be accommodated in the meeting r
 
 Note: Start time of one chosen meeting can't be equal to the end time of the other chosen meeting.
 
+//Idea:
+- as we have to accomodate only those meeting that could be held
+- we make pair and sort by meeting end time
+
 static bool sortBySec(pair<int,int> &a, pair<int,int> &b){
     return a.second < b.second;
 }
@@ -30,4 +34,28 @@ int maxMeetings(int start[], int end[], int n)
         }
     }
     return count;
+}
+
+-------------------------------------
+JavaScript
+-------------------------------------
+maxMeetings(start, end) {
+    // code here
+    let meeting = [];
+    let count = 1;
+    for(let i = 0; i<start.length; i++) {
+        meeting.push([start[i], end[i]]);
+    }
+    
+    meeting.sort((a, b) => a[1] - b[1]);
+    let endLimit = meeting[0][1];
+    
+    for(let i = 1; i < meeting.length; i++) {
+        if(meeting[i][0] > endLimit) {
+            count++;
+            endLimit = meeting[i][1];
+        }
+    }
+    return count;
+    
 }

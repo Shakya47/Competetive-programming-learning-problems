@@ -1,0 +1,20 @@
+Geek is a software engineer. He is assigned with the task of calculating average waiting time of all the processes by following shortest job first policy.
+The shortest job first (SJF) or shortest job next, is a scheduling policy that selects the waiting process with the smallest execution time to execute next.
+Given an array of integers bt of size n. Array bt denotes the burst time of each process. 
+Calculate the average waiting time of all the processes and return the nearest integer which is smaller or equal to the output.
+Note: Consider all process are available at time 0.
+
+//Idea:
+- sort the array
+- as the 1st task will not have waiting period, keep the initial waitTime = 0
+
+solve(bt)
+{
+    bt.sort((a, b) => a - b);
+    let waitTime = 0, t = 0;
+    for(let job of bt) {
+        waitTime += t;  //This is very interesting, this makes sure that only previous job time is considered and not the last one
+        t += job;
+    }
+    return Math.floor(waitTime/bt.length);
+}

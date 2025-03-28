@@ -1,12 +1,12 @@
 Given a set of N jobs where each jobi has a deadline and profit associated with it.
-
 Each job takes 1 unit of time to complete and only one job can be scheduled at a time. 
 We earn the profit associated with job if and only if the job is completed by its deadline.
-
 Find the number of jobs done and the maximum profit.
-
 Note: Jobs will be given in the form (Jobid, Deadline, Profit) associated with that Job.
 
+//Idea:
+- Greedily sort based on profit
+- keep assignin the jobs to the last deadline
 
 static bool cmp(Job &a, Job &b){
     return a.profit>b.profit;
@@ -40,4 +40,42 @@ vector<int> JobScheduling(Job arr[], int n)
   res.push_back(countJobs);
   res.push_back(totalProfit);
   return res;
+}
+
+----------------------------------------------
+Javascript:
+----------------------------------------------
+jobSequencing(deadline, profit) {
+    let n = deadline.length;
+    let totalProfit = 0, count = 0, maxDeadline = 0;
+    let indices = Array.from({ length: n }, (_, i) => i);
+    indices.sort((a, b) => profit[b] - profit[a]);
+
+    //could have done this to make an array of pairs but the above indices method is much better.
+    //
+    //for(let i = 0; i<n; i++) {
+    //    dProfit.push({deadline: deadline[i], profit: profit[i]});
+    //    maxDeadline = Math.max(maxDeadline, deadline[i]);
+    //}
+
+    for (let i = 0; i < n; i++) {
+        maxDeadline = Math.max(maxDeadline, deadline[i]);
+    }
+
+    let jobs = new Array(maxDeadline + 1).fill(-1);
+
+    for (let i = 0; i < n; i++) {
+        let jobIdx = indices[i]; // Get the index from sorted order
+        let j = deadline[jobIdx];
+        while (j > 0) {
+            if (jobs[j] === -1) {
+                jobs[j] = profit[jobIdx];
+                count++;
+                totalProfit += profit[jobIdx];
+                break;
+            }
+            j--;
+        }
+    }
+    return [count, totalProfit];
 }

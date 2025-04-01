@@ -28,3 +28,25 @@ double fractionalKnapsack(int W, Item arr[], int n)
     }
     return ans;
 }
+
+----------------------------------------
+JavaScript:
+----------------------------------------
+fractionalknapsack(val, wt, capacity) {
+        let result = 0;
+        let n = val.length;
+        let indices = Array.from({length: n}, (_, i) => i);
+        
+        indices.sort((a, b) => (val[b]/wt[b]) - (val[a]/wt[a]));
+        
+        for(let i = 0; i<n; i++) {
+            if(wt[indices[i]] <= capacity) {
+                result += val[indices[i]];
+                capacity -= wt[indices[i]];
+            } else if(wt[indices[i]] > capacity) {
+                result += ((val[indices[i]]/wt[indices[i]]) * capacity);
+                break;
+            }
+        }
+        return result;
+}

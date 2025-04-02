@@ -3,6 +3,10 @@ If there is no such subarray, return -1.
 A subarray is a contiguous part of an array.
 
 //Idea: 
+- sliding window alone, won't work
+-- When there are only positive numbers, expanding the window increases the sum, and shrinking it decreases the sum.
+-- But with negative numbers, shrinking might increase the sum instead of decreasing it, breaking the core assumption of the sliding window technique.
+- We maintain a monotonic deque to efficiently track the shortest subarray
 - sum>=k ->min of shortest, i+1
 - if eliminating 1st value in deque still gives sum >=k, then, store, pop_front, min
 - if sum < last value in deque, pop_back then push_back sum,i -> this is to make sure deque is monotonically ascending
@@ -32,3 +36,29 @@ int shortestSubarray(vector<int>& nums, int k) {
     }
     return (shortest == INT_MAX ? -1 : shortest);
 }
+
+------------------------------------------
+JavaScript:
+------------------------------------------
+var shortestSubarray = function(nums, k) {
+    let minLength = Infinity;
+    let prefixSum = [0];
+    let deque = [];
+    for(let num of nums) {
+        prefixSum.push(prefixSum[prefixSum.length - 1] + num);
+    }
+
+    for(let i = 0; i<= nums.length; i++) { //it's <= because at the end prefixSum.push() is extra, instead we could have also used i < prefixSum.length 
+        while(deque.length > 0 && prefixSum[i] - prefixSum[deque[0]] >= k) {
+            minLength = Math.min(minLength, i - deque[0]);
+            deque.shift();
+        }
+
+        while(deque.length > 0 && prefixSum[deque[deque.length - 1]] >= prefixSum[i]) {
+            deque.pop();
+        }
+        
+        deque.push(i);
+    }
+    return minLength === Infinity ? -1 : minLength;
+};

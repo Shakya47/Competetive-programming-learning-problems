@@ -47,7 +47,7 @@ var findMedianSortedArrays = function(nums1, nums2) {
     let n = nums2.length;
 
     if(m > n) {
-        return findMedianSortedArrays(nums2, nums1);
+        return findMedianSortedArrays(nums2, nums1); //because, when we calculate left and right, we want them to have smaller search space
     }
 
     let left = 0;
@@ -57,7 +57,7 @@ var findMedianSortedArrays = function(nums1, nums2) {
 
     while(left <= right) {
         let mid1 = Math.floor((left + right) / 2);
-        let mid2 = half - mid1;
+        let mid2 = half - mid1; //we want to make left half (+1 if odd) and right half of same size, thats why after mid1, remaining which we can take for left half is calculated like this 
 
         let left1 = mid1 > 0 ? nums1[mid1 - 1] : -Infinity;
         let left2 = mid2 > 0 ? nums2[mid2 - 1] : -Infinity;

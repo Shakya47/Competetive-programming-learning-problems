@@ -25,7 +25,7 @@ bool uniqueOccurrences(vector<int>& a) {
     }
 
 -------------------------------------------------------
-Javascript
+Javascript:
 -------------------------------------------------------
 var uniqueOccurrences = function(arr) {
     let map = new Map();
@@ -36,7 +36,7 @@ var uniqueOccurrences = function(arr) {
     }
 
     for(let [k,v] of map) {
-        if(set.has(v)) {
+        if(set.has(v)) { //Remember, we are storing map values not keys as we need to find unique occurences not uniqe numbers in nums
             return false;
         }
         set.add(v);

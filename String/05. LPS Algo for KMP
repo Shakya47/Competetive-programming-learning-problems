@@ -49,5 +49,36 @@ int main()
         cout<<lps[i]<<" ";
     }
     return 0;
-
 }
+
+````````````````````````````````````````````````````````````````````
+JavaScript -O(m+n)
+``````````````````````````````````````````````````````````````````
+// Compute LPS array for a given pattern (Knuth–Morris–Pratt preprocessing)
+function computeLPS(pattern) {
+  const n = pattern.length;
+  const lps = new Array(n).fill(0);
+  let len = 0; // length of the previous longest prefix suffix
+  let i = 1;   // we start from index 1
+
+  while (i < n) {
+    if (pattern[i] === pattern[len]) {
+      len++;
+      lps[i] = len;
+      i++;
+    } else {
+      if (len !== 0) {
+        // fallback: try the previous smaller prefix-suffix
+        len = lps[len - 1];
+        // note: we do NOT increment i here
+      } else {
+        // no proper prefix which is suffix ends at i
+        lps[i] = 0;
+        i++;
+      }
+    }
+  }
+
+  return lps;
+}
+

@@ -91,5 +91,13 @@ return s;
      }
 };
 
+-----------------------------------------------------------------------------------------------
+JavaScript:
+- remember that here regex doesn't have any "" or ''
+- make sure to use trim
+
+var reverseWords = function(s) {
+    return s.trim().split(/\s+/).reverse().join(" ");
+};
 
 

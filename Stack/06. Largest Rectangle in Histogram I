@@ -2,8 +2,10 @@ Given an array of integers heights representing the histogram's bar height where
 return the area of the largest rectangle in the histogram
 
 //Hint: Use previous & next smaller to calculated width of the rectangle
-- They can be easily found by modifying the previous problem "Previous and Next smaller"
-- if no smaller found, assign it the size of the array
+- remember, we already have height, we need to find a width
+- Use previous & next smaller to calculated width of the rectangle
+-- We store indexes in the stack, not the heights[i] because we are calculating width not height
+-- remember for previousSmaller out-of-bounds is -1 & for nextSmaller it is n
 - Previous-smaller and next-smaller will tell us the width of the rectangle
 
 
@@ -39,3 +41,40 @@ int main()
     }
     cout<<res;
 }
+
+--------------------------------------------------------------------------------------------------
+JavaScript:
+- remember, we store indexes in ps & ns and not heights[i] because we are looking for width not height (as it is already given)
+
+var largestRectangleArea = function(heights) {
+    let n = heights.length;
+    let stack = [];
+    let ps = [];
+    let ns = [];
+
+    for(let i = 0; i<n; i++) {
+        while(stack.length && heights[i] <= heights[stack[stack.length - 1]]) {
+            stack.pop();
+        }
+        ps[i] = stack.length ? stack[stack.length - 1] : -1; //in else we store outofbounds index
+        stack.push(i);
+    }
+
+    stack = [];
+
+    for(let i = n-1; i>=0; i--) {
+        while(stack.length && heights[i]<= heights[stack[stack.length - 1]]) {
+            stack.pop();
+        }
+        ns[i] = stack.length ? stack[stack.length - 1] : n; //in else we store outofbounds index
+        stack.push(i);
+    }
+
+    let cur = 0;
+    let res = 0;
+    for(let i = 0; i<n; i++) {
+        cur = (ns[i] - ps[i] - 1) * heights[i];
+        res = Math.max(res, cur);
+    }
+    return res;
+};

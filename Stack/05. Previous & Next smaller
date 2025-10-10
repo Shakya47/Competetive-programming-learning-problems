@@ -11,7 +11,7 @@ int main()
     for(int i =0; i<n; i++){        //Previous Smaller
         while(s.empty()==false && a[s.top()]>=a[i])
             s.pop();
-        ps[i] = (s.empty())?-1: s.top();
+        ps[i] = (s.empty())?-1: s.top(); //for previousSmaller we set -1 as out-of-bounds
         s.push(i);
     }
     
@@ -21,7 +21,7 @@ int main()
     for(int i = n-1; i>=0; i--){    //Next Smaller
         while(s.empty()==false && a[s.top()]>=a[i])
             s.pop();
-        ns[i] = (s.empty())?n:s.top();
+        ns[i] = (s.empty())?n:s.top(); //for nextSmaller, we are setting as n for out-of-bounds, not -1
         s.push(i);
     }
 

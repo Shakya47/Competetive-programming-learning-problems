@@ -18,3 +18,38 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
     }
     return ans;
 }
+
+
+-------------------------------------------------------------------------
+JavaScript:
+//This works but will give you TLC
+var maxSlidingWindow = function(nums, k) {
+  let ans = [];
+  for (let i = 0; i <= nums.length - k; i++) {
+    ans.push(Math.max(...nums.slice(i, i + k)));
+  }
+  return ans;
+};
+
+//Best solution
+var maxSlidingWindow = function(nums, k) {
+    let ans = [];
+    let dq = []; //Dequeue Increasing -> decreasing
+
+    for (let i = 0; i < nums.length; i++) {
+        while(dq.length && nums[i] >= nums[dq[dq.length - 1]]) {
+            dq.pop();
+        }
+
+        dq.push(i); //store index because just value might give duplicate and we need to remove the values also later
+
+        if(dq[0] <= i - k) { //remove the leftmost if it is not in the window anymore
+            dq.shift();
+        }
+        if(i>= k -1) {
+            ans.push(nums[dq[0]]);
+        }
+    }
+
+    return ans;
+};

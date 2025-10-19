@@ -32,3 +32,29 @@ public:
         return sum;
     }
 };
+
+----------------------------------------------------------------------
+JavaScript:
+____
+BFS: from the past BFS problems, I've got good intuition for BFS
+`````
+var sumOfLeftLeaves = function(root) {
+    let sum = 0;
+    if(root === null) return res;
+    let queue = [];
+    queue.push(root);
+
+    while(queue.length) {
+        let n = queue.length;
+        while(n--) {
+            let node = queue.shift();
+            if(node.left && !node.left.left && !node.left.right) {
+                sum += node.left.val;
+            } 
+            if(node.left) queue.push(node.left);
+            if(node.right) queue.push(node.right);
+        }
+    }
+    return sum;
+};
+

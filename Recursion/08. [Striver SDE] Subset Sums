@@ -18,3 +18,22 @@ vector<int> subsetSums(vector<int> arr, int N)
     sort(sumArr.begin(), sumArr.end());
     return sumArr;
 }
+
+--------------------------------------------------------------------
+JavaScript:
+- Take, not-take concept
+
+rec(sum, sumArr, i, arr) {
+    if(i < 0) {
+        sumArr.push(sum);
+        return;
+    }
+    this.rec(sum + arr[i], sumArr, i-1, arr); //Take
+    this.rec(sum, sumArr, i-1, arr);    //Not take
+}
+
+subsetSums(arr) {
+    let sumArr = [];
+    this.rec(0, sumArr, arr.length - 1, arr);
+    return sumArr;
+}

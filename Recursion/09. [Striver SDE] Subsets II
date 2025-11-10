@@ -22,3 +22,33 @@ vector<vector<int>> subsetsWithDup(vector<int>& nums) {
     return ans;
 
 }
+
+------------------------------------------------------------------------------------------------------------------
+JavaScript:
+- Have to take care of duplicate subsets when pushing into the ans/res array
+
+Solution 1 O(2^n) - but while using recursion this is unavoidable:
+````````````
+- Using Map, with String(set) as key, and set as value so that no duplicate exists in map
+- not an optimal solution but easy to understand
+
+var subsetsWithDup = function(nums) {
+    nums.sort((a,b) => a-b); 
+    let set = [];
+    let map = new Map();
+    let n = nums.length;
+    rec(set, map, n-1, nums);
+    let ans = Array.from(map.values());
+    return ans;
+};
+
+function rec(set, map, i, nums) {
+    if (i<0) {
+        map.set(`${set}`, [...set]);
+        return;
+    }
+
+    rec([...set, nums[i]], map, i-1, nums);
+    rec(set, map, i-1, nums);
+}
+

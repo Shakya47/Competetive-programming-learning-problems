@@ -34,27 +34,28 @@ vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
     return ans;
 }
 
-
+-------------------------------------------------------------
 JavaScript:
-//Same, take not take concept
+- Same, take not take concept
+
 var combinationSum = function(candidates, target) {
-    let res = [];
-    let n = candidates.length;
-    findSets(0, [], n, candidates, target, res);
-    return res;
+    let ans = [];
+    candidates.sort((a,b) => a - b);
+    sum(0, [], target, ans, candidates);
+    return ans;
 };
 
-function findSets(ind, set, n, arr, target, res){
-    if(ind === n){
-        if(target === 0){
-            res.push([...set]);
+function sum(ind, set, target, ans, nums) {
+
+    if(ind === nums.length) {
+        if (target === 0) {
+            ans.push([...set]);
         }
         return;
     }
-    if(arr[ind] <= target){
-        set.push(arr[ind]);
-        findSets(ind, set, n, arr, target - arr[ind], res);
-        set.pop();
+
+    if(nums[ind] <= target) {
+        sum(ind, [...set, nums[ind]], target - nums[ind], ans, nums);
     }
-    findSets(ind+1, set, n, arr, target, res);
+    sum(ind + 1, set, target, ans, nums);
 }

@@ -26,7 +26,11 @@ vector<vector<int>> permute(vector<int>& nums) {
     return ans;
 }
 
+--------------------------------------------------------------------------------
 JavaScript:
+- Also similar to subset-II and combination-II
+- here, in the loop, i always starts from 0
+
 var permute = function(nums) {
     let res = [];
     findSet([], nums, res);
@@ -41,7 +45,7 @@ function findSet(set, nums, res){
 
     for(let i = 0; i<nums.length; i++){
         if(!set.includes(nums[i])){
-            set.push(nums[i]);
+            set.push(nums[i]);    //Instead of next 3 line, can do this also find([...set, nums[i]], nums, ans);
             findSet(set, nums, res);
             set.pop();
         }

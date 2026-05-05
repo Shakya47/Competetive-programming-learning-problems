@@ -27,3 +27,33 @@ int trap(vector<int>& height) {
         }
         return w;
     }
+
+---------------------------------------------------------------------------------
+Javascript:
+
+var trap = function(height) {
+    let n = height.length;
+    if(n<=2) return 0;
+    let lmax = new Array(n);
+    let rmax = new Array(n);
+    lmax[0] = height[0];
+    rmax[n - 1] = height[n - 1];
+
+    for(let i = 1; i<n; i++) {
+        lmax[i] = Math.max(lmax[i-1], height[i]);
+    }
+
+    for(let i = n-2; i>=0; i--) {
+        rmax[i] = Math.max(rmax[i+1], height[i]);
+    }
+
+    let water = 0;
+    for(let i = 1; i<n-1; i++) {
+        if (rmax[i] < lmax[i]) {
+            water = water + (rmax[i] - height[i]);
+        } else {
+            water = water + (lmax[i] - height[i]);
+        }
+    }
+    return water;
+};

@@ -9,6 +9,8 @@ Output: 2
 
 
 //Hint: Prefix sum and Hashmap, Very Tricky
+- have a map with prefixSum(sum until now) and its occurences
+- important that its initialized with [0, 1] as later we might encounter sum - k == 0
 
 int subarraySum(vector<int>& a, int k) {
         int n = a.size();
@@ -28,19 +30,15 @@ int subarraySum(vector<int>& a, int k) {
 
 
 JavaScript:
-var subarraySum = function(nums, k) {
-    const map = new Map();
-    let pSum = 0;
-    let count = 0;
-    // map.set(0,1);
-    for(let i = 0; i<nums.length; i++){
-        pSum += nums[i];
-        if(pSum == k) count++;
-        if(map.has(pSum - k)){
-            count += map.get(pSum - k);
-        }
-        map.set(pSum, (map.get(pSum) || 0) + 1);
-
-    }
-    return count;
+function subarraySum(nums: number[], k: number): number {
+    const map = new Map([[0, 1]]); //prefixSum, occurence;
+    let sum = 0; let count = 0;
+    for(let num of nums) {
+        sum += num;
+        if(map.has(sum - k)) {
+            count += map.get(sum - k); //will return the occurences of ways that sum - prefixSum == k
+        }
+        map.set(sum, (map.get(sum) || 0) + 1);
+    }
+    return count;
 };
